@@ -1,4 +1,19 @@
+.headerUser{
+    margin-bottom: 5rem;
+}
+
 .logo{
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
+}
+
+.logo img {
+    border-radius: 50%;
+}
+
+.avatar{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
 }

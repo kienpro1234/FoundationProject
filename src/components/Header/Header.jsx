@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 //THêm class riêng cho esapase, tắt luôn, chứ k chờ
-export default function Header() {
+export default function Header({ className, ...props }) {
   //Dùng redux hay context api quản lý state sau
   const inputDiv = useRef(null);
   const inputRef = useRef(null);
@@ -54,7 +54,6 @@ export default function Header() {
   let content;
   console.log(location.pathname);
   if (location.pathname === "/userinfo") {
-    console.log("keke");
     content = (
       <div>
         <Link to={"/menu"} className="text-white">
@@ -66,48 +65,50 @@ export default function Header() {
     );
   } else {
     content = (
-      <div ref={inputDiv} className={classes["header-search"]}>
-        <input
-          ref={inputRef}
-          className={`${
-            isSearching ? classes["search-open"] : classes["search-close"]
-          }`}
-          type="text"
-        />
-        <button
-          className={`${
-            isSearching
-              ? classes["button-search-open"]
-              : classes["button-search"]
-          }`}
-          onClick={handleSearchClick}
-        >
-          <i className="fa fa-search"></i>
-        </button>
-      </div>
+      <>
+        <div ref={inputDiv} className={classes["header-search"]}>
+          <input
+            ref={inputRef}
+            className={`${
+              isSearching ? classes["search-open"] : classes["search-close"]
+            }`}
+            type="text"
+          />
+          <button
+            className={`${
+              isSearching
+                ? classes["button-search-open"]
+                : classes["button-search"]
+            }`}
+            onClick={handleSearchClick}
+          >
+            <i className="fa fa-search"></i>
+          </button>
+        </div>
+        {isLogin ? (
+          <div className={classes["header-auth"]}>
+            <Link to={"/userinfo"}>
+              <button>
+                <i className="fa fa-user"></i>
+              </button>
+            </Link>
+          </div>
+        ) : (
+          <div className={classes["header-auth-notLog"]}>
+            <Link to={"/userinfo"}>
+              <button>
+                <i className="fa fa-user"></i>
+              </button>
+            </Link>
+          </div>
+        )}
+      </>
     );
   }
 
   return (
-    <div className={classes.header}>
+    <div className={`${classes.header} ${className}`} {...props}>
       {content}
-      {isLogin ? (
-        <div className={classes["header-auth"]}>
-          <Link to={"/userinfo"}>
-            <button>
-              <i className="fa fa-user"></i>
-            </button>
-          </Link>
-        </div>
-      ) : (
-        <div className={classes["header-auth-notLog"]}>
-          <Link to={"/userinfo"}>
-            <button>
-              <i className="fa fa-user"></i>
-            </button>
-          </Link>
-        </div>
-      )}
 
       <div className={classes["header-fav"]}>
         <button>
