@@ -1,0 +1,1 @@
+export const DOMAIN = "https://restaurant-ordering-webapp-0-9-release.onrender.com/api/v1/";

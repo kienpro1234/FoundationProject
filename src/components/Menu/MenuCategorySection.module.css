@@ -1,0 +1,60 @@
+
+.category{
+    overflow: hidden;
+}
+
+.category li {
+    box-sizing: border-box;
+}
+
+.image{
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    mix-blend-mode: multiply;
+    border-radius: 5px;
+}
+
+.title{
+    text-align: center;
+    font-weight: 500;
+    position: relative;
+    font-size: 25px;
+    margin-bottom: 40px;
+}
+
+.title::before{
+    content: "";
+    position: absolute;
+    height: 1px;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #ccc;
+    left: 0;
+    z-index: -1;
+}
+
+.title span{
+    background-color: #fff;
+    padding: 0 30px;
+}
+
+.foodName {
+    font-size: 20px;
+    color: #333;
+}
+
+.foodInfo .price{
+    color: var(--color-red-tomato);
+}
+
+.food-review-detail{
+    color: #999;
+}
+
+
+
+
+
+
