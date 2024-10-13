@@ -17,3 +17,27 @@
     border-radius: 50%;
     object-fit: cover;
 }
+
+@media screen and (max-width: 840px) {
+    .logo{
+        display: none;
+    }
+
+    .avatar{
+        display: none;
+    }
+
+    .navbar{
+        width: 100%;
+    }
+
+    .headerUser-ul{
+        justify-content: space-between;
+    }
+
+    .username{
+        margin-top: 15px;
+        font-size: 1rem!important;
+        text-wrap: nowrap;
+    }
+}

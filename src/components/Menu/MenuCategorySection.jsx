@@ -1,20 +1,20 @@
 import React from "react";
 import Button from "../UI/Button";
 import classes from "./MenuCategorySection.module.css";
-
+import { formatName } from "../../utils/util";
 import { Link } from "react-router-dom";
 
 export default function MenuCategorySection({ category }) {
   return (
     <div className="menu-category">
       <h3 className={classes.title}>
-        <span>{category.categoryName.toUpperCase()}</span>
+        <span>{formatName(category.categoryName.toUpperCase())}</span>
       </h3>
-      <ul className={`row gx-0 px-3 ${classes.category}`}>
+      <ul className={`row gx-4 px-3 ${classes.category}`}>
         {category?.dishes?.map((food) => {
           return (
-            <li className="col-4 pe-3 mb-2" key={food.id}>
-              <div>
+            <li className="col-md-3 col-6 pe-3 mb-4" key={food.id}>
+              <div className={classes["menu-category-content"]}>
                 <div className={classes.foodInfo}>
                   <Link to={`/food/${food.id}`}>
                     <img
@@ -30,8 +30,10 @@ export default function MenuCategorySection({ category }) {
                   </Link>
                   <p className={classes.price}>{food.price}</p>
                 </div>
-                <div className="d-flex align-items-center justify-between">
-                  <div className="food-review ">
+                <div
+                  className={`${classes.footer} d-flex align-items-center justify-between`}
+                >
+                  <div className="food-review">
                     <div className="d-flex gap-1 align-items-center">
                       <i className="fa fa-star text-warning"></i>
                       {/* <p>

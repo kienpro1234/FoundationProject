@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import classes from "./Sider.module.css";
+import SiderMenu from "./SiderMenu";
+
 
 export default function Sider() {
   return (
@@ -13,48 +15,7 @@ export default function Sider() {
       </Link>
 
       <div className={classes["sider-content"]}>
-        <ul className={classes["sider-nav"]}>
-          <li>
-            <NavLink
-              className={({ isActive }) =>
-                isActive ? classes.active : undefined
-              }
-              to={"/"}
-            >
-              Trang chủ
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className={({ isActive }) =>
-                isActive ? classes.active : undefined
-              }
-              to={"/about"}
-            >
-              Giới thiệu
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className={({ isActive }) =>
-                isActive ? classes.active : undefined
-              }
-              to={"/menu"}
-            >
-              Menu
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className={({ isActive }) =>
-                isActive ? classes.active : undefined
-              }
-              to={"/contact"}
-            >
-              Liên hệ
-            </NavLink>
-          </li>
-        </ul>
+        <SiderMenu />
         <div className={classes["sider-footer"]}>
           <div className={classes["sider-contact"]}>
             <p>

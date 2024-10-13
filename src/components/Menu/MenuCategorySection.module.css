@@ -53,8 +53,21 @@
     color: #999;
 }
 
+.menu-category-content{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
+/* RESPONSIVE */
 
+@media screen and (max-width: 768px) {
+
+    .image {
+        height: 120px;
+    }
+}
 
 
 

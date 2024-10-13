@@ -3,7 +3,8 @@
 }
 
 .ingredients,
-.food, .portion {
+.food,
+.portion {
     border-bottom: 1px dotted #666;
     padding-bottom: 17px;
     margin-bottom: 17px;
@@ -16,7 +17,8 @@
     font-size: 18px;
 }
 
-.food-mainInfo div p, .description p {
+.food-mainInfo div p,
+.description p {
     margin-top: 8px;
     font-size: 18px;
 }
@@ -43,3 +45,12 @@
     font-weight: 600;
     line-height: 41px;
 }
+
+/* RESPONSIVE */
+
+/* @media screen and(max-width: 768px) {
+
+    .image {
+        height: 120px;
+    }
+} */

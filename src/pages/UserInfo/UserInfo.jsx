@@ -11,6 +11,7 @@ export default function UserInfo() {
     id: 1,
     name: "Hồn Loàng",
     avatar: hoangSpicture,
+    
   };
   return (
     <>

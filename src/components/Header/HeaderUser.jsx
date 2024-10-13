@@ -15,8 +15,13 @@ export default function HeaderUser({ user }) {
         />
       </div>
       <div className={`${classes.navbar}`}>
-        <ul className="d-flex gap-10 align-items-center">
-          <Header className="position-relative" style={{transform: "translateY(-35%)"}}/>
+        <ul
+          className={`${classes["headerUser-ul"]} d-flex gap-10 align-items-center`}
+        >
+          <Header
+            className="position-relative"
+            style={{ transform: "translateY(-35%)",minWidth: "180px" }}
+          />
           <div className="d-flex gap-2 align-items-center">
             <li>
               <img
@@ -25,7 +30,9 @@ export default function HeaderUser({ user }) {
                 alt={user.avatar}
               />
             </li>
-            <li className="text-white fw-bold" style={{fontSize: "1.8rem"}}>{user.name}</li>
+            <li className={`${classes.username} text-white fw-bold`} style={{ fontSize: "1.8rem" }}>
+              {user.name}
+            </li>
           </div>
         </ul>
       </div>

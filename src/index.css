@@ -35,13 +35,14 @@ a:hover {
 body {
   margin: 0;
   min-width: 320px;
+  height: 100vh;
+  /* height: 100vh; */
   /* min-height: 2000px; */
   /* min-height: 2000px; */
 }
 
 .home,
 .menu,
-
 /* .menuLanding, */
 .foodDetail {
   margin-left: 200px;
@@ -159,6 +160,8 @@ body {
 
 
 
+
+
 /* GLOBAL INPUT CSS  */
 /* INPUT */
 /* Style cho class .userInformation */
@@ -268,10 +271,67 @@ body {
 
 
 /* RESPONSIVE */
-
 @media screen and (min-width: 1760px) {
   .headerGreeting-userinfo {
     background-image: url("/src/assets/anh3.png");
     background-size: cover;
   }
+}
+
+
+@media screen and (max-width: 768px) {
+
+  .home,
+  .menu,
+  /* .menuLanding, */
+  .foodDetail {
+    margin-left: 0;
+  }
+
+  .userInfo{
+    padding: 10px 40px;
+  }
+
+  .headerGreeting-wrapper-userinfo {
+    padding: 10px 40px;
+    position: relative;
+    z-index: 2;
+  }
+}
+
+.menu-mobile-wrapper{
+  position: relative;
+  height: calc(100% - 70px);
+}
+
+.siderMenuWrapper-mobile{
+  padding: 2rem 2rem;
+}
+
+.sider-footer-mobile{
+  position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.sider-footer-mobile .sider-icon {
+  font-size: 2rem;
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  justify-content: center;
+  padding: 20px;
+  justify-content: space-around;
+  border-top: 1px solid black;
+}
+
+.sider-footer-mobile .sider-icon i {
+  cursor: pointer;
+}
+
+.sider-contact {
+  display: flex;
+  flex-direction: column;
+  padding-left: 42px;
+  padding-bottom: 20px;
 }

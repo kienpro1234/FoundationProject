@@ -21,6 +21,7 @@
     align-items: center;
     gap: 15px;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .menu-categories li a {
@@ -46,4 +47,32 @@
 .menu-categories li a.active {
     color: white;
     background-color: var(--color-red-tomato);
+}
+
+/* RESPONSIVE */
+
+@media screen and (max-width: 768px) {
+    .menu {
+        padding: 20px 0;
+    }
+
+    .menu-index {
+        width: 95%;
+    }
+
+    .menu-categories {
+        gap: 5px;
+    }
+
+    .menu-categories li{
+        flex-basis: calc(33% - 71px);
+        margin-bottom: 10px;
+        /* flex-grow: 1; */
+        
+    }
+
+    .menu-categories li a{
+        font-size: 14px;
+        text-wrap: nowrap;
+    }
 }
