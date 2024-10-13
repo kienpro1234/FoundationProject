@@ -30,7 +30,7 @@
     background-color: var(--color-red-tomato);
     border-radius: 50%;
 } */
- 
+
 .header-logo img {
     width: 70px;
     height: 70px;
@@ -50,7 +50,7 @@
     top: 0;
     width: 100vw;
     z-index: 5;
-
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
 .btnBack{
@@ -73,7 +73,7 @@
     width: 100%;
     padding: 9px 50px;
     height: 70px;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    /* background-color: rgba(169, 169, 169, 1); */
 }
 
 .search-open:focus{
