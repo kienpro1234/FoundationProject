@@ -32,10 +32,12 @@ export default function HeaderMobile() {
       className={`${isMenuOpen ? classes["header-open-menu"] : classes.header}`}
     >
       <div className={`${classes["header-logo"]}`}>
-        <img
-          src="https://img.freepik.com/premium-vector/restaurant-logo-design_1128391-17280.jpg"
-          alt="restaurant logo"
-        />
+        <Link to={"/menu/all"}>
+          <img
+            src="https://img.freepik.com/premium-vector/restaurant-logo-design_1128391-17280.jpg"
+            alt="restaurant logo"
+          />
+        </Link>
       </div>
 
       <ul className={`${classes.navbar}`}>

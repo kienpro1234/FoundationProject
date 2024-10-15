@@ -36,3 +36,9 @@
     font-size: 28px;
     letter-spacing: .05em;
 }
+
+@media screen and (max-width: 768px) {
+    .menuLanding-captions h2{
+        font-size: 23px;
+    }
+}
