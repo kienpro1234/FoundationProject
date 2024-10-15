@@ -30,6 +30,8 @@ export default function FoodDetail() {
     },
   });
 
+  console.log("dataDay", data)
+
   let content;
 
   if (isError) {
@@ -42,10 +44,13 @@ export default function FoodDetail() {
     content = <LoadingIndicator />;
   }
 
+  
+
   if (data) {
+    const foodCategories = data.categories;
     content = (
       <>
-        <MenuLanding />
+        <MenuLanding foodCategories={foodCategories}/>
         <main className="food-detail-big-screen">
             <Food food={data} />
             <CustomerReview />

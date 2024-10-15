@@ -36,7 +36,7 @@ export default function MenuDetails() {
     },
   });
 
-  console.log(data);
+  console.log("data menuDetails", data);
 
   let content;
 

@@ -345,4 +345,8 @@ body {
   .food-detail-big-screen {
     padding: 50px 13rem;
   }
+
+  .menu{
+    margin-left: 240px;
+  }
 }
