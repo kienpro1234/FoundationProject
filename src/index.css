@@ -288,7 +288,7 @@ body {
     margin-left: 0;
   }
 
-  .userInfo{
+  .userInfo {
     padding: 10px 40px;
   }
 
@@ -299,19 +299,19 @@ body {
   }
 }
 
-.menu-mobile-wrapper{
+.menu-mobile-wrapper {
   position: relative;
   height: calc(100% - 70px);
 }
 
-.siderMenuWrapper-mobile{
+.siderMenuWrapper-mobile {
   padding: 2rem 2rem;
 }
 
-.sider-footer-mobile{
+.sider-footer-mobile {
   position: absolute;
-    bottom: 0;
-    width: 100%;
+  bottom: 0;
+  width: 100%;
 }
 
 .sider-footer-mobile .sider-icon {
@@ -334,4 +334,15 @@ body {
   flex-direction: column;
   padding-left: 42px;
   padding-bottom: 20px;
+}
+
+@media screen and (min-width: 1500px) and (max-width: 2400px) {
+
+  .foodDetail{
+    margin-left: 240px;
+  }
+
+  .food-detail-big-screen {
+    padding: 50px 13rem;
+  }
 }

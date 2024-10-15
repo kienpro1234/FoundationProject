@@ -47,8 +47,8 @@ export default function CustomerReview() {
     <div className={`${classes.customerReview}`}>
       <h1 className={`${classes["cr-title"]}`}>CUSTOMER REVIEWS</h1>
       <div className={`${classes["customerReview-container"]}`}>
-        <div className={`${["customerReview-content"]} row p-5 ps-2 align-items-center`}>
-          <div className={`col-3 ${classes["content-item"]} text-center pe-0`}>
+        <div className={`${["customerReview-content"]} row p-md-5 ps-md-2 align-items-center`}>
+          <div className={`col-md-3 col-12 ${classes["content-item"]} text-md-center pe-0`}>
             <p className={`${classes["rv-number"]}`}>
               <span>5.0</span>
               <span> / 5</span>
@@ -62,7 +62,7 @@ export default function CustomerReview() {
             </p>
             <p className="rv-vote">Base on 1 reviews</p>
           </div>
-          <div className={`col ${classes["content-item"]} rv-rating-chart px-3`}>
+          <div className={`col-md col-12 ${classes["content-item"]} ${classes["content-item-2"]} rv-rating-chart px-md-3`}>
             <div className={`${classes["rv-rating-row"]}`}>
               <span className={`${classes["rv-rating-star"]}`}>
                 5<span>★</span>
@@ -129,8 +129,8 @@ export default function CustomerReview() {
               <span class={`${classes["percent"]}`}>100%</span>
             </div>
           </div>
-          <div className={`col ${classes["content-item-last"]}`}>
-            <p>Filter by</p>
+          <div className={`col-md col-12 ${classes["content-item-last"]}`}>
+            <p className="mb-md-0 mb-3">Filter by</p>
             <div className={classes.kind}>
               {buttonLabels.map((buttonLabel, index) => (
                 <button
@@ -149,10 +149,10 @@ export default function CustomerReview() {
         <ul>
           {dummyDataFeedback.reviews.map((feedback) => (
             <li className="row">
-              <div className={`${classes.avatar} col-1`}>
+              <div className={`${classes.avatar} col-md-1 col-2`}>
                 <img src={feedback.avatar} alt={feedback.avatar} />
               </div>
-              <div className="col-11">
+              <div className={`col-md-11 col-10 ${classes["feedback-content"]}`}>
                 <h3>{feedback.reviewer}</h3>
                 <p>{feedback.date}</p>
                 <span className="star">

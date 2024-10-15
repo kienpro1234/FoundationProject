@@ -6,11 +6,13 @@ import Button from "../UI/Button";
 export default function Food({ food }) {
   return (
     <div className={`food ${classes["food-container"]}`}>
-      <div className={`d-flex gx-0  justify-content-center ${classes.food}`}>
-        <div className="col-6 pe-4">
+      <div
+        className={`d-flex gx-0  justify-content-center ${classes.food} row`}
+      >
+        <div className="col-md-6 col-12 pe-md-4 mb-md-0 mb-5">
           <img className={classes.image} src={food.image} alt={food.image} />
         </div>
-        <div className="col-6">
+        <div className="col-md-6 col-12">
           <div>
             <h1 className={classes.name}>{food.dishName.toUpperCase()}</h1>
             {/* <i className="fa fa-star text-warning"></i>

@@ -5,7 +5,7 @@
 
 .customerReview-container {
     border: 1px solid #c3c3c3;
-    padding: 20px 30;
+    padding: 20px 30px;
 }
 
 .cr-title {
@@ -55,7 +55,7 @@
     /* width: 5%; */
 }
 
-.percent{
+.percent {
     font-size: 12px;
 }
 
@@ -111,4 +111,39 @@
 
 .feedback-replies .replier {
     color: var(--color-red-tomato);
+}
+
+/* RESPONSIVE */
+/* @media screen and (min-width: 1500px) and (max-width: 1920px) {
+    
+} */
+@media screen and (max-width: 767.8px) {
+    .content-item-2 {
+        border-bottom: 1px dashed #ccc;
+        border-top: 1px dashed #ccc;
+        padding: 15px 0;
+        margin: 15px auto;
+        width: 92%;
+
+
+    }
+
+    .customerReview {
+        padding: 50px 8px;
+
+    }
+
+    .customerReview-container {
+        padding: 5px 17px 20px;
+    }
+
+    .content-item {
+        border-right: unset;
+    }
+
+    .avatar img{
+        min-width: 50px;
+    }
+
+    
 }

@@ -46,10 +46,9 @@ export default function FoodDetail() {
     content = (
       <>
         <MenuLanding />
-        <main>
-
+        <main className="food-detail-big-screen">
             <Food food={data} />
-
+            <CustomerReview />
         </main>
       </>
     );
@@ -58,7 +57,7 @@ export default function FoodDetail() {
   return (
     <div className="foodDetail">
       {content}
-      <CustomerReview />
+      
     </div>
   );
 }
