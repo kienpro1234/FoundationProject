@@ -3,9 +3,29 @@ import Button from "../UI/Button";
 import classes from "./MenuCategorySection.module.css";
 import { formatName } from "../../utils/util";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { DOMAIN } from "../../utils/const";
 
 export default function MenuCategorySection({ category }) {
-  console.log("check data", category)
+  console.log("check data", category);
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["menu", "most-popular"],
+    queryFn: async ({ signal }) => {
+      try {
+        const res = await fetch(`${DOMAIN}category/most-popular`, { signal });
+
+        const result = await res.json();
+
+        return result.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+  });
+
+  const mostPopularArray = data?.dishes.map((food) => food.dishName);
+  console.log("ktra", mostPopularArray);
   return (
     <div className="menu-category">
       <h3 className={classes.title}>
@@ -19,15 +39,17 @@ export default function MenuCategorySection({ category }) {
                 <div className={classes.foodInfo}>
                   <p className={`${classes["foodInfo-status"]}`}>
                     {/* lấy từ data cho vào đây  food.status*/}
-                    Hết hàng
+                    {food.status}
                   </p>
-                  <span className={`${classes["sale-status"]}`}>
-                    {/* Kiểm tra sale status tương ứng để xuất ra logo tương ứng với css tương ứng */}
-                    {/* <i class="fa-solid fa-fire"></i> */}
-                  </span>
+                  {mostPopularArray && mostPopularArray.includes(food.dishName) && (
+                    <span className={`${classes["sale-status"]}`}>
+                      {/* Kiểm tra sale status tương ứng để xuất ra logo tương ứng với css tương ứng */}
+                      {/* <i class="fa-solid fa-fire"></i> */}
+                    </span>
+                  )}
 
                   <button className={`${classes["foodInfo-fav-btn"]}`}>
-                  <i class="fa-regular fa-heart"></i>
+                    <i class="fa-regular fa-heart"></i>
                   </button>
                   <Link to={`/food/${food.id}`}>
                     <img

@@ -6,6 +6,7 @@ import { DOMAIN } from "../../utils/const";
 import { formatName } from "../../utils/util";
 import ErrorBlock from "../UI/ErrorBlock";
 import LoadingIndicator from "../UI/LoadingIndicator";
+import Footer from "../Footer/Footer";
 
 export default function MenuComponent() {
   console.log(DOMAIN + "category");
@@ -68,7 +69,9 @@ export default function MenuComponent() {
       <div className={classes["menu-index"]}>
         <h3 style={{ letterSpacing: ".05em" }}>MENU</h3>
         <ul className={classes["menu-categories"]}>{content}</ul>
+        
       </div>
+      
     </section>
   );
 }
