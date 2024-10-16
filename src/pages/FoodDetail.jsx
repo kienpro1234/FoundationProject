@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import CustomerReview from "../components/Food/CustomerReview";
+import Footer from "../components/Footer/Footer";
 
 export default function FoodDetail() {
   const params = useParams();
@@ -54,6 +55,7 @@ export default function FoodDetail() {
         <main className="food-detail-big-screen">
             <Food food={data} />
             <CustomerReview />
+            <Footer />
         </main>
       </>
     );

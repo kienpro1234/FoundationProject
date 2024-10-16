@@ -6,7 +6,6 @@ import SearchContext from "../../context/headerContext";
 export default function HeaderMobile() {
   const { isSearching, setIsSearching } = useContext(SearchContext);
   const { isMenuOpen, setIsMenuOpen } = useContext(SearchContext);
-  const [clickedButton, setClickedButton] = useState(null);
   const inputRef = useRef(null);
 
   const handleSearchClick = () => {
@@ -28,15 +27,6 @@ export default function HeaderMobile() {
     setIsMenuOpen(false);
   };
 
-  const handleButtonClick = (buttonName) => {
-    setClickedButton(buttonName);
-
-    // Reset màu nền sau 200ms
-    setTimeout(() => {
-      setClickedButton(null);
-    }, 1000);
-  };
-
   return (
     <div
       className={`${isMenuOpen ? classes["header-open-menu"] : classes.header}`}
@@ -50,6 +40,10 @@ export default function HeaderMobile() {
         </Link>
       </div>
 
+      {/* Chú thích:
+      - Logo luôn hiện 
+      - Nếu menu chưa open thì hiển thị đầy đủ mục ở header, nếu ngược lại thì không hiển thị, mà chỉ hiển thị close button thôi
+      */}
       <ul className={`${classes.navbar}`}>
         {!isMenuOpen ? (
           <>
@@ -109,17 +103,17 @@ export default function HeaderMobile() {
                 <i className="fa fa-shopping-cart"></i>
               </button>
             </div>
+            <div>
+              <button
+                className={`button-click-expand`}
+                onClick={handleOpenMenu}
+              >
+                <i className="fa fa-bars"></i>
+              </button>
+            </div>
           </>
         ) : (
-          <></>
-        )}
-
-        <div>
-          {!isMenuOpen ? (
-            <button className={`button-click-expand`} onClick={handleOpenMenu}>
-              <i className="fa fa-bars"></i>
-            </button>
-          ) : (
+          <div>
             <button
               className={`button-click-expand
               }`}
@@ -127,8 +121,8 @@ export default function HeaderMobile() {
             >
               <i className="fa fa-times"></i>
             </button>
-          )}
-        </div>
+          </div>
+        )}
       </ul>
     </div>
   );

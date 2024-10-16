@@ -5,6 +5,7 @@ import { formatName } from "../../utils/util";
 import { Link } from "react-router-dom";
 
 export default function MenuCategorySection({ category }) {
+  console.log("check data", category)
   return (
     <div className="menu-category">
       <h3 className={classes.title}>
@@ -16,6 +17,18 @@ export default function MenuCategorySection({ category }) {
             <li className="col-md-3 col-6 pe-3 mb-4" key={food.id}>
               <div className={classes["menu-category-content"]}>
                 <div className={classes.foodInfo}>
+                  <p className={`${classes["foodInfo-status"]}`}>
+                    {/* lấy từ data cho vào đây  food.status*/}
+                    Hết hàng
+                  </p>
+                  <span className={`${classes["sale-status"]}`}>
+                    {/* Kiểm tra sale status tương ứng để xuất ra logo tương ứng với css tương ứng */}
+                    {/* <i class="fa-solid fa-fire"></i> */}
+                  </span>
+
+                  <button className={`${classes["foodInfo-fav-btn"]}`}>
+                  <i class="fa-regular fa-heart"></i>
+                  </button>
                   <Link to={`/food/${food.id}`}>
                     <img
                       className={classes.image}
