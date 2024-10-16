@@ -286,6 +286,7 @@ body {
   /* .menuLanding, */
   .foodDetail {
     margin-left: 0;
+    overflow: hidden;
   }
 
   .userInfo {
@@ -296,6 +297,10 @@ body {
     padding: 10px 40px;
     position: relative;
     z-index: 2;
+  }
+
+  .food-review-button{
+    width: 100%;
   }
 }
 
