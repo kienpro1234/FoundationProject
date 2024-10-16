@@ -1,17 +1,17 @@
-.header{
+.header {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.header-open-menu{
+.header-open-menu {
     display: flex;
     align-items: center;
     justify-content: space-between;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
-.navbar{
+.navbar {
     width: 50%;
     display: flex;
     gap: 40px;
@@ -53,7 +53,7 @@
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
-.btnBack{
+.btnBack {
     position: absolute;
     left: 3%;
     top: 50%;
@@ -61,7 +61,7 @@
     cursor: pointer;
 }
 
-.hidden{
+.hidden {
     display: none;
 }
 
@@ -76,7 +76,7 @@
     /* background-color: rgba(169, 169, 169, 1); */
 }
 
-.search-open:focus{
+.search-open:focus {
     outline: none;
 }
 

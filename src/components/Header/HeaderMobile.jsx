@@ -6,7 +6,7 @@ import SearchContext from "../../context/headerContext";
 export default function HeaderMobile() {
   const { isSearching, setIsSearching } = useContext(SearchContext);
   const { isMenuOpen, setIsMenuOpen } = useContext(SearchContext);
-  console.log("ismenuopen", isMenuOpen);
+  const [clickedButton, setClickedButton] = useState(null);
   const inputRef = useRef(null);
 
   const handleSearchClick = () => {
@@ -27,6 +27,16 @@ export default function HeaderMobile() {
   const handleCloseMenu = () => {
     setIsMenuOpen(false);
   };
+
+  const handleButtonClick = (buttonName) => {
+    setClickedButton(buttonName);
+
+    // Reset màu nền sau 200ms
+    setTimeout(() => {
+      setClickedButton(null);
+    }, 1000);
+  };
+
   return (
     <div
       className={`${isMenuOpen ? classes["header-open-menu"] : classes.header}`}
@@ -48,14 +58,18 @@ export default function HeaderMobile() {
                 isSearching
                   ? classes["header-search-open"]
                   : classes["header-search"]
-              } `}
+              }`}
             >
-              <button
+              <div
                 className={`${isSearching ? classes.btnBack : classes.hidden}`}
-                onClick={handleBackSearch}
               >
-                <i className="fa fa-arrow-left"></i>
-              </button>
+                <button
+                  className={`button-click-expand`}
+                  onClick={handleBackSearch}
+                >
+                  <i className="fa fa-arrow-left"></i>
+                </button>
+              </div>
               <input
                 ref={inputRef}
                 className={`${
@@ -63,31 +77,35 @@ export default function HeaderMobile() {
                 }`}
                 type="text"
               />
-              <button
+              <div
                 className={`${
                   isSearching
                     ? classes["button-search-open"]
                     : classes["button-search"]
                 }`}
-                onClick={handleSearchClick}
               >
-                <i className="fa fa-search"></i>
-              </button>
+                <button
+                  className={`button-click-expand`}
+                  onClick={handleSearchClick}
+                >
+                  <i className="fa fa-search"></i>
+                </button>
+              </div>
             </div>
             <div className={classes["header-auth"]}>
               <Link to={"/userinfo"}>
-                <button>
+                <button className={`button-click-expand`}>
                   <i className="fa fa-user"></i>
                 </button>
               </Link>
             </div>
             <div className={classes["header-fav"]}>
-              <button>
+              <button className={`button-click-expand`}>
                 <i className="fa fa-heart"></i>
               </button>
             </div>
             <div className={classes["header-cart"]}>
-              <button>
+              <button className={`button-click-expand`}>
                 <i className="fa fa-shopping-cart"></i>
               </button>
             </div>
@@ -98,12 +116,16 @@ export default function HeaderMobile() {
 
         <div>
           {!isMenuOpen ? (
-            <button onClick={handleOpenMenu}>
+            <button className={`button-click-expand`} onClick={handleOpenMenu}>
               <i className="fa fa-bars"></i>
             </button>
           ) : (
-            <button onClick={handleCloseMenu}>
-              <i class="fa fa-times"></i>
+            <button
+              className={`button-click-expand
+              }`}
+              onClick={handleCloseMenu}
+            >
+              <i className="fa fa-times"></i>
             </button>
           )}
         </div>
