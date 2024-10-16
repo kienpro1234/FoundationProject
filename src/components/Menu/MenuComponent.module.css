@@ -65,9 +65,9 @@
     }
 
     .menu-categories li{
-        flex-basis: calc(33% - 71px);
+        /* flex-basis: calc(33% - 71px); */
         margin-bottom: 10px;
-        /* flex-grow: 1; */
+        flex-grow: 0;
         
     }
 
