@@ -55,7 +55,7 @@ export default function FoodDetail() {
         <main className="food-detail-big-screen">
             <Food food={data} />
             <CustomerReview />
-            <Footer />
+            
         </main>
       </>
     );
@@ -64,7 +64,7 @@ export default function FoodDetail() {
   return (
     <div className="foodDetail">
       {content}
-      
+      <Footer />
     </div>
   );
 }

@@ -9,6 +9,7 @@ import { DOMAIN } from "../../utils/const";
 export default function MenuCategorySection({ category }) {
   console.log("check data", category);
 
+  //Có thể viết query này ở component cha, tránh mỗi category lại call api 1 lần
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["menu", "most-popular"],
     queryFn: async ({ signal }) => {
@@ -18,6 +19,7 @@ export default function MenuCategorySection({ category }) {
         const result = await res.json();
 
         return result.data;
+        
       } catch (err) {
         throw err;
       }

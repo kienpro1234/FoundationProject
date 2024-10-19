@@ -44,7 +44,7 @@ body {
 .home,
 .menu,
 /* .menuLanding, */
-.foodDetail {
+.foodDetail, .about {
   margin-left: 200px;
   overflow: hidden;
 }
@@ -287,6 +287,11 @@ body {
 
 }
 
+/* ABOUT PAGE */
+.about-bottom-flex > div{
+  flex-basis: calc(50% - 50px);
+}
+
 /* RESPONSIVE */
 @media screen and (min-width: 1760px) {
   .headerGreeting-userinfo {
@@ -296,12 +301,14 @@ body {
 }
 
 
+
+
 @media screen and (max-width: 768px) {
 
   .home,
   .menu,
   /* .menuLanding, */
-  .foodDetail {
+  .foodDetail, .about {
     margin-left: 0;
     overflow: hidden;
   }
@@ -360,19 +367,12 @@ body {
 
 @media screen and (min-width: 1500px) and (max-width: 2400px) {
 
-  .foodDetail{
+  .food-detail-big-screen, .container-big-screen {
+    padding: 50px 13rem!important;
+  }
+
+  .menu, .home, .about, .foodDetail{
     margin-left: 240px;
   }
 
-  .food-detail-big-screen {
-    padding: 50px 13rem;
-  }
-
-  .menu{
-    margin-left: 240px;
-  }
-
-  .home{
-    margin-left: 240px;
-  }
 }

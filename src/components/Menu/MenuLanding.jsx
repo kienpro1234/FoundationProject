@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./MenuLanding.module.css";
 import { formatName } from "../../utils/util";
-export default function MenuLanding({ foodCategories }) {
+export default function MenuLanding({ foodCategories ,...props }) {
   if (foodCategories) {
     console.log("food categories landing", foodCategories);
   }
@@ -18,7 +18,7 @@ export default function MenuLanding({ foodCategories }) {
     <div className={`${classes.menuLanding} menuLanding`}>
       <div className={classes["menuLanding-captions"]}>
         <h3>MENU</h3>
-        <h2>{categoryName || "TODAY'S MENU"} </h2>
+        <h2>{categoryName || props.aboutTitle || "TODAY'S MENU"} </h2>
       </div>
     </div>
   );
