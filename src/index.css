@@ -16,6 +16,7 @@
   -moz-osx-font-smoothing: grayscale;
   --color-red: #999;
   --color-red-tomato: #d83a3a;
+  --form-control-disabled: #959495;
 }
 
 a {
@@ -125,8 +126,6 @@ body {
   position: relative;
   padding-bottom: 1rem;
   border-bottom: 1px solid black;
-
-
 }
 
 .headerGreeting-userinfo::before {
@@ -158,10 +157,6 @@ body {
   position: relative;
   z-index: 2;
 }
-
-
-
-
 
 /* GLOBAL INPUT CSS  */
 /* INPUT */
@@ -203,7 +198,6 @@ body {
   color: #aaa;
   font-style: italic;
 }
-
 
 /* Loading icon */
 .lds-ring {
@@ -271,12 +265,12 @@ body {
 }
 
 /* config này để mở rộng vùng click của button  */
-.button-click-expand{
+.button-click-expand {
   position: relative;
-  z-index: 1;  
+  z-index: 1;
 }
 
-.button-click-expand::before{
+.button-click-expand::before {
   content: "";
   position: absolute;
   top: -10px;
@@ -284,13 +278,76 @@ body {
   right: -10px;
   bottom: -10px;
   z-index: 0;
-
 }
 
 /* ABOUT PAGE */
-.about-bottom-flex > div{
+.about-bottom-flex > div {
   flex-basis: calc(50% - 50px);
 }
+
+/* RESGISTER AND LOGIN */
+.heading-login {
+  @apply text-2xl font-bold;
+}
+
+
+/* Custom input css */
+
+.form-control-input {
+  font-family: system-ui, sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.1;
+  display: grid;
+  grid-template-columns: 1em auto;
+  gap: 0.5em;
+}
+
+input[type="checkbox"] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  appearance: none;
+  /* For iOS < 15 to remove gradient background */
+  background-color: #fff;
+  /* Not removed via appearance */
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid currentColor;
+  border-radius: 0.15em;
+  transform: translateY(-0.075em);
+  display: grid;
+  place-content: center;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--color-red-tomato);
+  background-color: CanvasText;
+
+  transform-origin: bottom left;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+input[type="checkbox"]:disabled {
+  --form-control-color: var(--form-control-disabled);
+
+  color: var(--form-control-disabled);
+  cursor: not-allowed;
+}
+
+
+
 
 /* RESPONSIVE */
 @media screen and (min-width: 1760px) {
@@ -300,11 +357,7 @@ body {
   }
 }
 
-
-
-
 @media screen and (max-width: 768px) {
-
   .home,
   .menu,
   /* .menuLanding, */
@@ -323,7 +376,7 @@ body {
     z-index: 2;
   }
 
-  .food-review-button{
+  .food-review-button {
     width: 100%;
   }
 }
@@ -366,13 +419,15 @@ body {
 }
 
 @media screen and (min-width: 1500px) and (max-width: 2400px) {
-
-  .food-detail-big-screen, .container-big-screen {
-    padding: 50px 13rem!important;
+  .food-detail-big-screen,
+  .container-big-screen {
+    padding: 50px 13rem !important;
   }
 
-  .menu, .home, .about, .foodDetail{
+  .menu,
+  .home,
+  .about,
+  .foodDetail {
     margin-left: 240px;
   }
-
 }
