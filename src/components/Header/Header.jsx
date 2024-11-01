@@ -95,11 +95,22 @@ export default function Header({ className, ...props }) {
           </div>
         ) : (
           <div className={classes["header-auth-notLog"]}>
-            <Link to={"/userinfo"}>
+            <Link>
               <button>
                 <i className="fa fa-user"></i>
               </button>
             </Link>
+            <div className={`${classes["login-menu-container"]}`}>
+              <ul className={`${classes["login-menu"]}`}>
+                <Link to={"/register"} className="text-slate-800 hover:text-slate-800 text-sm">
+                  <li className="mb-2">Sign up</li>
+                </Link>
+                <Link to={"/login"} className="text-slate-800 hover:text-slate-800 text-sm">
+                  <li>Sign in</li>
+                </Link>
+                <div className={`${classes["login-menu-overlay"]}`}></div>
+              </ul>
+            </div>
           </div>
         )}
       </>

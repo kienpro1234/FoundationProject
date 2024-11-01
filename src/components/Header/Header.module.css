@@ -50,7 +50,7 @@
     /* margin-left: 20px; */
 }
 
-.search-open:focus{
+.search-open:focus {
     outline: none;
 }
 
@@ -69,4 +69,52 @@
     position: absolute;
     right: 3%;
     top: 10%;
+}
+
+/* LOGIN MENU */
+.header-auth-notLog {
+    position: relative;
+
+}
+
+.header-auth-notLog:hover .login-menu-container, .login-menu-container:hover, .login-menu-overlay {
+    display: block;
+}
+
+
+.login-menu-container {
+    display: none;
+    position: absolute;
+    width: 116px;
+    bottom: -79px;
+    left: -32px;
+}
+
+.login-menu {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.login-menu::before {
+    content: "";
+    position: absolute;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    border-bottom: 5px solid white;
+    
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.login-menu-overlay{
+    content: "";
+    position: absolute;
+    top: -10px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
 }

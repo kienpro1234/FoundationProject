@@ -16,6 +16,7 @@ import FoodDetail from "./pages/FoodDetail";
 import MenuDetailError from "./pages/MenuDetailError";
 import { SearchingContextProvider } from "./context/headerContext";
 import Login from "./pages/Login";
+import Register from "./pages/Register/Register";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />
+  },
+  {
+    path: "/register",
+    element: <Register />
   }
 ]);
 function App() {
