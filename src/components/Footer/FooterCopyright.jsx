@@ -1,8 +1,12 @@
 import React from "react";
 import classes from "./FooterCopyright.module.css";
-export default function FooterCopyright() {
+export default function FooterCopyright({ title }) {
   return (
-    <div className={`${classes["footer-copyright"]}`}>
+    <div
+      className={`${classes["footer-copyright"]} ${
+        title === "cart" ? "mt-12" : ""
+      }`}
+    >
       <div className="row">
         <div className="col-md-4">
           <div

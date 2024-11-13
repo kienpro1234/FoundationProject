@@ -128,7 +128,7 @@ export default function Header({ className, ...props }) {
       </div>
       <div className={classes["header-cart"]}>
         <button>
-          <i className="fa fa-shopping-cart"></i>
+          <Link to={"/cart"} className="fa fa-shopping-cart"></Link>
         </button>
       </div>
     </div>

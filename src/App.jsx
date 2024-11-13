@@ -18,6 +18,7 @@ import { SearchingContextProvider } from "./context/headerContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register/Register";
 import { LoginContextProvider } from "./context/loginContext";
+import ShoppingCart from "./pages/ShoppingCart/ShoppingCart";
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/cart",
+    element: <ShoppingCart />,
   },
 ]);
 
