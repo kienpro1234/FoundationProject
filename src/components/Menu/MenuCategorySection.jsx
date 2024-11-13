@@ -19,7 +19,6 @@ export default function MenuCategorySection({ category }) {
         const result = await res.json();
 
         return result.data;
-        
       } catch (err) {
         throw err;
       }
@@ -43,15 +42,16 @@ export default function MenuCategorySection({ category }) {
                     {/* lấy từ data cho vào đây  food.status*/}
                     {food.status}
                   </p>
-                  {mostPopularArray && mostPopularArray.includes(food.dishName) && (
-                    <span className={`${classes["sale-status"]}`}>
-                      {/* Kiểm tra sale status tương ứng để xuất ra logo tương ứng với css tương ứng */}
-                      {/* <i class="fa-solid fa-fire"></i> */}
-                    </span>
-                  )}
+                  {mostPopularArray &&
+                    mostPopularArray.includes(food.dishName) && (
+                      <span className={`${classes["sale-status"]}`}>
+                        {/* Kiểm tra sale status tương ứng để xuất ra logo tương ứng với css tương ứng */}
+                        {/* <i class="fa-solid fa-fire"></i> */}
+                      </span>
+                    )}
 
                   <button className={`${classes["foodInfo-fav-btn"]}`}>
-                    <i class="fa-regular fa-heart"></i>
+                    <i className="fa-regular fa-heart"></i>
                   </button>
                   <Link to={`/food/${food.id}`}>
                     <img

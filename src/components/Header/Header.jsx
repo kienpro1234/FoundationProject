@@ -1,27 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import classes from "./Header.module.css";
 import { Link, useLocation } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { getToken } from "../../utils/util";
 
 //THêm class riêng cho esapase, tắt luôn, chứ k chờ
 export default function Header({ className, ...props }) {
   //Dùng redux hay context api quản lý state sau
   const inputDiv = useRef(null);
   const inputRef = useRef(null);
-  const [isLogin] = useState(false);
+
   const [isSearching, setIsSearching] = useState(false);
   const location = useLocation();
 
-  // const {data} = useQuery({
-  //   queryKey: ["menu"],
-  //   queryFn: async ({signal}) => {
-  //     const response = await fetch("https://restaurant-ordering-webapp-0-7-release.onrender.com/api/v1/category", {signal});
+  // Kiểm tra nếu có accessToken thì setIsLogin = true để bên dưới render có điều kiện
+  //isLogin ở đây khác với isLogin
 
-  //     return await response.json();
-  //   }
-  // })
-
-  // console.log("data", data)
+  const token = getToken();
 
   const handleClickOutside = (event) => {
     if (inputDiv.current && !inputDiv.current.contains(event.target)) {
@@ -58,7 +52,7 @@ export default function Header({ className, ...props }) {
       <div>
         <Link to={"/menu"} className="text-white">
           <button>
-            <i class="fa fa-home"></i>
+            <i className="fa fa-home"></i>
           </button>
         </Link>
       </div>
@@ -85,7 +79,7 @@ export default function Header({ className, ...props }) {
             <i className="fa fa-search"></i>
           </button>
         </div>
-        {isLogin ? (
+        {token ? (
           <div className={classes["header-auth"]}>
             <Link to={"/userinfo"}>
               <button>
@@ -102,10 +96,16 @@ export default function Header({ className, ...props }) {
             </Link>
             <div className={`${classes["login-menu-container"]}`}>
               <ul className={`${classes["login-menu"]}`}>
-                <Link to={"/register"} className="text-slate-800 hover:text-slate-800 text-sm">
+                <Link
+                  to={"/register"}
+                  className="text-slate-800 hover:text-slate-800 text-sm"
+                >
                   <li className="mb-2">Sign up</li>
                 </Link>
-                <Link to={"/login"} className="text-slate-800 hover:text-slate-800 text-sm">
+                <Link
+                  to={"/login"}
+                  className="text-slate-800 hover:text-slate-800 text-sm"
+                >
                   <li>Sign in</li>
                 </Link>
                 <div className={`${classes["login-menu-overlay"]}`}></div>

@@ -10,13 +10,15 @@ import About from "./pages/About";
 import Menu from "./pages/Menu";
 import Contact from "./pages/Contact";
 import MenuDetails from "./pages/MenuDetails";
-import { queryClient } from "./utils/util";
+import { isEmail, queryClient } from "./utils/util";
 import { QueryClientProvider } from "@tanstack/react-query";
 import FoodDetail from "./pages/FoodDetail";
 import MenuDetailError from "./pages/MenuDetailError";
 import { SearchingContextProvider } from "./context/headerContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register/Register";
+import { LoginContextProvider } from "./context/loginContext";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -24,6 +26,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        // path: "/home",
         element: <Home />,
       },
       {
@@ -60,18 +63,22 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />
+    element: <Login />,
   },
   {
     path: "/register",
-    element: <Register />
-  }
+    element: <Register />,
+  },
 ]);
+
 function App() {
+  console.log("vlll", isEmail("213291814"));
   return (
     <QueryClientProvider client={queryClient}>
       <SearchingContextProvider>
-        <RouterProvider router={router} />
+        <LoginContextProvider>
+          <RouterProvider router={router} />
+        </LoginContextProvider>
       </SearchingContextProvider>
     </QueryClientProvider>
   );

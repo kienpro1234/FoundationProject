@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import classes from "./HeaderUser.module.css";
 import Header from "./Header";
+import { loginContext } from "../../context/loginContext";
+import useLogout from "../../hooks/useLogout";
+import { redirect } from "react-router-dom";
+import { getToken } from "../../utils/util";
 export default function HeaderUser({ user }) {
-  //Lấy thông tin người dùng từ bên kia
+  //lấy ra handleLogout để logout, remove AT và setIsLogin = false
+  const { handleLogout, navigate } = useLogout();
+  const token = getToken();
+  if (!token) {
+    navigate("/menu/all");
+  }
 
   return (
     <div
@@ -20,18 +29,28 @@ export default function HeaderUser({ user }) {
         >
           <Header
             className="position-relative"
-            style={{ transform: "translateY(-35%)",minWidth: "180px" }}
+            style={{ transform: "translateY(-35%)", minWidth: "180px" }}
           />
           <div className="d-flex gap-2 align-items-center">
             <li>
               <img
                 className={classes.avatar}
                 src={user.avatar}
-                alt={user.avatar}
+                alt={"avatar"}
               />
             </li>
-            <li className={`${classes.username} text-white fw-bold`} style={{ fontSize: "1.8rem" }}>
-              {user.name}
+            <li
+              className={`${classes.username} text-white fw-bold flex flex-col`}
+              style={{ fontSize: "1.8rem" }}
+            >
+              {user.lastName}
+
+              <button
+                onClick={handleLogout}
+                className="text-xs md:text-sm  text-left"
+              >
+                Đăng xuất
+              </button>
             </li>
           </div>
         </ul>

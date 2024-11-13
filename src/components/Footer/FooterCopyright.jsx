@@ -43,31 +43,32 @@ export default function FooterCopyright() {
           </div>
         </div>
         <div className="col-md-2">
-          <div
-            className={`${classes["footer-copyright-item-3"]}`}
-          >
+          <div className={`${classes["footer-copyright-item-3"]}`}>
             <h2 className="mb-2">CUSTOMER SUPPORT</h2>
             <ul className="d-flex flex-col gap-2 text-nowrap">
               <li>
-                <i class="fa fa-long-arrow-alt-right"></i> Lorem ipsum dolor
+                <i className="fa fa-long-arrow-alt-right"></i> Lorem ipsum dolor
                 sit.
               </li>
               <li>
-                <i class="fa fa-long-arrow-alt-right"></i> Lorem ipsum dolor
+                <i className="fa fa-long-arrow-alt-right"></i> Lorem ipsum dolor
                 sit.
               </li>
               <li>
-                <i class="fa fa-long-arrow-alt-right"></i> Lorem ipsum dolor
+                <i className="fa fa-long-arrow-alt-right"></i> Lorem ipsum dolor
                 sit.
               </li>
               <li>
-                <i class="fa fa-long-arrow-alt-right"></i> Lorem, ipsum dolor.
+                <i className="fa fa-long-arrow-alt-right"></i> Lorem, ipsum
+                dolor.
               </li>
               <li>
-                <i class="fa fa-long-arrow-alt-right"></i> Lorem, ipsum dolor.
+                <i className="fa fa-long-arrow-alt-right"></i> Lorem, ipsum
+                dolor.
               </li>
               <li>
-                <i class="fa fa-long-arrow-alt-right"></i> Lorem, ipsum dolor.
+                <i className="fa fa-long-arrow-alt-right"></i> Lorem, ipsum
+                dolor.
               </li>
             </ul>
           </div>

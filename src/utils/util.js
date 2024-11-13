@@ -1,4 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 // export const formatPriceUSD = (price) => {
 //   if (typeof price !== 'number' || isNaN(price)) {
@@ -26,4 +27,35 @@ export const formatName = (name) => {
 
   // Kết hợp các từ lại với dấu cách
   return formattedWords.join(" ");
+};
+
+export const getAccessToken = () => {
+  return localStorage.getItem("accessToken");
+};
+
+//get accees token
+export const getToken = () => {
+  return localStorage.getItem("accessToken") || null;
+};
+
+export const getUserNameLS = () => {
+  return localStorage.getItem("username") || null;
+};
+
+export const isEmail = (email) => {
+  const emailRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+  if (emailRegex.test(email)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const isPhoneNumber = (phoneNumber) => {
+  const phoneNumberRegex = /^\d+$/;
+  if (phoneNumberRegex.test(phoneNumber)) {
+    return true;
+  } else {
+    return false;
+  }
 };
