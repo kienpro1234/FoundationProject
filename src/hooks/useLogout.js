@@ -8,7 +8,8 @@ export default function useLogout() {
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    localStorage.removeItem("username");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("role");
     setIsLogin(false);
     navigate("/menu/all");
   };

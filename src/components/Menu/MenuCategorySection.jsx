@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "../UI/Button";
 import classes from "./MenuCategorySection.module.css";
-import { formatName } from "../../utils/util";
+import { formatName, getRoleLS } from "../../utils/util";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { DOMAIN } from "../../utils/const";
@@ -35,41 +35,35 @@ export default function MenuCategorySection({ category }) {
       <ul className={`row gx-4 px-3 ${classes.category}`}>
         {category?.dishes?.map((food) => {
           return (
-            <li className="col-md-3 col-6 pe-3 mb-4" key={food.id}>
-              <div className={classes["menu-category-content"]}>
+            <li className="col-md-3 col-6 pe-2 md:!pe-3 mb-4 " key={food.id}>
+              <div className={`${classes["menu-category-content"]} shadow-1 p-2 md:!p-3 rounded-md`}>
                 <div className={classes.foodInfo}>
                   <p className={`${classes["foodInfo-status"]}`}>
                     {/* lấy từ data cho vào đây  food.status*/}
                     {food.status}
                   </p>
-                  {mostPopularArray &&
-                    mostPopularArray.includes(food.dishName) && (
-                      <span className={`${classes["sale-status"]}`}>
-                        {/* Kiểm tra sale status tương ứng để xuất ra logo tương ứng với css tương ứng */}
-                        {/* <i class="fa-solid fa-fire"></i> */}
-                      </span>
-                    )}
+                  {mostPopularArray && mostPopularArray.includes(food.dishName) && (
+                    <span className={`${classes["sale-status"]}`}>
+                      {/* Kiểm tra sale status tương ứng để xuất ra logo tương ứng với css tương ứng */}
+                      {/* <i class="fa-solid fa-fire"></i> */}
+                    </span>
+                  )}
 
-                  <button className={`${classes["foodInfo-fav-btn"]}`}>
-                    <i className="fa-regular fa-heart"></i>
-                  </button>
+                  <div className="overflow-hidden">
+                    <Link to={`/food/${food.id}`}>
+                      <img
+                        className={`${classes.image} hover:scale-110 transition`}
+                        src={food.image}
+                        alt={food.dishName}
+                      />
+                    </Link>
+                  </div>
                   <Link to={`/food/${food.id}`}>
-                    <img
-                      className={classes.image}
-                      src={food.image}
-                      alt={food.dishName}
-                    />
+                    <p className={`fw-bold ${classes.foodName}`}>{food.dishName}</p>
                   </Link>
-                  <Link to={`/food/${food.id}`}>
-                    <p className={`fw-bold ${classes.foodName}`}>
-                      {food.dishName}
-                    </p>
-                  </Link>
-                  <p className={classes.price}>{food.price}</p>
+                  <p className={classes.price}>${food.price}</p>
                 </div>
-                <div
-                  className={`${classes.footer} d-flex align-items-center justify-between`}
-                >
+                <div className={`${classes.footer} d-flex align-items-center justify-between`}>
                   <div className="food-review">
                     <div className="d-flex gap-1 align-items-center">
                       <i className="fa fa-star text-warning"></i>
@@ -88,6 +82,21 @@ export default function MenuCategorySection({ category }) {
                     <Button className="food-review-button">ORDER</Button>
                   </div>
                 </div>
+                <button className={`${classes["foodInfo-fav-btn"]}`}>
+                  <i className="fa-regular fa-heart"></i>
+                </button>
+
+                {getRoleLS() === "admin" && (
+                  <>
+                    <button className={`${classes["foodInfo-edit-btn"]}`}>
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+
+                    <button className={`${classes["foodInfo-delelte-btn"]}`}>
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </>
+                )}
               </div>
             </li>
           );

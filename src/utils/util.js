@@ -10,8 +10,7 @@ import axios from "axios";
 
 export const queryClient = new QueryClient();
 
-export const isObject = (value) =>
-  value !== null && typeof value === "object" && !Array.isArray(value);
+export const isObject = (value) => value !== null && typeof value === "object" && !Array.isArray(value);
 
 export const formatName = (name) => {
   // Chuyển tất cả thành chữ thường và tách từ dấu gạch nối nếu có
@@ -38,8 +37,12 @@ export const getToken = () => {
   return localStorage.getItem("accessToken") || null;
 };
 
-export const getUserNameLS = () => {
-  return localStorage.getItem("username") || null;
+export const getUserIdLS = () => {
+  return localStorage.getItem("userId") || null;
+};
+
+export const getRoleLS = () => {
+  return localStorage.getItem("role") || null;
 };
 
 export const isEmail = (email) => {

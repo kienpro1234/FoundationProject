@@ -61,11 +61,15 @@ export default function Register() {
         password: "",
         confirmedPassword: "",
       });
-      toast.success("Register successfully");
+      toast.success("Register successfully", {
+        position: "top-center",
+      });
       navigate("/login");
     },
     onError: (error) => {
-      toast.error(`register failed ${error.response?.data?.message}`);
+      toast.error(`register failed ${error.response?.data?.message}`, {
+        position: "top-center",
+      });
       console.error("Error:", error);
       // Xử lý lỗi và giữ lại dữ liệu form nếu đăng ký thất bại
     },
@@ -292,7 +296,9 @@ export default function Register() {
         </div>
         <div>
           {useRegisterMutation.isPending ? (
-            <ButtonLogin className={"w-full 2xl:mt-3 2xl:mb-3 mt-2 mb-2"}>Sending...</ButtonLogin>
+            <ButtonLogin disabled className={"w-full 2xl:mt-3 2xl:mb-3 mt-2 mb-2 cursor-no-drop"}>
+              Sending...
+            </ButtonLogin>
           ) : (
             <ButtonLogin className={"w-full 2xl:mt-3 2xl:mb-3 mt-2 mb-2"}>ĐĂNG KÍ</ButtonLogin>
           )}

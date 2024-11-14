@@ -9,62 +9,15 @@ import LoadingIndicator from "../UI/LoadingIndicator";
 // import Footer from "../Footer/Footer";
 import axios from "axios";
 import { http } from "../../utils/http";
+import { fetchCategory } from "../../apis/categoryIndex";
 
 export default function MenuComponent() {
   console.log(DOMAIN + "category");
-  // const { data, isLoading, isError, error } = useQuery({
-  //   queryKey: ["menu-navbar"],
-  //   queryFn: async ({ signal }) => {
-  //     console.log("hellollo");
-  //     try {
-  //       console.log("sau hello");
-  //       const res = await axios.get(`${DOMAIN}category`, {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         signal,
-  //       });
-  //       console.log("res ne", res);
-
-  //       console.log("1", res.json());
-
-  //       console.log("rs1", res.text());
-  //       console.log("content type", res.headers.get("Content-Type"));
-
-  //       const result = await res.json();
-  //       console.log("result", result);
-  //       return result.data;
-
-  //       // return res.json();
-  //     } catch (err) {
-  //       throw err;
-  //     }
-  //   },
-  // });
 
   //Dùng axios
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["menu-navbar"],
-    queryFn: async ({ signal }) => {
-      try {
-        console.log("sau hello");
-        const res = await http.get(`category`, { signal });
-
-        // if (res.status < 200 || res.status >= 300) {
-        //   throw new Error("Không thể fetch manu category");
-        // }
-
-        console.log("res ne", res);
-
-        const result = res.data;
-        console.log("result", result);
-
-        return result.data;
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        throw err;
-      }
-    },
+    queryFn: fetchCategory,
   });
 
   console.log("data", data);
@@ -83,23 +36,13 @@ export default function MenuComponent() {
     content = (
       <>
         <li>
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? classes.active : undefined
-            }
-            to={"all"}
-          >
+          <NavLink className={({ isActive }) => (isActive ? classes.active : undefined)} to={"all"}>
             All
           </NavLink>
         </li>
         {data.map((cat, index) => (
           <li key={index}>
-            <NavLink
-              className={({ isActive }) =>
-                isActive ? classes.active : undefined
-              }
-              to={cat.categoryName}
-            >
+            <NavLink className={({ isActive }) => (isActive ? classes.active : undefined)} to={cat.categoryName}>
               {formatName(cat.categoryName)}
             </NavLink>
           </li>

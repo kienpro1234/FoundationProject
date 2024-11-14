@@ -1,4 +1,3 @@
-import Header from "../../components/Header/Header";
 import HeaderUser from "../../components/Header/HeaderUser";
 import Greeting from "../../components/UserInformation/Greeting";
 import UserInformation from "../../components/UserInformation/UserInformation";
@@ -9,32 +8,21 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import LoadingIndicator from "../../components/UI/LoadingIndicator";
 import ErrorBlock from "../../components/UI/ErrorBlock";
-import { getToken, getUserNameLS } from "../../utils/util";
+import { getToken, getUserIdLS } from "../../utils/util";
 import { http } from "../../utils/http";
 
 export default function UserInfo() {
   //Call api kèm theo token để lấy user info
   const token = getToken();
   const navigate = useNavigate();
-  // const user = {
-  //   id: 1,
-  //   name: "Hồn Loàng",
-  //   avatar: hoangSpicture,
-  // };
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["userinfo"],
     queryFn: async ({ signal }) => {
-      const username = getUserNameLS();
+      const userId = getUserIdLS();
       const accessToken = getToken();
-      console.log("accessTOken", accessToken);
-      console.log("username", username);
-      // console.log(
-      //   "first",
-      //   `${DOMAIN}user?username=${username}`
-      // );
       try {
-        const result = await http.get(`users/${username}`, {
+        const result = await http.get(`users/${userId}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             "Content-Type": "application/json",
@@ -67,12 +55,7 @@ export default function UserInfo() {
   }
   if (isError) {
     console.error("error", error);
-    content = (
-      <ErrorBlock
-        title={"Không thể fetch userinfo"}
-        message={error.response.data.message}
-      />
-    );
+    content = <ErrorBlock title={"Không thể fetch userinfo"} message={error.response.data.message} />;
   }
 
   if (data) {

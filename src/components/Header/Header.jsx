@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import classes from "./Header.module.css";
 import { Link, useLocation } from "react-router-dom";
-import { getToken } from "../../utils/util";
+import { getRoleLS, getToken } from "../../utils/util";
+import Modal from "../UI/Modal";
+import AddFoodForm from "../AddFood/AddFoodForm";
 
 //THêm class riêng cho esapase, tắt luôn, chứ k chờ
 export default function Header({ className, ...props }) {
@@ -105,6 +107,8 @@ export default function Header({ className, ...props }) {
     );
   }
 
+  const role = getRoleLS();
+
   return (
     <div className={`${classes.header} ${className}`} {...props}>
       {content}
@@ -116,9 +120,24 @@ export default function Header({ className, ...props }) {
       </div>
       <div className={classes["header-cart"]}>
         <button>
-          <Link to={"/cart"} className="fa fa-shopping-cart"></Link>
+          <Link to={"/cart"} className="fa fa-shopping-cart text-white"></Link>
         </button>
       </div>
+      {role === "admin" && (
+        <div className={classes["header-addFood"]}>
+          {/* Button kích hoạt Modal */}
+          <Modal
+            title="Thêm mới dữ liệu"
+            id="addModal"
+            size="lg" // md, sm
+            triggeredButton={<i class="fa-solid fa-plus"></i>}
+          >
+            {/* Nội dung bên trong modal */}
+            {/* component form sẽ thêm ở đây  */}
+            <AddFoodForm />
+          </Modal>
+        </div>
+      )}
     </div>
   );
 }
