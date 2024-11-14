@@ -19,6 +19,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register/Register";
 import { LoginContextProvider } from "./context/loginContext";
 import ShoppingCart from "./pages/ShoppingCart/ShoppingCart";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const router = createBrowserRouter([
   {
@@ -83,6 +84,7 @@ function App() {
       <SearchingContextProvider>
         <LoginContextProvider>
           <RouterProvider router={router} />
+          <ReactQueryDevtools initialIsOpen={false} />
         </LoginContextProvider>
       </SearchingContextProvider>
     </QueryClientProvider>

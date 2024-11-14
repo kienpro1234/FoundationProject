@@ -34,11 +34,9 @@ export default function HeaderMobile({ configImg, title }) {
 
   return (
     <div
-      className={`${
-        isMenuOpen ? classes["header-open-menu"] : classes.header
-      } ${isDesktop && "bg-emerald-600 px-20 py-1"} ${
-        title === "cart" ? "relative border-b shadow-sm" : ""
-      }`}
+      className={`${isMenuOpen ? classes["header-open-menu"] : classes.header} ${
+        isDesktop && "bg-emerald-600 px-20 py-1"
+      } ${title === "cart" ? "relative border-b shadow-sm" : ""}`}
     >
       <div className={`${classes["header-logo"]}`}>
         <Link to={"/menu/all"}>
@@ -50,13 +48,7 @@ export default function HeaderMobile({ configImg, title }) {
         </Link>
       </div>
 
-      {title ? (
-        <h3 className="absolute left-1/2 -translate-x-1/2 font-semibold">
-          Ordering Cart
-        </h3>
-      ) : (
-        ""
-      )}
+      {title ? <h3 className="absolute left-1/2 -translate-x-1/2 font-semibold">Ordering Cart</h3> : ""}
 
       {/* Chú thích:
       - Logo luôn hiện 
@@ -70,45 +62,19 @@ export default function HeaderMobile({ configImg, title }) {
             ) : (
               <>
                 {isMobile && (
-                  <div
-                    className={`${
-                      isSearching
-                        ? classes["header-search-open"]
-                        : classes["header-search"]
-                    }`}
-                  >
-                    <div
-                      className={`${
-                        isSearching ? classes.btnBack : classes.hidden
-                      }`}
-                    >
-                      <button
-                        className={`button-click-expand`}
-                        onClick={handleBackSearch}
-                      >
+                  <div className={`${isSearching ? classes["header-search-open"] : classes["header-search"]}`}>
+                    <div className={`${isSearching ? classes.btnBack : classes.hidden}`}>
+                      <button className={`button-click-expand`} onClick={handleBackSearch}>
                         <i className="fa fa-arrow-left"></i>
                       </button>
                     </div>
                     <input
                       ref={inputRef}
-                      className={`${
-                        isSearching
-                          ? classes["search-open"]
-                          : classes["search-close"]
-                      }`}
+                      className={`${isSearching ? classes["search-open"] : classes["search-close"]}`}
                       type="text"
                     />
-                    <div
-                      className={`${
-                        isSearching
-                          ? classes["button-search-open"]
-                          : classes["button-search"]
-                      }`}
-                    >
-                      <button
-                        className={`button-click-expand`}
-                        onClick={handleSearchClick}
-                      >
+                    <div className={`${isSearching ? classes["button-search-open"] : classes["button-search"]}`}>
+                      <button className={`button-click-expand`} onClick={handleSearchClick}>
                         <i className="fa fa-search"></i>
                       </button>
                     </div>
@@ -122,9 +88,7 @@ export default function HeaderMobile({ configImg, title }) {
                     </button>
                   </Link>
                 </div>
-                <div
-                  className={`${classes["header-fav"]} hover:text-red-600 transition-all`}
-                >
+                <div className={`${classes["header-fav"]} hover:text-red-600 transition-all`}>
                   <button className={`button-click-expand`}>
                     <i className="fa fa-heart"></i>
                   </button>
@@ -138,10 +102,7 @@ export default function HeaderMobile({ configImg, title }) {
                     </div>
 
                     <div>
-                      <button
-                        className={`button-click-expand`}
-                        onClick={handleOpenMenu}
-                      >
+                      <button className={`button-click-expand`} onClick={handleOpenMenu}>
                         <i className="fa fa-bars"></i>
                       </button>
                     </div>

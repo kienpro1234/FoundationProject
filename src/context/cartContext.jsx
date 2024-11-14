@@ -51,14 +51,14 @@ export const CartContextProvider = ({ children }) => {
   const increaseItem = (item) => {
     dispatch({
       type: "INCREASE_ITEM",
-      itemId,
+      item,
     });
   };
 
   const decreaseItem = (item) => {
     dispatch({
       type: "DECREASE_ITEM",
-      itemId,
+      item,
     });
   };
 

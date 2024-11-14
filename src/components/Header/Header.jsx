@@ -63,17 +63,11 @@ export default function Header({ className, ...props }) {
         <div ref={inputDiv} className={classes["header-search"]}>
           <input
             ref={inputRef}
-            className={`${
-              isSearching ? classes["search-open"] : classes["search-close"]
-            }`}
+            className={`${isSearching ? classes["search-open"] : classes["search-close"]}`}
             type="text"
           />
           <button
-            className={`${
-              isSearching
-                ? classes["button-search-open"]
-                : classes["button-search"]
-            }`}
+            className={`${isSearching ? classes["button-search-open"] : classes["button-search"]}`}
             onClick={handleSearchClick}
           >
             <i className="fa fa-search"></i>
@@ -96,16 +90,10 @@ export default function Header({ className, ...props }) {
             </Link>
             <div className={`${classes["login-menu-container"]}`}>
               <ul className={`${classes["login-menu"]}`}>
-                <Link
-                  to={"/register"}
-                  className="text-slate-800 hover:text-slate-800 text-sm"
-                >
+                <Link to={"/register"} className="text-slate-800 hover:text-slate-800 text-sm">
                   <li className="mb-2">Sign up</li>
                 </Link>
-                <Link
-                  to={"/login"}
-                  className="text-slate-800 hover:text-slate-800 text-sm"
-                >
+                <Link to={"/login"} className="text-slate-800 hover:text-slate-800 text-sm">
                   <li>Sign in</li>
                 </Link>
                 <div className={`${classes["login-menu-overlay"]}`}></div>

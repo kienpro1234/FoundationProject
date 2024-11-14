@@ -7,6 +7,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { DOMAIN } from "../../utils/const";
 import { http } from "../../utils/http";
 import { isEmail, isPhoneNumber } from "../../utils/util";
+import { toast } from "react-toastify";
 
 export default function Register() {
   const [eyeOpen, setEyeOpen] = useState(true);
@@ -27,8 +28,8 @@ export default function Register() {
     confirmedPassword: "",
   });
 
-  let phoneNumber = isPhoneNumber(userData.account) ? userData.account : null;
-  let email = isEmail(userData.account) ? userData.account : null;
+  let phoneNumber = isPhoneNumber(userData.account) ? userData.account : "";
+  let email = isEmail(userData.account) ? userData.account : "";
 
   const useRegisterMutation = useMutation({
     mutationFn: (userData) => {
@@ -60,11 +61,11 @@ export default function Register() {
         password: "",
         confirmedPassword: "",
       });
-      alert("register successfully");
+      toast.success("Register successfully");
       navigate("/login");
     },
     onError: (error) => {
-      alert("register failed");
+      toast.error(`register failed ${error.response?.data?.message}`);
       console.error("Error:", error);
       // Xử lý lỗi và giữ lại dữ liệu form nếu đăng ký thất bại
     },
@@ -213,10 +214,7 @@ export default function Register() {
   };
   return (
     <div className={`${classes.loginContainer} `}>
-      <form
-        className={`${classes.loginForm} rounded-md `}
-        onSubmit={handleSubmit}
-      >
+      <form className={`${classes.loginForm} rounded-md `} onSubmit={handleSubmit}>
         <h2 className={`heading-login`}>Đăng Kí</h2>
         <p className={`mt-2 mb-3`}>Đăng kí bằng email hoặc số điện thoại</p>
 
@@ -267,11 +265,7 @@ export default function Register() {
               setEyeOpen((prevEyeOpen) => !prevEyeOpen);
             }}
           >
-            {eyeOpen ? (
-              <i className="fa fa-eye text-gray-400"></i>
-            ) : (
-              <i className="fa fa-eye-slash text-gray-400"></i>
-            )}
+            {eyeOpen ? <i className="fa fa-eye text-gray-400"></i> : <i className="fa fa-eye-slash text-gray-400"></i>}
           </button>
         </div>
         <div className={`${classes.error} mb-[12px]`}>{dataError.password}</div>
@@ -289,39 +283,24 @@ export default function Register() {
         {/* Nhớ tài khoản , quên mk */}
         <div className="flex justify-between items-baseline">
           <div className="mt-3 flex items-baseline gap-2">
-            <input
-              id="login-input"
-              type="checkbox"
-              className="accent-emerald-500 basis-[10%]"
-              name="agreeTerm"
-            />
+            <input id="login-input" type="checkbox" className="accent-emerald-500 basis-[10%]" name="agreeTerm" />
             <label className="text-sm" htmlFor="login-input">
               Tôi đồng ý với{" "}
-              <span className="text-red-500">
-                điều kiện & điều khoản sử dụng thông tin của tasty chicken
-              </span>
+              <span className="text-red-500">điều kiện & điều khoản sử dụng thông tin của tasty chicken</span>
             </label>
           </div>
         </div>
         <div>
           {useRegisterMutation.isPending ? (
-            <ButtonLogin className={"w-full 2xl:mt-3 2xl:mb-3 mt-2 mb-2"}>
-              Sending...
-            </ButtonLogin>
+            <ButtonLogin className={"w-full 2xl:mt-3 2xl:mb-3 mt-2 mb-2"}>Sending...</ButtonLogin>
           ) : (
-            <ButtonLogin className={"w-full 2xl:mt-3 2xl:mb-3 mt-2 mb-2"}>
-              ĐĂNG KÍ
-            </ButtonLogin>
+            <ButtonLogin className={"w-full 2xl:mt-3 2xl:mb-3 mt-2 mb-2"}>ĐĂNG KÍ</ButtonLogin>
           )}
         </div>
         <div className="text-sm">
           <span>
             <span className="mr-2">Bạn đã có tài khoản?</span>
-            <Link
-              to={"/login"}
-              className="text-red-500 hover:text-red-700"
-              href="#"
-            >
+            <Link to={"/login"} className="text-red-500 hover:text-red-700" href="#">
               Đăng nhập ngay
             </Link>
           </span>

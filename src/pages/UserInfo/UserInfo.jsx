@@ -3,12 +3,10 @@ import HeaderUser from "../../components/Header/HeaderUser";
 import Greeting from "../../components/UserInformation/Greeting";
 import UserInformation from "../../components/UserInformation/UserInformation";
 import UserOrderList from "../../components/UserInformation/UserOrderList";
-import hoangSpicture from "../../assets/z5897007480764_1648527d12cdbf83a2a1b993ca10098d.jpg";
 import { useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { DOMAIN, TOKEN, USERNAME } from "../../utils/const";
 import LoadingIndicator from "../../components/UI/LoadingIndicator";
 import ErrorBlock from "../../components/UI/ErrorBlock";
 import { getToken, getUserNameLS } from "../../utils/util";
