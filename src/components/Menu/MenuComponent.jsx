@@ -7,8 +7,6 @@ import { formatName } from "../../utils/util";
 import ErrorBlock from "../UI/ErrorBlock";
 import LoadingIndicator from "../UI/LoadingIndicator";
 // import Footer from "../Footer/Footer";
-import axios from "axios";
-import { http } from "../../utils/http";
 import { fetchCategory } from "../../apis/categoryIndex";
 
 export default function MenuComponent() {

@@ -114,6 +114,30 @@
   position: relative;
 }
 
+.pop-up {
+  position: fixed;
+  top: 50%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+
+}
+
+.pop-up-loading {
+  position: fixed;
+  top: 50%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+
+}
+
 /* RESPONSIVE */
 
 @media screen and (max-width: 768px) {
@@ -145,9 +169,11 @@
     /* transform: translateY(-50%); */
     font-size: 13px;
   }
+
   .foodInfo-delelte-btn {
     top: 38%;
   }
+
   .foodInfo-edit-btn {
     top: 16%;
   }

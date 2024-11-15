@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../UI/Button";
 import classes from "./MenuCategorySection.module.css";
 import { formatName, getRoleLS } from "../../utils/util";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DOMAIN } from "../../utils/const";
+import { deleteFood } from "../../apis/foodApi";
+import { toast } from "react-toastify";
+import LoadingIndicator from "../UI/LoadingIndicator";
+import FoodItem from "../FoodItem/FoodItem";
 
 export default function MenuCategorySection({ category }) {
   console.log("check data", category);
+  const [idToDelete, setIdToDelete] = useState("");
+  const queryClient = useQueryClient();
+  console.log("category list", category.dishes);
 
   //Có thể viết query này ở component cha, tránh mỗi category lại call api 1 lần
   const { data, isLoading, isError, error } = useQuery({
@@ -24,9 +31,37 @@ export default function MenuCategorySection({ category }) {
       }
     },
   });
+  console.log("idtoDelte", idToDelete);
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteFood,
+    onSuccess: () => {
+      toast.success("Xóa thành công");
+
+      queryClient.invalidateQueries(["menu"]);
+    },
+    onError: (err) => {
+      console.error("Xóa thất bại", err);
+      toast.error("Xóa thất bại");
+    },
+  });
+
+  const handleClickDelete = (id) => {
+    setIdToDelete(id);
+  };
+
+  const handleCancelDelete = () => {
+    setIdToDelete("");
+  };
+
+  const handleConfirmDelete = (id) => {
+    console.log("id xoa", id);
+    deleteMutation.mutate(id);
+    setIdToDelete("");
+  };
 
   const mostPopularArray = data?.dishes.map((food) => food.dishName);
-  console.log("ktra", mostPopularArray);
+
   return (
     <div className="menu-category">
       <h3 className={classes.title}>
@@ -89,16 +124,49 @@ export default function MenuCategorySection({ category }) {
                 {getRoleLS() === "admin" && (
                   <>
                     <button className={`${classes["foodInfo-edit-btn"]}`}>
-                      <i class="fa-solid fa-pen-to-square"></i>
+                      <i className="fa-solid fa-pen-to-square"></i>
                     </button>
+                    <div>
+                      <button
+                        onClick={() => handleClickDelete(food.id)}
+                        className={`${classes["foodInfo-delelte-btn"]}`}
+                      >
+                        <i className="fa-solid fa-trash"></i>
+                      </button>
 
-                    <button className={`${classes["foodInfo-delelte-btn"]}`}>
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
+                      {idToDelete === food.id && (
+                        <div className={`${classes["pop-up"]} shadow-lg`}>
+                          <p className="text-center mb-3">Are you sure to delete?</p>
+                          <button
+                            onClick={handleCancelDelete}
+                            type="button"
+                            className="text-red-700 hover:text-white border-2 border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                          >
+                            No
+                          </button>
+                          <button
+                            onClick={() => handleConfirmDelete(food.id)}
+                            type="button"
+                            className="text-blue-700 hover:text-white border-2 border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+                          >
+                            Yes
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </>
                 )}
               </div>
             </li>
+            // <FoodItem
+            //   food={food}
+            //   handleCancelDelete={handleCancelDelete}
+            //   handleClickDelete={handleClickDelete}
+            //   handleConfirmDelete={handleConfirmDelete}
+            //   mostPopularArray={mostPopularArray}
+            //   showPopUp={showPopUp}
+            //   deleteMutation={deleteMutation}
+            // />
           );
         })}
       </ul>
