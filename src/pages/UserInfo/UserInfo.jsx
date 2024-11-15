@@ -10,6 +10,7 @@ import LoadingIndicator from "../../components/UI/LoadingIndicator";
 import ErrorBlock from "../../components/UI/ErrorBlock";
 import { getToken, getUserIdLS } from "../../utils/util";
 import { http } from "../../utils/http";
+import { toast } from "react-toastify";
 
 export default function UserInfo() {
   //Call api kèm theo token để lấy user info
@@ -42,8 +43,8 @@ export default function UserInfo() {
   });
   useEffect(() => {
     if (!token) {
-      alert("Vui lòng đăng nhập để sử dụng chức năng này");
-      navigate("/menu/all");
+      toast.warning("Vui lòng đăng nhập để sử dụng chức năng này");
+      navigate("/login");
     }
   }, [token, navigate]);
 
