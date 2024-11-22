@@ -4,7 +4,7 @@ import UserInformation from "../../components/UserInformation/UserInformation";
 import UserOrderList from "../../components/UserInformation/UserOrderList";
 import { useEffect } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import LoadingIndicator from "../../components/UI/LoadingIndicator";
 import ErrorBlock from "../../components/UI/ErrorBlock";
@@ -41,12 +41,18 @@ export default function UserInfo() {
       }
     },
   });
-  useEffect(() => {
-    if (!token) {
-      toast.warning("Vui lòng đăng nhập để sử dụng chức năng này");
-      navigate("/login");
-    }
-  }, [token, navigate]);
+  // useEffect(() => {
+  //   if (!token) {
+  //     toast.warning("Vui lòng đăng nhập để sử dụng chức năng này");
+  //     navigate("/login");
+  //   }
+  // }, [token, navigate]);
+
+  //Cần làm protectedRoute cho route này thay vì làm thủ công ở compoennt như này, khó kiếm
+  if (!token) {
+    alert("Vui lòng đăng nhập để sử dụng chức năng này");
+    return <Navigate to="/login" />;
+  }
 
   if (!token) return null; // Không render component khi chưa login
   let content;

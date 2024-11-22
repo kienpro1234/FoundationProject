@@ -9,6 +9,8 @@ import { deleteFood } from "../../apis/foodApi";
 import { toast } from "react-toastify";
 import LoadingIndicator from "../UI/LoadingIndicator";
 import FoodItem from "../FoodItem/FoodItem";
+import Modal from "../UI/Modal";
+import ModalOrdering from "../ModalOrdering/ModalOrdering";
 
 export default function MenuCategorySection({ category }) {
   console.log("check data", category);
@@ -70,8 +72,8 @@ export default function MenuCategorySection({ category }) {
       <ul className={`row gx-4 px-3 ${classes.category}`}>
         {category?.dishes?.map((food) => {
           return (
-            <li className="col-md-3 col-6 pe-2 md:!pe-3 mb-4 " key={food.id}>
-              <div className={`${classes["menu-category-content"]} shadow-1 p-2 md:!p-3 rounded-md`}>
+            <li className="col-md-3 col-6 mb-4 pe-2 md:!pe-3" key={food.id}>
+              <div className={`${classes["menu-category-content"]} rounded-md p-2 shadow-1 md:!p-3`}>
                 <div className={classes.foodInfo}>
                   <p className={`${classes["foodInfo-status"]}`}>
                     {/* lấy từ data cho vào đây  food.status*/}
@@ -87,7 +89,7 @@ export default function MenuCategorySection({ category }) {
                   <div className="overflow-hidden">
                     <Link to={`/food/${food.id}`}>
                       <img
-                        className={`${classes.image} hover:scale-110 transition`}
+                        className={`${classes.image} transition hover:scale-110`}
                         src={food.image}
                         alt={food.dishName}
                       />
@@ -100,7 +102,7 @@ export default function MenuCategorySection({ category }) {
                 </div>
                 <div className={`${classes.footer} d-flex align-items-center justify-between`}>
                   <div className="food-review">
-                    <div className="d-flex gap-1 align-items-center">
+                    <div className="d-flex align-items-center gap-1">
                       <i className="fa fa-star text-warning"></i>
                       {/* <p>
                         {food.starAmount} ({food.reviewAmount} reviews)
@@ -114,7 +116,14 @@ export default function MenuCategorySection({ category }) {
                     </div> */}
                   </div>
                   <div>
-                    <Button className="food-review-button">ORDER</Button>
+                    {/* Tách component để xử lý state bên này, do có 2 component dùng modal này */}
+                    <ModalOrdering
+                      itemCart={food}
+                      title={"Choose order detail"}
+                      id={`CHOOSE_ORDER_DETAIL${food.id}`}
+                      size={"sm"}
+                      triggeredButton={<Button className="food-review-button">ORDER</Button>}
+                    ></ModalOrdering>
                   </div>
                 </div>
                 <button className={`${classes["foodInfo-fav-btn"]}`}>
@@ -136,18 +145,18 @@ export default function MenuCategorySection({ category }) {
 
                       {idToDelete === food.id && (
                         <div className={`${classes["pop-up"]} shadow-lg`}>
-                          <p className="text-center mb-3">Are you sure to delete?</p>
+                          <p className="mb-3 text-center">Are you sure to delete?</p>
                           <button
                             onClick={handleCancelDelete}
                             type="button"
-                            className="text-red-700 hover:text-white border-2 border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                            className="mb-2 me-2 rounded-lg border-2 border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-red-300 dark:border-red-500 dark:text-red-500 dark:hover:bg-red-600 dark:hover:text-white dark:focus:ring-red-900"
                           >
                             No
                           </button>
                           <button
                             onClick={() => handleConfirmDelete(food.id)}
                             type="button"
-                            className="text-blue-700 hover:text-white border-2 border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+                            className="mb-2 me-2 rounded-lg border-2 border-blue-700 px-5 py-2.5 text-center text-sm font-medium text-blue-700 hover:bg-blue-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-500 dark:hover:text-white dark:focus:ring-blue-800"
                           >
                             Yes
                           </button>

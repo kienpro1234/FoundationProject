@@ -1,39 +1,50 @@
-import React from "react";
+import React, { useContext } from "react";
 import HeaderMobile from "../../components/Header/HeaderMobile";
 import CartItem from "../../components/ShoppingCart/CartItem";
 
 import FooterCopyright from "../../components/Footer/FooterCopyright";
+import { calcTotalPrice, getCartListFromLS } from "../../utils/util";
+import { CartContext } from "../../context/cartContext";
 
 export default function ShoppingCart() {
+  const { cartList } = useContext(CartContext);
+
+  const handleConfirmOrder = () => {};
+
   return (
     <div>
       <HeaderMobile configImg={"!size-16 !rounded-full"} title={"cart"} />
 
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-9 mt-9">
+      <div className="mx-auto mt-9 grid max-w-7xl grid-cols-1 gap-9 px-4 md:grid-cols-2">
         {/* left side */}
         <div className="col-span-1 flex flex-col gap-3">
-          <CartItem />
-          <CartItem />
-          <CartItem />
+          {(!cartList || cartList.length === 0) && (
+            <div className="text-lg text-red-500">Chưa có gì trong giỏ hàng</div>
+          )}
+          {cartList && cartList.length > 0 && cartList.map((item) => <CartItem key={item.id} food={item} />)}
         </div>
 
         {/* right side */}
         <div className="col-span-1 md:pt-4">
           <div className="flex justify-between">
-            <p>Sub Total</p>
-            <p>$29</p>
+            <p>Total</p>
+            <p>${calcTotalPrice(cartList)}</p>
           </div>
-          <div className="flex justify-between my-8">
+          {/* <div className="flex justify-between my-8">
             <p>Delivery Fee</p>
             <p>$29</p>
           </div>
           <div className="flex justify-between">
             <p>Grand Total</p>
             <p>$29</p>
-          </div>
-          <div className="text-center mt-8">
-            <button className="px-4 py-2 bg-emerald-600 text-white rounded-3xl hover:bg-emerald-800">
-              Proceed to checkout
+          </div> */}
+          <div className="mt-8 text-center">
+            <button
+              onClick={handleConfirmOrder}
+              className="rounded-3xl bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-800"
+            >
+              Confirm Order
+              {/* Nếu là desktop thì là proceed to checkout */}
             </button>
           </div>
         </div>

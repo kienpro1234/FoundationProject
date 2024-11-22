@@ -3,14 +3,7 @@ import classes from "./CustomerReview.module.css";
 import { NavLink } from "react-router-dom";
 export default function CustomerReview() {
   const [activeButton, setActiveButton] = useState(null);
-  const buttonLabels = [
-    "All",
-    "5 stars",
-    "4 stars",
-    "3 stars",
-    "2 stars",
-    "1 star",
-  ];
+  const buttonLabels = ["All", "5 stars", "4 stars", "3 stars", "2 stars", "1 star"];
 
   //Ví dụ của kind 5 stars
   const dummyDataFeedback = {
@@ -54,15 +47,17 @@ export default function CustomerReview() {
               <span> / 5</span>
             </p>
             <p className="star">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
+              <i className="fa fa-star"></i>
+              <i className="fa fa-star"></i>
+              <i className="fa fa-star"></i>
+              <i className="fa fa-star"></i>
+              <i className="fa fa-star"></i>
             </p>
             <p className="rv-vote">Base on 1 reviews</p>
           </div>
-          <div className={`col-md col-12 ${classes["content-item"]} ${classes["content-item-2"]} rv-rating-chart px-md-3`}>
+          <div
+            className={`col-md col-12 ${classes["content-item"]} ${classes["content-item-2"]} rv-rating-chart px-md-3`}
+          >
             <div className={`${classes["rv-rating-row"]}`}>
               <span className={`${classes["rv-rating-star"]}`}>
                 5<span>★</span>
@@ -74,7 +69,7 @@ export default function CustomerReview() {
                   style={{ width: "100%" }}
                 ></div>
               </div>
-              <span class={`${classes["percent"]}`}>100%</span>
+              <span className={`${classes["percent"]}`}>100%</span>
             </div>
             <div className={`${classes["rv-rating-row"]}`}>
               <span className={`${classes["rv-rating-star"]}`}>
@@ -87,7 +82,7 @@ export default function CustomerReview() {
                   style={{ width: "100%" }}
                 ></div>
               </div>
-              <span class={`${classes["percent"]}`}>100%</span>
+              <span className={`${classes["percent"]}`}>100%</span>
             </div>
             <div className={`${classes["rv-rating-row"]}`}>
               <span className={`${classes["rv-rating-star"]}`}>
@@ -100,7 +95,7 @@ export default function CustomerReview() {
                   style={{ width: "100%" }}
                 ></div>
               </div>
-              <span class={`${classes["percent"]}`}>100%</span>
+              <span className={`${classes["percent"]}`}>100%</span>
             </div>
             <div className={`${classes["rv-rating-row"]}`}>
               <span className={`${classes["rv-rating-star"]}`}>
@@ -113,7 +108,7 @@ export default function CustomerReview() {
                   style={{ width: "100%" }}
                 ></div>
               </div>
-              <span class={`${classes["percent"]}`}>100%</span>
+              <span className={`${classes["percent"]}`}>100%</span>
             </div>
             <div className={`${classes["rv-rating-row"]}`}>
               <span className={`${classes["rv-rating-star"]}`}>
@@ -126,7 +121,7 @@ export default function CustomerReview() {
                   style={{ width: "100%" }}
                 ></div>
               </div>
-              <span class={`${classes["percent"]}`}>100%</span>
+              <span className={`${classes["percent"]}`}>100%</span>
             </div>
           </div>
           <div className={`col-md col-12 ${classes["content-item-last"]}`}>
@@ -147,8 +142,8 @@ export default function CustomerReview() {
       </div>
       <div className={`${classes["customerRv-feedback"]} `}>
         <ul>
-          {dummyDataFeedback.reviews.map((feedback) => (
-            <li className="row">
+          {dummyDataFeedback.reviews.map((feedback, index) => (
+            <li className="row" key={index}>
               <div className={`${classes.avatar} col-md-1 col-2`}>
                 <img src={feedback.avatar} alt={feedback.avatar} />
               </div>
@@ -157,7 +152,7 @@ export default function CustomerReview() {
                 <p>{feedback.date}</p>
                 <span className="star">
                   {Array.from({ length: feedback.stars }).map((_, index) => (
-                    <i key={index} class="fa fa-star"></i>
+                    <i key={index} className="fa fa-star"></i>
                   ))}
                 </span>
                 <p>{feedback.comment}</p>

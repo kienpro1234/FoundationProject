@@ -126,7 +126,7 @@ export default function AddFoodForm() {
             value={selectedValues.dishName}
             onChange={handleChange}
             name="dishName"
-            className={"w-full border focus:shadow-none border-black"}
+            className={"w-full border border-black focus:shadow-none"}
             placeholder={"Dish Name"}
           />
           <div className={``}></div>
@@ -134,7 +134,7 @@ export default function AddFoodForm() {
             value={selectedValues.cookingTime}
             onChange={handleChange}
             name="cookingTime"
-            className={"w-full border focus:shadow-none border-black"}
+            className={"w-full border border-black focus:shadow-none"}
             placeholder={"Cooking Time"}
           />
           <div className={``}></div>
@@ -145,11 +145,11 @@ export default function AddFoodForm() {
             value={selectedValues.price}
             onChange={handleChange}
             name="price"
-            className={"w-full border focus:shadow-none border-black"}
+            className={"w-full border border-black focus:shadow-none"}
             placeholder={"Price"}
           />
 
-          <select onChange={handleChange} className="w-full border 2xl:py-2 py-1.5 px-4 text-black" name="status" id="">
+          <select onChange={handleChange} className="w-full border px-4 py-1.5 text-black 2xl:py-2" name="status" id="">
             {/* Duyệt mảng in ra các option */}
             <option value="" hidden>
               Choose status
@@ -164,7 +164,7 @@ export default function AddFoodForm() {
             value={selectedValues.portion}
             onChange={handleChange}
             name="portion"
-            className={"w-full border focus:shadow-none border-black"}
+            className={"w-full border border-black focus:shadow-none"}
             placeholder={"Portion"}
           />
 
@@ -172,12 +172,12 @@ export default function AddFoodForm() {
             value={selectedValues.image}
             onChange={handleChange}
             name="image"
-            className={"w-full border focus:shadow-none border-black"}
+            className={"w-full border border-black focus:shadow-none"}
             placeholder={"Image"}
           />
         </div>
         <div className="mb-[12px]">
-          <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <label for="message" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
             Ingredients
           </label>
           <textarea
@@ -186,12 +186,12 @@ export default function AddFoodForm() {
             name="ingredient"
             id="message"
             rows="4"
-            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
             placeholder=""
           ></textarea>
         </div>
         <div className="mb-[12px]">
-          <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <label for="message" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
             Description
           </label>
           <textarea
@@ -200,7 +200,7 @@ export default function AddFoodForm() {
             name="description"
             id="message"
             rows="4"
-            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
             placeholder=""
           ></textarea>
         </div>
@@ -209,16 +209,16 @@ export default function AddFoodForm() {
             onClick={handleCancel}
             data-bs-dismiss="modal"
             type="button"
-            class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+            className="mb-2 me-2 rounded-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={addFormMutation.isPending}
-            class={`${
+            className={`${
               addFormMutation.isPending ? "cursor-no-drop" : ""
-            }text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none `}
+            }text-white mb-2 me-2 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300`}
           >
             {addFormMutation.isPending ? "Submitting..." : "Submit"}
           </button>

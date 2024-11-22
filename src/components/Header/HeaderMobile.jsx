@@ -3,8 +3,11 @@ import classes from "./HeaderMobile.module.css";
 import { Link } from "react-router-dom";
 import SearchContext from "../../context/headerContext";
 import { useMediaQuery } from "react-responsive";
+import { countFoodInCartList } from "../../utils/util";
+import { CartContext } from "../../context/cartContext";
 
 export default function HeaderMobile({ configImg, title }) {
+  const { cartList } = useContext(CartContext);
   const { isSearching, setIsSearching } = useContext(SearchContext);
   const { isMenuOpen, setIsMenuOpen } = useContext(SearchContext);
   const inputRef = useRef(null);
@@ -88,18 +91,25 @@ export default function HeaderMobile({ configImg, title }) {
                     </button>
                   </Link>
                 </div>
-                <div className={`${classes["header-fav"]} hover:text-red-600 transition-all`}>
+                <div className={`${classes["header-fav"]} transition-all hover:text-red-600`}>
                   <button className={`button-click-expand`}>
                     <i className="fa fa-heart"></i>
                   </button>
                 </div>
                 {isMobile && (
                   <>
-                    <div className={classes["header-cart"]}>
-                      <button className={`button-click-expand`}>
-                        <i className="fa fa-shopping-cart"></i>
-                      </button>
-                    </div>
+                    <Link to={"/cart"} className="fixed bottom-1/4 right-4 z-10">
+                      <div
+                        className={`${classes["header-cart"]} flex size-10 items-center justify-center rounded-full bg-red-500 text-sm text-white`}
+                      >
+                        <div className="absolute -right-[1px] -top-1 flex size-4 items-center justify-center rounded-full bg-blue-400">
+                          <span className="text-sm font-bold text-white">{countFoodInCartList(cartList)}</span>
+                        </div>
+                        <button className={`button-click-expand`}>
+                          <i className="fa fa-shopping-cart"></i>
+                        </button>
+                      </div>
+                    </Link>
 
                     <div>
                       <button className={`button-click-expand`} onClick={handleOpenMenu}>
@@ -113,11 +123,7 @@ export default function HeaderMobile({ configImg, title }) {
           </>
         ) : (
           <div>
-            <button
-              className={`button-click-expand
-              }`}
-              onClick={handleCloseMenu}
-            >
+            <button className={`button-click-expand }`} onClick={handleCloseMenu}>
               <i className="fa fa-times"></i>
             </button>
           </div>

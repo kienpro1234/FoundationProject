@@ -2,13 +2,13 @@ import React from "react";
 import classes from "./Food.module.css";
 
 import Button from "../UI/Button";
+import Modal from "../UI/Modal";
+import ModalOrdering from "../ModalOrdering/ModalOrdering";
 
 export default function Food({ food }) {
   return (
     <div className={`food ${classes["food-container"]}`}>
-      <div
-        className={`d-flex gx-0  justify-content-center ${classes.food} row`}
-      >
+      <div className={`d-flex gx-0 justify-content-center ${classes.food} row`}>
         <div className="col-md-6 col-12 pe-md-4 mb-md-0 mb-5">
           <img className={classes.image} src={food.image} alt={food.image} />
         </div>
@@ -29,9 +29,14 @@ export default function Food({ food }) {
             //  */}
 
             <p className={classes.price}>{food.price}</p>
-            <Button className={"food-review-button food-order-button"}>
-              ORDER
-            </Button>
+            <ModalOrdering
+              itemCart={food}
+              title={"Choose order detail"}
+              id={"CHOOSE_ORDER_DETAIL"}
+              size={"sm"}
+              triggeredButton={<Button className="food-review-button">ORDER</Button>}
+            ></ModalOrdering>
+
             <div className={classes["food-mainInfo"]}>
               <div className={classes.ingredients}>
                 <h3 className="fw-bold">

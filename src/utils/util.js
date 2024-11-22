@@ -45,6 +45,14 @@ export const getRoleLS = () => {
   return localStorage.getItem("role") || null;
 };
 
+export const setCartListToLS = (cartList) => {
+  localStorage.setItem("cartList", JSON.stringify(cartList));
+};
+
+export const getCartListFromLS = () => {
+  return JSON.parse(localStorage.getItem("cartList")) || [];
+};
+
 export const isEmail = (email) => {
   const emailRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
   if (emailRegex.test(email)) {
@@ -52,6 +60,16 @@ export const isEmail = (email) => {
   } else {
     return false;
   }
+};
+
+export const calcTotalPrice = (cartList) => {
+  const total = cartList.reduce((acc, food) => (acc += Number(food.price)), 0);
+
+  return parseFloat(total.toFixed(2));
+};
+
+export const countFoodInCartList = (cartList) => {
+  return cartList.reduce((acc) => acc + 1, 0);
 };
 
 export const isPhoneNumber = (phoneNumber) => {

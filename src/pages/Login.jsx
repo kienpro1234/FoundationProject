@@ -36,7 +36,7 @@ export default function Login() {
             headers: {
               "Content-Type": "application/json",
             },
-          }
+          },
         );
         console.log("data", res);
         return res.data;
@@ -97,9 +97,9 @@ export default function Login() {
 
   return (
     <div className={`${classes.loginContainer} `}>
-      <form className={`${classes.loginForm} rounded-md `} onSubmit={handleSubmit}>
+      <form className={`${classes.loginForm} rounded-md`} onSubmit={handleSubmit}>
         <h2 className={`heading-login`}>Đăng nhập</h2>
-        <p className={`mt-2 mb-3`}>Đăng nhập bằng email hoặc số điện thoại</p>
+        <p className={`mb-3 mt-2`}>Đăng nhập bằng email hoặc số điện thoại</p>
         {/* input */}
         <div className="mb-[12px]">
           <Input
@@ -127,31 +127,31 @@ export default function Login() {
               setEyeOpen((prevEyeOpen) => !prevEyeOpen);
             }}
           >
-            {eyeOpen ? <i class="fa fa-eye text-gray-400"></i> : <i class="fa fa-eye-slash text-gray-400"></i>}
+            {eyeOpen ? <i className="fa fa-eye text-gray-400"></i> : <i className="fa fa-eye-slash text-gray-400"></i>}
           </button>
         </div>
         {/* Nhớ tài khoản , quên mk */}
-        <div className="flex justify-between items-baseline">
+        <div className="flex items-baseline justify-between">
           <div className="mt-3 flex items-baseline gap-2">
             <input id="login-input" type="checkbox" className="accent-emerald-500" />
             <label className="text-sm" htmlFor="login-input">
               Nhớ tài khoản
             </label>
           </div>
-          <a className="text-sm underline decoration-1 underline-offset-4 cursor-pointer text-gray-600 font-normal hover:text-gray-600">
+          <a className="cursor-pointer text-sm font-normal text-gray-600 underline decoration-1 underline-offset-4 hover:text-gray-600">
             Quên mật khẩu?
           </a>
         </div>
         <div>
           {useLoginMutation.isPending ? (
-            <ButtonLogin style={{ cursor: "no-drop" }} className={"w-full mt-3"}>
+            <ButtonLogin style={{ cursor: "no-drop" }} className={"mt-3 w-full"}>
               Đăng nhập...
             </ButtonLogin>
           ) : (
-            <ButtonLogin className={"w-full mt-3"}>Đăng nhập</ButtonLogin>
+            <ButtonLogin className={"mt-3 w-full"}>Đăng nhập</ButtonLogin>
           )}
         </div>
-        <div className="text-sm mt-3 flex justify-between">
+        <div className="mt-3 flex justify-between text-sm">
           <Link to={"/menu"}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -159,7 +159,7 @@ export default function Login() {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="size-6 hover:fill-blue-600 transition"
+              className="size-6 transition hover:fill-blue-600"
             >
               <path
                 strokeLinecap="round"

@@ -92,10 +92,10 @@ export default function Header({ className, ...props }) {
             </Link>
             <div className={`${classes["login-menu-container"]}`}>
               <ul className={`${classes["login-menu"]}`}>
-                <Link to={"/register"} className="text-slate-800 hover:text-slate-800 text-sm">
+                <Link to={"/register"} className="text-sm text-slate-800 hover:text-slate-800">
                   <li className="mb-2">Sign up</li>
                 </Link>
-                <Link to={"/login"} className="text-slate-800 hover:text-slate-800 text-sm">
+                <Link to={"/login"} className="text-sm text-slate-800 hover:text-slate-800">
                   <li>Sign in</li>
                 </Link>
                 <div className={`${classes["login-menu-overlay"]}`}></div>
@@ -130,7 +130,11 @@ export default function Header({ className, ...props }) {
             title="Thêm mới dữ liệu"
             id="addModal"
             size="lg" // md, sm
-            triggeredButton={<i class="fa-solid fa-plus"></i>}
+            triggeredButton={
+              <button>
+                <i className="fa-solid fa-plus"></i>
+              </button>
+            }
           >
             {/* Nội dung bên trong modal */}
             {/* component form sẽ thêm ở đây  */}

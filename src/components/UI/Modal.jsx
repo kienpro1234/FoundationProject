@@ -1,15 +1,15 @@
 import React from "react";
 import { createPortal } from "react-dom";
 
-export default function Modal({ title, children, id, size, triggeredButton }) {
+export default function Modal({ title, children, id, size, triggeredButton, classNameButtonTrigger, btnClose }) {
   return (
     <>
-      <button type="button" data-bs-toggle="modal" data-bs-target={`#${id}`}>
+      <span className={classNameButtonTrigger || ""} type="button" data-bs-toggle="modal" data-bs-target={`#${id}`}>
         {triggeredButton}
-      </button>
+      </span>
 
       {createPortal(
-        <div className="modal fade" id={id} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal fade" id={id} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div className={`modal-dialog ${size ? `modal-${size}` : ""}`}>
             <div className="modal-content">
               <div className="modal-header">
@@ -34,7 +34,7 @@ export default function Modal({ title, children, id, size, triggeredButton }) {
             </div>
           </div>
         </div>,
-        document.querySelector("#root")
+        document.querySelector("#root"),
       )}
     </>
   );
