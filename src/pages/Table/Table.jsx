@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getTable } from "../../apis/tableApi";
 import LoadingIndicator from "../../components/UI/LoadingIndicator";
+import ErrorBlock from "../../components/UI/ErrorBlock";
 
 export default function Table() {
   // lấy url của page này để call api fetch đến thông tin của table này, để hiển thị tương ứng
@@ -116,6 +117,10 @@ export default function Table() {
   let content = <></>;
   if (!isPositionValid) {
     content = <p className="text-lg font-semibold text-red-500">Vị trí không phù hợp</p>;
+  }
+
+  if (isError) {
+    content = <ErrorBlock message={"Không thể fetch table"} title={"Lỗi"} />;
   }
   if (dataTable) {
     content = (
