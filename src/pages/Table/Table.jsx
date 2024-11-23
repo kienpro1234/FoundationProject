@@ -53,7 +53,7 @@ export default function Table() {
   // const restaurantLongitude = 200;
 
   // const allowedRadius = 0.01; // Bán kính cho phép (ví dụ: 0.5 km)
-  const allowedRadius = 0.01;
+  const allowedRadius = 0.015;
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
