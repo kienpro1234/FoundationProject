@@ -123,9 +123,11 @@ export default function Table() {
         {/* Container */}
         <div className="px-8 py-3">
           {/* title */}
-          <h1 className="border-b-[1.5px] border-red-500 pb-3 text-6xl capitalize text-red-500">{dataTable?.name}</h1>
+          <h1 className="border-b-[1.5px] border-red-500 pb-3 text-6xl capitalize text-red-500">
+            {dataTable?.name.replace(/_/, " ")}
+          </h1>
           {/* Content top */}
-          <div className="py-20">
+          <div className="min-h-[300px] py-20">
             {/* flex*/}
             <div className="flex flex-col gap-3">
               {dataTable.orders.map((order) => (
