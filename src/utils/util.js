@@ -63,7 +63,7 @@ export const isEmail = (email) => {
 };
 
 export const calcTotalPrice = (cartList) => {
-  const total = cartList.reduce((acc, food) => (acc += Number(food.price)), 0);
+  const total = cartList.reduce((acc, food) => (acc += Number(food.price) * Number(food.quantity)), 0);
 
   return parseFloat(total.toFixed(2));
 };

@@ -18,6 +18,7 @@ import ShoppingCart from "./pages/ShoppingCart/ShoppingCart";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Table from "./pages/Table/Table";
 import { CartContextProvider } from "./context/cartContext";
+import { DOMAIN } from "./utils/const";
 
 function RejectedRoute() {
   const token = getToken();
@@ -86,7 +87,7 @@ const router = createBrowserRouter([
     element: <ShoppingCart />,
   },
   {
-    path: "/table/:id",
+    path: `/api/positions/:tableId`,
     element: <Table />,
   },
 ]);

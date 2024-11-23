@@ -13,11 +13,7 @@ export default function CartItem({ food }) {
         <div className="col-span-2 flex justify-center bmd:col-span-1 md:col-span-2">
           <div className="bg-gray-400 p-1">
             <Link to={`/food/${food.id}`}>
-              <img
-                src="https://transcode-v2.app.engoo.com/image/fetch/f_auto,c_limit,w_1200,h_630,dpr_1/https://assets.app.engoo.com/images/x7jPxj9YtJfv97hnC3mMmQog5VwuYojZ7tlrhczGXIV.jpeg"
-                alt=""
-                className="size-[70px]"
-              />
+              <img src={food.image} alt="" className="size-[70px]" />
             </Link>
           </div>
         </div>
@@ -25,12 +21,12 @@ export default function CartItem({ food }) {
         {/* CONTENT */}
         <div className="col-span-6 flex justify-between bmd:col-span-6 md:col-span-6">
           {/* left side */}
-          <div className="">
-            <h3 className="mb-1 text-lg font-bold">{food.dishName}</h3>
+          <div className="overflow-hidden">
+            <h3 className="mb-1 truncate text-lg font-bold">{food.dishName}</h3>
             <p className="text-sm">Portion: {food.portion}</p>
             <p className="text-sm">Price: ${food.price}</p>
           </div>
-          <div className="flex flex-col justify-between">
+          <div className="flex flex-shrink-0 flex-col justify-between">
             <div className="mr-[3px] cursor-pointer text-right">
               <i className="fa fa-times"></i>
             </div>
