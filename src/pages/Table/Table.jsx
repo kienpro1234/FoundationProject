@@ -127,7 +127,7 @@ export default function Table() {
             {dataTable?.name.replace(/_/, " ")}
           </h1>
           {/* Content top */}
-          <div className="min-h-[300px] py-20">
+          <div className="min-h-[350px] py-20">
             {/* flex*/}
             <div className="flex flex-col gap-3">
               {dataTable.orders.map((order) => (
