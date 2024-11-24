@@ -1,29 +1,26 @@
 import React, { useState } from "react";
 import Button from "../UI/Button";
 import classes from "./MenuCategorySection.module.css";
-import { formatName, getRoleLS } from "../../utils/util";
+import { formatName, getRoleLS, transformCategoryNameToURL } from "../../utils/util";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DOMAIN } from "../../utils/const";
 import { deleteFood } from "../../apis/foodApi";
 import { toast } from "react-toastify";
-import LoadingIndicator from "../UI/LoadingIndicator";
-import FoodItem from "../FoodItem/FoodItem";
-import Modal from "../UI/Modal";
 import ModalOrdering from "../ModalOrdering/ModalOrdering";
+import { fetchCategoryDetail } from "../../apis/category.api";
 
-export default function MenuCategorySection({ category }) {
+export default function MenuCategorySection({ category, catQueryData, catName }) {
   console.log("check data", category);
   const [idToDelete, setIdToDelete] = useState("");
   const queryClient = useQueryClient();
-  console.log("category list", category.dishes);
 
   //Có thể viết query này ở component cha, tránh mỗi category lại call api 1 lần
-  const { data, isLoading, isError, error } = useQuery({
+  const { data: mostPopularData } = useQuery({
     queryKey: ["menu", "most-popular"],
     queryFn: async ({ signal }) => {
       try {
-        const res = await fetch(`${DOMAIN}category/most-popular`, { signal });
+        const res = await fetch(`${DOMAIN}dishes/category/most%20popular`, { signal });
 
         const result = await res.json();
 
@@ -33,7 +30,33 @@ export default function MenuCategorySection({ category }) {
       }
     },
   });
-  console.log("idtoDelte", idToDelete);
+
+  console.log("data log xem ra gi", mostPopularData);
+
+  // const URL = `${DOMAIN}dishes/category/${}`;
+  let categoryNameURL = "";
+  if (category) {
+    categoryNameURL = transformCategoryNameToURL(`${category.categoryName}`);
+  }
+  const {
+    data: categoryData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["menu", category?.categoryId],
+    queryFn: () => fetchCategoryDetail(categoryNameURL),
+    enabled: Boolean(category),
+  });
+
+  let finalCategoryData = [];
+  if (categoryData) {
+    finalCategoryData = categoryData.data.data;
+  }
+
+  if (catQueryData) {
+    finalCategoryData = catQueryData;
+  }
 
   const deleteMutation = useMutation({
     mutationFn: deleteFood,
@@ -62,17 +85,22 @@ export default function MenuCategorySection({ category }) {
     setIdToDelete("");
   };
 
-  const mostPopularArray = data?.dishes.map((food) => food.dishName);
+  const mostPopularArray = mostPopularData?.map((food) => food.dishName);
 
   return (
     <div className="menu-category">
-      <h3 className={classes.title}>
-        <span>{formatName(category.categoryName.toUpperCase())}</span>
-      </h3>
+      {category && finalCategoryData?.length > 0 && (
+        <h3 className={classes.title}>
+          {category && <span>{formatName(category?.categoryName.toUpperCase() || "")}</span>}
+          {/* <span>{formatName(category?.categoryName.toUpperCase() || "") || catName}</span> */}
+        </h3>
+      )}
+      {catName && <h3 className={classes.title}>{catName && <span>{catName}</span>}</h3>}
+
       <ul className={`row gx-4 px-3 ${classes.category}`}>
-        {category?.dishes?.map((food) => {
+        {finalCategoryData?.map((food) => {
           return (
-            <li className="col-md-3 col-6 mb-4 pe-2 md:!pe-3" key={food.id}>
+            <li className="col-md-3 col-6 mb-4 pe-2 md:!pe-3" key={food.dishId}>
               <div className={`${classes["menu-category-content"]} rounded-md p-2 shadow-1 md:!p-3`}>
                 <div className={classes.foodInfo}>
                   <p className={`${classes["foodInfo-status"]}`}>
@@ -87,7 +115,7 @@ export default function MenuCategorySection({ category }) {
                   )}
 
                   <div className="overflow-hidden">
-                    <Link to={`/food/${food.id}`}>
+                    <Link to={`/food/${food.dishId}`}>
                       <img
                         className={`${classes.image} transition hover:scale-110`}
                         src={food.image}
@@ -95,7 +123,7 @@ export default function MenuCategorySection({ category }) {
                       />
                     </Link>
                   </div>
-                  <Link to={`/food/${food.id}`}>
+                  <Link to={`/food/${food.dishId}`}>
                     <p className={`fw-bold ${classes.foodName}`}>{food.dishName}</p>
                   </Link>
                   <p className={classes.price}>${food.price}</p>
@@ -120,7 +148,7 @@ export default function MenuCategorySection({ category }) {
                     <ModalOrdering
                       itemCart={food}
                       title={"Choose order detail"}
-                      id={`CHOOSE_ORDER_DETAIL${food.id}`}
+                      id={`CHOOSE_ORDER_DETAIL${food.dishId}`}
                       size={"sm"}
                       triggeredButton={<Button className="food-review-button">ORDER</Button>}
                     ></ModalOrdering>
@@ -137,13 +165,13 @@ export default function MenuCategorySection({ category }) {
                     </button>
                     <div>
                       <button
-                        onClick={() => handleClickDelete(food.id)}
+                        onClick={() => handleClickDelete(food.dishId)}
                         className={`${classes["foodInfo-delelte-btn"]}`}
                       >
                         <i className="fa-solid fa-trash"></i>
                       </button>
 
-                      {idToDelete === food.id && (
+                      {idToDelete === food.dishId && (
                         <div className={`${classes["pop-up"]} shadow-lg`}>
                           <p className="mb-3 text-center">Are you sure to delete?</p>
                           <button
@@ -154,7 +182,7 @@ export default function MenuCategorySection({ category }) {
                             No
                           </button>
                           <button
-                            onClick={() => handleConfirmDelete(food.id)}
+                            onClick={() => handleConfirmDelete(food.dishId)}
                             type="button"
                             className="mb-2 me-2 rounded-lg border-2 border-blue-700 px-5 py-2.5 text-center text-sm font-medium text-blue-700 hover:bg-blue-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-500 dark:hover:text-white dark:focus:ring-blue-800"
                           >

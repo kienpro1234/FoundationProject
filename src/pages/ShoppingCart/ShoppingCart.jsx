@@ -5,9 +5,14 @@ import CartItem from "../../components/ShoppingCart/CartItem";
 import FooterCopyright from "../../components/Footer/FooterCopyright";
 import { calcTotalPrice, getCartListFromLS } from "../../utils/util";
 import { CartContext } from "../../context/cartContext";
+import { useMutation } from "@tanstack/react-query";
 
 export default function ShoppingCart() {
   const { cartList } = useContext(CartContext);
+
+  // const {mutate, isPending} = useMutation({
+  //   mutationFn:
+  // })
 
   const handleConfirmOrder = () => {};
 

@@ -10,7 +10,7 @@ import LoadingIndicator from "../UI/LoadingIndicator";
 import { fetchCategory } from "../../apis/categoryIndex";
 
 export default function MenuComponent() {
-  console.log(DOMAIN + "category");
+  console.log(DOMAIN + "categories");
 
   //Dùng axios
   const { data, isLoading, isError, error } = useQuery({

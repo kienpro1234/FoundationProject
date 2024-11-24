@@ -1,15 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { getTable } from "../../apis/tableApi";
 import LoadingIndicator from "../../components/UI/LoadingIndicator";
 import ErrorBlock from "../../components/UI/ErrorBlock";
+import { CartContext } from "../../context/cartContext";
 
 export default function Table() {
   // lấy url của page này để call api fetch đến thông tin của table này, để hiển thị tương ứng
   // Lấy url ra
+  const { setTableId } = useContext(CartContext);
   const { tableId } = useParams();
-  const [isPositionValid, setIsPositionValid] = useState(false);
+  console.log("tableid", tableId);
+  useEffect(() => {
+    setTableId(tableId);
+  }, []);
+  const [isPositionValid, setIsPositionValid] = useState(true); // Đổi sang false sau
   // Lấy vị trí của người dùng, nếu phù hợp thì tiếp tục gửi api lên cho BE(api get table, gửi kèm position trong body) để lấy thông tin table hiển thị ra, link api cũng đồng thời là link trên url, gửi kèm position để BE kiểm tra nữa, nhưng trường hợp này chắc k cần
   function calculateDistance(lat1, lng1, lat2, lng2) {
     const R = 6371; // Bán kính Trái Đất (km)
@@ -111,7 +117,9 @@ export default function Table() {
 
   let dataTable = "";
   if (data) {
-    dataTable = data.data.data;
+    console.log("data", data);
+    dataTable = data.data.data.pageContent;
+    console.log("datatable", dataTable);
   }
 
   let content = <></>;
@@ -124,22 +132,25 @@ export default function Table() {
   }
   if (dataTable) {
     content = (
-      <div className="h-screen bg-pink-red">
+      <div className="h-screen overflow-auto bg-pink-red">
         {/* Container */}
         <div className="px-8 py-3">
           {/* title */}
-          <h1 className="border-b-[1.5px] border-red-500 pb-3 text-6xl capitalize text-red-500">
-            {dataTable?.name.replace(/_/, " ")}
-          </h1>
+          <h1 className="border-b-[1.5px] border-red-500 pb-3 text-6xl capitalize text-red-500">table {tableId}</h1>
           {/* Content top */}
           <div className="min-h-[400px] py-20">
             {/* flex*/}
             <div className="flex flex-col gap-3">
-              {dataTable.orders.map((order) => (
-                <div className="rounded-3xl border-[1.5px] border-black bg-gray-50 px-3 py-2 font-bold">
-                  <h3 className="text-xl text-red-500">Order #123123</h3>
-                  <p className="">Food list:</p>
-                  <p className="">Status: </p>
+              {dataTable.map((order) => (
+                <div className="flex items-center justify-between rounded-3xl border-[1.5px] border-black bg-gray-50 px-3 py-2 font-bold">
+                  <div>
+                    <h3 className="text-xl text-red-500">{order.dish.dishName}</h3>
+                    <p className="">Quantity: {order.quantity}</p>
+                    <p className="">Status: {order.status ? "Đã thanh toán" : "Chưa thanh toán"}</p>
+                  </div>
+                  <div>
+                    <img src={order.dish.image} alt="" className="size-16 rounded-full object-cover shadow-md" />
+                  </div>
                 </div>
               ))}
               {/* item */}
@@ -162,9 +173,11 @@ export default function Table() {
               <button className="w-32 rounded-xl bg-emerald-500 py-[11px] text-4xl font-bold text-white hover:bg-emerald-400">
                 Pay
               </button>
-              <button className="w-32 rounded-xl bg-red-500 py-[11px] text-4xl font-bold text-white hover:bg-red-400">
-                Order
-              </button>
+              <Link to={"/menu/all"}>
+                <button className="w-32 rounded-xl bg-red-500 py-[11px] text-4xl font-bold text-white hover:bg-red-400">
+                  Order
+                </button>
+              </Link>
             </div>
           </div>
         </div>

@@ -3,7 +3,7 @@ import { http } from "../utils/http";
 export const fetchCategory = async ({ signal }) => {
   try {
     console.log("sau hello");
-    const res = await http.get(`category`, { signal });
+    const res = await http.get(`categories`, { signal });
 
     // if (res.status < 200 || res.status >= 300) {
     //   throw new Error("Không thể fetch manu category");

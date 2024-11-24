@@ -5,9 +5,10 @@ import SearchContext from "../../context/headerContext";
 import { useMediaQuery } from "react-responsive";
 import { countFoodInCartList } from "../../utils/util";
 import { CartContext } from "../../context/cartContext";
+import { TABLEURL } from "../../utils/const";
 
 export default function HeaderMobile({ configImg, title }) {
-  const { cartList } = useContext(CartContext);
+  const { tableId } = useContext(CartContext);
   const { isSearching, setIsSearching } = useContext(SearchContext);
   const { isMenuOpen, setIsMenuOpen } = useContext(SearchContext);
   const inputRef = useRef(null);
@@ -98,12 +99,14 @@ export default function HeaderMobile({ configImg, title }) {
                 </div>
                 {isMobile && (
                   <>
-                    <Link to={"/cart"} className="fixed bottom-1/4 right-4 z-10">
+                    <Link to={`${TABLEURL}${tableId}`} className="fixed bottom-1/4 right-4 z-10">
                       <div
                         className={`${classes["header-cart"]} flex size-10 items-center justify-center rounded-full bg-red-500 text-sm text-white`}
                       >
                         <div className="absolute -right-[1px] -top-1 flex size-4 items-center justify-center rounded-full bg-blue-400">
-                          <span className="text-sm font-bold text-white">{countFoodInCartList(cartList)}</span>
+                          {/* đếm số food đang ở trong table(giỏ hàng bằng cách fetch api gọi đến table, lấy số lượng rồi cho ra đây) */}
+                          {/* <span className="text-sm font-bold text-white">{countFoodInCartList(cartList)}</span> */}
+                          <span className="text-sm font-bold text-white">2</span>
                         </div>
                         <button className={`button-click-expand`}>
                           <i className="fa fa-shopping-cart"></i>
