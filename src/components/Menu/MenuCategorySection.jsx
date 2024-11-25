@@ -11,6 +11,7 @@ import ModalOrdering from "../ModalOrdering/ModalOrdering";
 import { fetchCategoryDetail } from "../../apis/category.api";
 
 export default function MenuCategorySection({ category, catQueryData, catName }) {
+  console.log("cat data", catQueryData);
   console.log("check data", category);
   const [idToDelete, setIdToDelete] = useState("");
   const queryClient = useQueryClient();
@@ -37,6 +38,7 @@ export default function MenuCategorySection({ category, catQueryData, catName })
   let categoryNameURL = "";
   if (category) {
     categoryNameURL = transformCategoryNameToURL(`${category.categoryName}`);
+    console.log("category ton tai", category);
   }
   const {
     data: categoryData,
@@ -44,7 +46,7 @@ export default function MenuCategorySection({ category, catQueryData, catName })
     isError,
     error,
   } = useQuery({
-    queryKey: ["menu", category?.categoryId],
+    queryKey: ["menu", categoryNameURL],
     queryFn: () => fetchCategoryDetail(categoryNameURL),
     enabled: Boolean(category),
   });

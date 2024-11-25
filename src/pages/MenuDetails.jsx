@@ -6,15 +6,18 @@ import ErrorBlock from "../components/UI/ErrorBlock";
 import LoadingIndicator from "../components/UI/LoadingIndicator";
 import { DOMAIN } from "../utils/const";
 import { transformCategoryNameToURL } from "../utils/util";
+import { fetchCategoryDetail } from "../apis/category.api";
 
 export default function MenuDetails() {
   const { id } = useParams();
   const correctId = transformCategoryNameToURL(id);
+
+  //Kiểm tra hiện tại có đang chọn filter khác all hay là đang chọn all
   const isChoosingCategory = correctId !== "categories" && correctId !== "all";
 
-  // Query all categories
+  // Query all categories , để gọi data cho trường hợp all, tức là gọi toàn bộ categories
   const categoriesQuery = useQuery({
-    queryKey: ["categories"],
+    queryKey: ["menu"],
     queryFn: async ({ signal }) => {
       const response = await fetch(`${DOMAIN}categories`, { signal });
       const result = await response.json();
@@ -23,16 +26,14 @@ export default function MenuDetails() {
     enabled: !isChoosingCategory, // Chỉ gọi khi không chọn một category cụ thể
   });
 
-  // Query specific category
+  // Query specific category (Để gọi data cho trường hợp chọn filter)
   const catQuery = useQuery({
-    queryKey: ["category", correctId],
-    queryFn: async ({ signal }) => {
-      const response = await fetch(`${DOMAIN}dishes/category/${correctId}`, { signal });
-      const result = await response.json();
-      return result.data; // Trả về dữ liệu chi tiết của category
-    },
+    queryKey: ["menu", correctId],
+    queryFn: () => fetchCategoryDetail(correctId),
     enabled: isChoosingCategory, // Chỉ gọi khi chọn một category cụ thể
   });
+
+  // export const fetchCategoryDetail = (categoryName) => http.get(`dishes/category/${categoryName}`);
 
   // Xử lý trạng thái tải dữ liệu hoặc lỗi // Lỗi chính là ở đây, cho content = Loading indicator có vẻ k hiệu nghiệm // Vì nếu có 2 query một lúc như thế mà lại cho content = LoadingIndicator cho cả 2 thì bị lỗi gì ấy
   if (categoriesQuery.isLoading || catQuery.isLoading) {
@@ -54,8 +55,8 @@ export default function MenuDetails() {
   // Chỉ render khi dữ liệu đã có
   let content = null;
 
-  if (isChoosingCategory && catQuery.isSuccess && catQuery.data) {
-    content = <MenuCategorySection catQueryData={catQuery.data} catName={id} />;
+  if (isChoosingCategory && catQuery.isSuccess && catQuery.data.data) {
+    content = <MenuCategorySection catQueryData={catQuery.data.data.data} catName={id} />;
   } else if (categoriesQuery.isSuccess && Array.isArray(categoriesQuery.data)) {
     content = categoriesQuery.data.map((category) => (
       <MenuCategorySection key={category.categoryId} category={category} />
