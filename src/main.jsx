@@ -8,6 +8,6 @@ import { ToastContainer } from "react-toastify";
 createRoot(document.getElementById("root")).render(
   <>
     <App />
-    <ToastContainer />
-  </>
+    <ToastContainer autoClose={500} />
+  </>,
 );

@@ -8,7 +8,13 @@ import axios from "axios";
 //   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
 // };
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export const isObject = (value) => value !== null && typeof value === "object" && !Array.isArray(value);
 

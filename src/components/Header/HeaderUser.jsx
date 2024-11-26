@@ -24,22 +24,16 @@ export default function HeaderUser({ user }) {
         </Link>
       </div>
       <div className={`${classes.navbar}`}>
-        <ul className={`${classes["headerUser-ul"]} d-flex gap-10 align-items-center`}>
+        <ul className={`${classes["headerUser-ul"]} d-flex align-items-center gap-10`}>
           <Header className="position-relative" style={{ transform: "translateY(-35%)", minWidth: "180px" }} />
-          <div className="d-flex gap-2 align-items-center">
+          <div className="d-flex align-items-center gap-2">
             <li>
-              <img
-                className={classes.avatar}
-                src={
-                  "https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/431240968_431190712682006_1668401436782837892_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=Q_Xk-HlaJaUQ7kNvgEe2G5e&_nc_zt=23&_nc_ht=scontent.fhan2-5.fna&_nc_gid=AFfXrKsIi48of07fUdasUbc&oh=00_AYBc4VrX1skg2JbkYoIa9Uu0WE19G_GERlEff6h1FwsrDA&oe=673BBC64"
-                }
-                alt={"avatar"}
-              />
+              <img className={classes.avatar} src={user.imageUrl} alt={"avatar"} />
             </li>
-            <li className={`${classes.username} text-white fw-bold flex flex-col`} style={{ fontSize: "1.8rem" }}>
-              {user.lastName}
+            <li className={`${classes.username} fw-bold flex flex-col text-white`} style={{ fontSize: "1.8rem" }}>
+              {user.lastName + " " + user.firstName}
 
-              <button onClick={handleLogout} className="text-xs md:text-sm  text-left">
+              <button onClick={handleLogout} className="text-left text-xs md:text-sm">
                 Đăng xuất
               </button>
             </li>

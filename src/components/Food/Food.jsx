@@ -8,40 +8,36 @@ import ModalOrdering from "../ModalOrdering/ModalOrdering";
 export default function Food({ food }) {
   const imageRef = useRef(null);
 
-  const handleZoom = (event) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const image = imageRef.current;
-    const { naturalHeight, naturalWidth } = image;
-    // const { offsetX, offsetY } = event.nativeEvent;
-    const offsetX = event.pageX - (rect.x + window.scrollX);
+  // const handleZoom = (event) => {
+  //   const rect = event.currentTarget.getBoundingClientRect();
+  //   const image = imageRef.current;
+  //   const { naturalHeight, naturalWidth } = image;
+  //   // const { offsetX, offsetY } = event.nativeEvent;
+  //   const offsetX = event.pageX - (rect.x + window.scrollX);
 
-    const offsetY = event.pageY - (rect.y + window.scrollY);
-    const top = offsetY * (1 - naturalHeight / rect.height);
-    const left = offsetX * (1 - naturalWidth / rect.width);
+  //   const offsetY = event.pageY - (rect.y + window.scrollY);
+  //   const top = offsetY * (1 - naturalHeight / rect.height);
+  //   const left = offsetX * (1 - naturalWidth / rect.width);
 
-    image.style.width = naturalWidth + "px";
-    image.style.height = naturalHeight + "px";
-    image.style.maxWidth = "unset";
+  //   image.style.width = naturalWidth + "px";
+  //   image.style.height = naturalHeight + "px";
+  //   image.style.maxWidth = "unset";
 
-    image.style.top = top + "px";
-    image.style.left = left + "px";
-  };
+  //   image.style.top = top + "px";
+  //   image.style.left = left + "px";
+  // };
 
-  const handleRemoveZoom = () => {
-    imageRef.current?.removeAttribute("style");
-  };
+  // const handleRemoveZoom = () => {
+  //   imageRef.current?.removeAttribute("style");
+  // };
   return (
     <div className={`food ${classes["food-container"]}`}>
       <div className={`grid grid-cols-12 gap-9`}>
         <div className="col-span-12 md:col-span-5">
-          <div
-            className="shadow-img-food-detail relative w-full overflow-hidden pt-[100%]"
-            onMouseMove={handleZoom}
-            onMouseLeave={handleRemoveZoom}
-          >
+          <div className="relative w-full pt-[100%] shadow-img-food-detail">
             <img
               ref={imageRef}
-              className={`pointer-events-none absolute left-0 top-0 h-full w-full object-cover`}
+              className={`absolute left-0 top-0 h-full w-full object-cover`}
               src={food.image}
               alt={food.image}
             />
@@ -127,7 +123,7 @@ export default function Food({ food }) {
   );
 }
 
-// CODE GIỮA
+// // CODE GIỮA
 
 // CODE CŨ
 

@@ -25,31 +25,26 @@ export default function Login() {
 
   const useLoginMutation = useMutation({
     mutationFn: async (userData) => {
-      try {
-        const res = await http.post(
-          "auth/login",
-          {
-            username: userData.account,
-            password: userData.password,
+      return http.post(
+        "auth/login",
+        {
+          emailOrPhone: userData.account,
+          password: userData.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
           },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          },
-        );
-        console.log("data", res);
-        return res.data;
-      } catch (err) {
-        console.error("err", err);
-        throw err;
-      }
+        },
+      );
     },
     onSuccess: (data) => {
-      console.log("data", data);
-      const accessToken = data.accessToken;
-      const userId = data.user.id;
-      const role = data.user.roles.length > 1 ? "admin" : "user";
+      console.log("data nnn", data);
+      const accessToken = data.data.accessToken;
+      const userId = data.data.user.userId;
+      // console.log("accessToken", accessToken);
+      // console.log("userId", userId);
+      const role = data.data.user.roles.length > 1 ? "admin" : "user";
 
       if (accessToken) {
         localStorage.setItem("accessToken", accessToken);

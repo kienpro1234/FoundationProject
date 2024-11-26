@@ -3,12 +3,12 @@ import classes from "./HeaderMobile.module.css";
 import { Link } from "react-router-dom";
 import SearchContext from "../../context/headerContext";
 import { useMediaQuery } from "react-responsive";
-import { countFoodInCartList } from "../../utils/util";
+import { countFoodInCartList, getAccessToken } from "../../utils/util";
 import { CartContext } from "../../context/cartContext";
 import { TABLEURL } from "../../utils/const";
 
 export default function HeaderMobile({ configImg, title }) {
-  const { tableId } = useContext(CartContext);
+  const { tableId, cartList } = useContext(CartContext);
   const { isSearching, setIsSearching } = useContext(SearchContext);
   const { isMenuOpen, setIsMenuOpen } = useContext(SearchContext);
   const inputRef = useRef(null);
@@ -16,6 +16,11 @@ export default function HeaderMobile({ configImg, title }) {
   const isDesktop = useMediaQuery({ minWidth: 1024 });
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
   const isMobile = useMediaQuery({ maxWidth: 767 });
+
+  const isUsingTableAndLogin = tableId && getAccessToken();
+  const isUsingTableAndNotLogin = tableId && !getAccessToken();
+  const isNotUsingTableAndLogin = !tableId && getAccessToken();
+  const isNotUsingTableAndNotLogin = !tableId && !getAccessToken();
 
   const handleSearchClick = () => {
     setIsSearching(() => {
@@ -99,15 +104,23 @@ export default function HeaderMobile({ configImg, title }) {
                 </div>
                 {isMobile && (
                   <>
-                    <Link to={`${TABLEURL}${tableId}`} className="fixed bottom-1/4 right-4 z-10">
+                    <Link
+                      to={`${tableId ? `${TABLEURL}${tableId}` : "/cart"}`}
+                      className="fixed bottom-1/4 right-4 z-10"
+                    >
                       <div
                         className={`${classes["header-cart"]} flex size-10 items-center justify-center rounded-full bg-red-500 text-sm text-white`}
                       >
-                        <div className="absolute -right-[1px] -top-1 flex size-4 items-center justify-center rounded-full bg-blue-400">
-                          {/* đếm số food đang ở trong table(giỏ hàng bằng cách fetch api gọi đến table, lấy số lượng rồi cho ra đây) */}
-                          {/* <span className="text-sm font-bold text-white">{countFoodInCartList(cartList)}</span> */}
-                          <span className="text-sm font-bold text-white">2</span>
-                        </div>
+                        {cartList && cartList.length > 0 && (
+                          <div className="absolute -right-[1px] -top-1 flex size-4 items-center justify-center rounded-full bg-blue-400">
+                            {/* đếm số food đang ở trong table(giỏ hàng bằng cách fetch api gọi đến table, lấy số lượng rồi cho ra đây) */}
+
+                            <span className="text-sm font-bold text-white">{countFoodInCartList(cartList)}</span>
+
+                            {/* <span className="text-sm font-bold text-white">2</span> */}
+                          </div>
+                        )}
+
                         <button className={`button-click-expand`}>
                           <i className="fa fa-shopping-cart"></i>
                         </button>
