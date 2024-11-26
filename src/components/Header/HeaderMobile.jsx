@@ -6,6 +6,8 @@ import { useMediaQuery } from "react-responsive";
 import { countFoodInCartList, getAccessToken } from "../../utils/util";
 import { CartContext } from "../../context/cartContext";
 import { TABLEURL } from "../../utils/const";
+import { useQuery } from "@tanstack/react-query";
+import { getTable } from "../../apis/tableApi";
 
 export default function HeaderMobile({ configImg, title }) {
   const { tableId, cartList } = useContext(CartContext);
@@ -21,6 +23,21 @@ export default function HeaderMobile({ configImg, title }) {
   const isUsingTableAndNotLogin = tableId && !getAccessToken();
   const isNotUsingTableAndLogin = !tableId && getAccessToken();
   const isNotUsingTableAndNotLogin = !tableId && !getAccessToken();
+
+  console.log("tablid ow day giong ma", tableId);
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["table", tableId],
+    queryFn: () => getTable(tableId),
+    enabled: Boolean(tableId),
+  });
+
+  let dataTable = [];
+
+  if (data) {
+    dataTable = data.data.data.pageContent;
+    console.log("data table header mobile", dataTable);
+    console.log("datable lengthf", dataTable.length.toString());
+  }
 
   const handleSearchClick = () => {
     setIsSearching(() => {
@@ -111,11 +128,16 @@ export default function HeaderMobile({ configImg, title }) {
                       <div
                         className={`${classes["header-cart"]} flex size-10 items-center justify-center rounded-full bg-red-500 text-sm text-white`}
                       >
-                        {cartList && cartList.length > 0 && (
+                        {((cartList && cartList.length > 0) || (dataTable && dataTable.length > 0)) && (
                           <div className="absolute -right-[1px] -top-1 flex size-4 items-center justify-center rounded-full bg-blue-400">
                             {/* đếm số food đang ở trong table(giỏ hàng bằng cách fetch api gọi đến table, lấy số lượng rồi cho ra đây) */}
 
-                            <span className="text-sm font-bold text-white">{countFoodInCartList(cartList)}</span>
+                            {dataTable.length > 0 && (
+                              <span className="text-sm font-bold text-white">{dataTable.length}</span>
+                            )}
+                            {cartList.length > 0 && (
+                              <span className="text-sm font-bold text-white">{cartList.length}</span>
+                            )}
 
                             {/* <span className="text-sm font-bold text-white">2</span> */}
                           </div>

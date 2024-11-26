@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import Modal from "../UI/Modal";
 import { CartContext } from "../../context/cartContext";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { orderFood } from "../../apis/tableApi";
 import { getAccessToken, getUserIdLS } from "../../utils/util";
 import { toast } from "react-toastify";
@@ -10,6 +10,7 @@ import { createPortal } from "react-dom";
 
 export default function ModalOrdering({ title, modalId, size, triggeredButton, foodId, itemCart }) {
   const { tableId, addItemToCart, cartList } = useContext(CartContext);
+  const queryClient = useQueryClient();
   const [quantity, setQuantity] = useState(1);
   const userId = getUserIdLS() || undefined;
   const isUsingTableAndLogin = tableId && getAccessToken();
@@ -45,6 +46,10 @@ export default function ModalOrdering({ title, modalId, size, triggeredButton, f
     onSuccess: (data) => {
       console.log("res", data);
       setQuantity(1);
+      console.log("query key invalidate", tableId);
+      queryClient.invalidateQueries({
+        queryKey: ["table", tableId],
+      });
     },
     onError: (err) => {
       toast.error(err);

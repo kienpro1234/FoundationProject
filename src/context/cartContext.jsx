@@ -24,7 +24,7 @@ const cartReducer = (state, action) => {
     case "INCREASE_ITEM": {
       const cartList = [...state.cartList];
       console.log("cafda", cartList);
-      const item = cartList.find((item) => action.item.id === item.id);
+      const item = cartList.find((item) => action.item.dishId === item.dishId);
       if (item) {
         item.quantity++;
       } else {
@@ -39,7 +39,7 @@ const cartReducer = (state, action) => {
     }
     case "DECREASE_ITEM": {
       const cartList = [...state.cartList];
-      const index = cartList.findIndex((item) => action.item.id === item.id);
+      const index = cartList.findIndex((item) => action.item.dishId === item.dishId);
       if (index !== -1) {
         if (cartList[index].quantity > 1) {
           cartList[index].quantity--;
