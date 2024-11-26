@@ -1,7 +1,11 @@
 import { DOMAIN } from "../utils/const";
 import { http } from "../utils/http";
 
-const URL = `${DOMAIN}orders/position/`;
-export const getTable = (tableId) => http.get(`${URL}${tableId}`);
+export const getTable = (tableId) => http.get(`orders/position/${tableId}`);
 
 // export const confirmOrderToTable = () => http.post(``)
+
+// const URL_ORDER_FOOD =
+export const orderFood = (data) => http.post("orders", data);
+
+export const deleteOrder = (orderId) => http.delete(`orders/${orderId}`);

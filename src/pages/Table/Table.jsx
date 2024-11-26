@@ -1,15 +1,19 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getTable } from "../../apis/tableApi";
+import { deleteOrder, getTable } from "../../apis/tableApi";
 import LoadingIndicator from "../../components/UI/LoadingIndicator";
 import ErrorBlock from "../../components/UI/ErrorBlock";
 import { CartContext } from "../../context/cartContext";
+import { toast } from "react-toastify";
+import { createPortal } from "react-dom";
 
 export default function Table() {
   // lấy url của page này để call api fetch đến thông tin của table này, để hiển thị tương ứng
   // Lấy url ra
   const { setTableId } = useContext(CartContext);
+  const [orderIdDelete, setOrderIdDelete] = useState("");
+  const queryClient = useQueryClient();
   const { tableId } = useParams();
   console.log("tableid", tableId);
   useEffect(() => {
@@ -115,6 +119,29 @@ export default function Table() {
     enabled: isPositionValid,
   });
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: (orderId) => deleteOrder(orderId),
+    onSuccess: () => {
+      toast.success("Hủy thành công");
+      queryClient.invalidateQueries({
+        queryKey: ["table", tableId],
+      });
+    },
+    onError: (err) => {
+      console.error("error delete order", err);
+      toast.error(err);
+    },
+  });
+
+  const handleClickDelete = (orderId) => {
+    setOrderIdDelete(orderId);
+  };
+
+  const handleConfirmDelete = (orderId) => {
+    mutate(orderId);
+    setOrderIdDelete("");
+  };
+
   let dataTable = "";
   if (data) {
     console.log("data", data);
@@ -133,6 +160,14 @@ export default function Table() {
   if (dataTable) {
     content = (
       <div className="h-screen overflow-auto bg-pink-red">
+        {isPending &&
+          createPortal(
+            <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-black/70">
+              <LoadingIndicator />
+            </div>,
+            document.querySelector("#root"),
+          )}
+
         {/* Container */}
         <div className="px-8 py-3">
           {/* title */}
@@ -143,10 +178,39 @@ export default function Table() {
             <div className="flex flex-col gap-3">
               {dataTable.map((order) => (
                 <div className="flex items-center justify-between rounded-3xl border-[1.5px] border-black bg-gray-50 px-3 py-2 font-bold">
-                  <div>
+                  <div className="space-y-1">
                     <h3 className="text-xl text-red-500">{order.dish.dishName}</h3>
                     <p className="">Quantity: {order.quantity}</p>
                     <p className="">Status: {order.status ? "Đã thanh toán" : "Chưa thanh toán"}</p>
+                    <div>
+                      <button
+                        className="rounded-lg bg-red-600 px-2 py-1 text-white shadow"
+                        onClick={() => handleClickDelete(order.orderId)}
+                      >
+                        Hủy
+                      </button>
+                      {orderIdDelete === order.orderId && (
+                        <div className={`pop-up-delete shadow-lg`}>
+                          <p className="mb-3 text-center">Are you sure to delete?</p>
+                          <button
+                            onClick={() => {
+                              setOrderIdDelete("");
+                            }}
+                            type="button"
+                            className="mb-2 me-2 rounded-lg border-2 border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-red-300 dark:border-red-500 dark:text-red-500 dark:hover:bg-red-600 dark:hover:text-white dark:focus:ring-red-900"
+                          >
+                            No
+                          </button>
+                          <button
+                            onClick={() => handleConfirmDelete(order.orderId)}
+                            type="button"
+                            className="mb-2 me-2 rounded-lg border-2 border-blue-700 px-5 py-2.5 text-center text-sm font-medium text-blue-700 hover:bg-blue-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-500 dark:hover:text-white dark:focus:ring-blue-800"
+                          >
+                            Yes
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <div>
                     <img src={order.dish.image} alt="" className="size-16 rounded-full object-cover shadow-md" />

@@ -150,7 +150,8 @@ export default function MenuCategorySection({ category, catQueryData, catName })
                     <ModalOrdering
                       itemCart={food}
                       title={"Choose order detail"}
-                      id={`CHOOSE_ORDER_DETAIL${food.dishId}`}
+                      modalId={`CHOOSE_ORDER_DETAIL${food.dishId}`}
+                      foodId={food.dishId}
                       size={"sm"}
                       triggeredButton={<Button className="food-review-button">ORDER</Button>}
                     ></ModalOrdering>

@@ -28,8 +28,8 @@ export default function Register() {
     confirmedPassword: "",
   });
 
-  let phoneNumber = isPhoneNumber(userData.account) ? userData.account : "";
-  let email = isEmail(userData.account) ? userData.account : "";
+  // let phoneNumber = isPhoneNumber(userData.account) ? userData.account : "";
+  // let email = isEmail(userData.account) ? userData.account : "";
 
   const useRegisterMutation = useMutation({
     mutationFn: (userData) => {
@@ -39,13 +39,11 @@ export default function Register() {
         return http.post(`auth/register`, {
           firstName: userData.surname,
           lastName: userData.fullname,
-          phoneNumber: phoneNumber,
+          emailOrPhone: userData.account,
           gender: "male",
-          email: email,
           password: userData.password,
-          rePassword: userData.confirmedPassword,
-          Dob: "fdadsa",
-          address: "12231",
+          dob: "2024-11-25",
+          address: "string",
         });
       } catch (error) {
         console.log("error roi", error);
@@ -218,9 +216,9 @@ export default function Register() {
   };
   return (
     <div className={`${classes.loginContainer} `}>
-      <form className={`${classes.loginForm} rounded-md `} onSubmit={handleSubmit}>
+      <form className={`${classes.loginForm} rounded-md`} onSubmit={handleSubmit}>
         <h2 className={`heading-login`}>Đăng Kí</h2>
-        <p className={`mt-2 mb-3`}>Đăng kí bằng email hoặc số điện thoại</p>
+        <p className={`mb-3 mt-2`}>Đăng kí bằng email hoặc số điện thoại</p>
 
         {/* input */}
         <div className="mb-[12px]">
@@ -285,9 +283,9 @@ export default function Register() {
         </div>
         <div className={`${classes.error} `}>{dataError.confirmedPassword}</div>
         {/* Nhớ tài khoản , quên mk */}
-        <div className="flex justify-between items-baseline">
+        <div className="flex items-baseline justify-between">
           <div className="mt-3 flex items-baseline gap-2">
-            <input id="login-input" type="checkbox" className="accent-emerald-500 basis-[10%]" name="agreeTerm" />
+            <input id="login-input" type="checkbox" className="basis-[10%] accent-emerald-500" name="agreeTerm" />
             <label className="text-sm" htmlFor="login-input">
               Tôi đồng ý với{" "}
               <span className="text-red-500">điều kiện & điều khoản sử dụng thông tin của tasty chicken</span>
@@ -296,11 +294,11 @@ export default function Register() {
         </div>
         <div>
           {useRegisterMutation.isPending ? (
-            <ButtonLogin disabled className={"w-full 2xl:mt-3 2xl:mb-3 mt-2 mb-2 cursor-no-drop"}>
+            <ButtonLogin disabled className={"mb-2 mt-2 w-full cursor-no-drop 2xl:mb-3 2xl:mt-3"}>
               Sending...
             </ButtonLogin>
           ) : (
-            <ButtonLogin className={"w-full 2xl:mt-3 2xl:mb-3 mt-2 mb-2"}>ĐĂNG KÍ</ButtonLogin>
+            <ButtonLogin className={"mb-2 mt-2 w-full 2xl:mb-3 2xl:mt-3"}>ĐĂNG KÍ</ButtonLogin>
           )}
         </div>
         <div className="text-sm">

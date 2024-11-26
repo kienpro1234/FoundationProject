@@ -1,12 +1,23 @@
 import React, { useContext, useState } from "react";
 import Modal from "../UI/Modal";
 import { CartContext } from "../../context/cartContext";
+import { useMutation } from "@tanstack/react-query";
+import { orderFood } from "../../apis/tableApi";
+import { getAccessToken, getUserIdLS } from "../../utils/util";
+import { toast } from "react-toastify";
+import LoadingIndicator from "../UI/LoadingIndicator";
+import { createPortal } from "react-dom";
 
-export default function ModalOrdering({ title, id, size, triggeredButton, itemCart }) {
-  const { addItemToCart, cartList } = useContext(CartContext);
-
+export default function ModalOrdering({ title, modalId, size, triggeredButton, foodId, itemCart }) {
+  const { tableId, addItemToCart, cartList } = useContext(CartContext);
   const [quantity, setQuantity] = useState(1);
+  const userId = getUserIdLS() || undefined;
+  const isUsingTableAndLogin = tableId && getAccessToken();
+  const isUsingTableAndNotLogin = tableId && !getAccessToken();
+  const isNotUsingTableAndLogin = !tableId && getAccessToken();
+  const isNotUsingTableAndNotLogin = !tableId && !getAccessToken();
 
+  console.log("cartList sau them", cartList);
   const handleDecre = (Car) => {
     if (quantity === 1) {
       return;
@@ -23,21 +34,50 @@ export default function ModalOrdering({ title, id, size, triggeredButton, itemCa
     setQuantity(1);
   };
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: () =>
+      orderFood({
+        quantity: quantity,
+        userId: userId,
+        dishId: foodId,
+        positionId: tableId,
+      }),
+    onSuccess: (data) => {
+      console.log("res", data);
+      setQuantity(1);
+    },
+    onError: (err) => {
+      toast.error(err);
+      console.error("err", err);
+    },
+  });
+
   // dùng context API ở đây , gửi đồ ăn này lên cartList bên context
   const handleOrder = () => {
     console.log("handleOrder");
-    addItemToCart({
-      ...itemCart,
-      quantity: quantity,
-    });
-
-    console.log("cartList sau khi them", cartList);
-
-    setQuantity(1);
+    if (isUsingTableAndNotLogin || isUsingTableAndLogin) {
+      mutate();
+    } else if (isNotUsingTableAndNotLogin) {
+      console.log("isNotUsingTableAndNotLogin");
+      addItemToCart({
+        ...itemCart,
+        quantity: quantity,
+      });
+      setQuantity(1);
+    }
   };
 
+  if (isPending) {
+    return createPortal(
+      <div className="absolute left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black/70">
+        <LoadingIndicator />
+      </div>,
+      document.querySelector("#root"),
+    );
+  }
+
   return (
-    <Modal title={title} id={id} size={size} triggeredButton={triggeredButton}>
+    <Modal title={title} id={modalId} size={size} triggeredButton={triggeredButton}>
       <div className="flex items-baseline justify-center gap-4">
         <span
           onClick={handleDecre}
