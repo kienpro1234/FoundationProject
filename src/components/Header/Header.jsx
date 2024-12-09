@@ -1,18 +1,21 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import classes from "./Header.module.css";
-import { Link, useLocation } from "react-router-dom";
+import { createSearchParams, Link, useLocation, useNavigate } from "react-router-dom";
 import { getRoleLS, getToken } from "../../utils/util";
 import Modal from "../UI/Modal";
 import AddFoodForm from "../AddFood/AddFoodForm";
+import { toast } from "react-toastify";
 
 //THêm class riêng cho esapase, tắt luôn, chứ k chờ
 export default function Header({ className, ...props }) {
   //Dùng redux hay context api quản lý state sau
   const inputDiv = useRef(null);
   const inputRef = useRef(null);
+  const [searchKeyWord, setSearchKeyWord] = useState("");
 
   const [isSearching, setIsSearching] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Kiểm tra nếu có accessToken thì setIsLogin = true để bên dưới render có điều kiện
   //isLogin ở đây khác với isLogin
@@ -47,8 +50,34 @@ export default function Header({ className, ...props }) {
     };
   });
 
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+
+    setSearchKeyWord(value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!searchKeyWord) {
+      toast.warning("Không được bỏ trống", {
+        position: "top-center",
+      });
+      return;
+    }
+
+    navigate({
+      pathname: "/menu/search",
+      search: createSearchParams({
+        name: searchKeyWord,
+      }).toString(),
+    });
+
+    setSearchKeyWord("");
+  };
+
   let content;
-  console.log(location.pathname);
+
   if (location.pathname === "/userinfo") {
     content = (
       <div>
@@ -62,19 +91,40 @@ export default function Header({ className, ...props }) {
   } else {
     content = (
       <>
-        <div ref={inputDiv} className={classes["header-search"]}>
-          <input
-            ref={inputRef}
-            className={`${isSearching ? classes["search-open"] : classes["search-close"]}`}
-            type="text"
-          />
-          <button
-            className={`${isSearching ? classes["button-search-open"] : classes["button-search"]}`}
-            onClick={handleSearchClick}
-          >
-            <i className="fa fa-search"></i>
-          </button>
-        </div>
+        <form onSubmit={handleSubmit}>
+          <div ref={inputDiv} className={classes["header-search"]}>
+            <input
+              ref={inputRef}
+              className={`${isSearching ? classes["search-open"] : classes["search-close"]}`}
+              type="text"
+              value={searchKeyWord}
+              onChange={handleChange}
+            />
+
+            <button
+              type="submit"
+              className={`${isSearching ? classes["button-search-open"] : "hidden"}`}
+              onClick={handleSearchClick}
+            >
+              <i className="fa fa-search"></i>
+            </button>
+
+            <button
+              type="button"
+              className={`${isSearching ? "hidden" : classes["button-search"]}`}
+              onClick={handleSearchClick}
+            >
+              <i className="fa fa-search"></i>
+            </button>
+            {/* <button
+              className={`${isSearching ? classes["button-search-open"] : classes["button-search"]}`}
+              onClick={handleSearchClick}
+            >
+              <i className="fa fa-search"></i>
+            </button> */}
+          </div>
+        </form>
+
         {token ? (
           <div className={classes["header-auth"]}>
             <Link to={"/userinfo"}>

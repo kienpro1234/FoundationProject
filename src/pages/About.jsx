@@ -5,64 +5,52 @@ import Footer from "../components/Footer/Footer";
 export default function About() {
   return (
     <div className="about">
-      <MenuLanding
-        aboutTitle={"Tasty kitchen representing the quintessence of cuisine".toUpperCase()}
-      />
+      <MenuLanding aboutTitle={"Tasty kitchen representing the quintessence of cuisine".toUpperCase()} />
       {/* about section */}
-      <div className="container-big-screen py-5 px-4">
+      <div className="container-big-screen px-4 py-5">
         {/* content flex */}
-        <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex flex-col gap-4 md:flex-row">
           <div className="basis-1/2">
-            <h2 className="font-medium text-2xl">
+            <h2 className="text-2xl font-medium">
               TASTY KITCHEN
               <br />
               GET HIGH-END
               <br />
               CUISINE TO YOUR HOME
             </h2>
-            <p className="my-3 text-zinc-500 text-sm">
-              Being a new F&B business model – online restaurant, TASTY Kitchen
-              is a pioneer in delivering premium meal solutions to your family's
-              dining table.
+            <p className="my-3 text-sm text-zinc-500">
+              Being a new F&B business model – online restaurant, TASTY Kitchen is a pioneer in delivering premium meal
+              solutions to your family's dining table.
             </p>
-            <p className="mb-4 text-zinc-500 text-sm">
-              With a kitchen system that is constantly being invested and
-              expanded; natural, fresh ingredients carefully selected from the
-              leading prestigious farms in Vietnam; and the creative, dedicated
-              hands of experienced chefs, we are proud of serving our valued
-              customers the best-quality and healthy dishes.
+            <p className="mb-4 text-sm text-zinc-500">
+              With a kitchen system that is constantly being invested and expanded; natural, fresh ingredients carefully
+              selected from the leading prestigious farms in Vietnam; and the creative, dedicated hands of experienced
+              chefs, we are proud of serving our valued customers the best-quality and healthy dishes.
             </p>
 
-            <button className="py-2 px-4 bg-red-500 hover:bg-red-700 text-white">
-              ORDER NOW!
-            </button>
+            <button className="bg-red-500 px-4 py-2 text-white hover:bg-red-700">ORDER NOW!</button>
           </div>
           <div className="basis-1/2">
-            <img
-              className="object-cover"
-              src="https://static.tastykitchen.vn/images/imgabout_1_v2.jpg"
-              alt=""
-            />
+            <img className="object-cover" src="https://static.tastykitchen.vn/images/imgabout_1_v2.jpg" alt="" />
           </div>
         </div>
       </div>
       {/* Values section */}
-      <div className="container-big-screen py-5 px-4 text-white bg-about-values-img bg-center bg-cover">
+      <div className="container-big-screen bg-about-values-img bg-cover bg-center px-4 py-5 text-white">
         {/* Top content */}
-        <div className="text-center mb-3">
-          <h3 className="text-sm font-md">TASTY CHICKEN</h3>
-          <h2 className="text-4xl tracking-wider mb-3">CORE VALUES</h2>
-          <p className="text-sm w-full md:w-3/5 mx-auto">
-            TASTY Kitchen pioneers the concept of "Restaurant at Home" in
-            Vietnam with superior quality, bringing a unique new culinary style
-            to diners.
+        <div className="mb-3 text-center">
+          <h3 className="font-md text-sm">TASTY CHICKEN</h3>
+          <h2 className="mb-3 text-4xl tracking-wider">CORE VALUES</h2>
+          <p className="mx-auto w-full text-sm md:w-3/5">
+            TASTY Kitchen pioneers the concept of "Restaurant at Home" in Vietnam with superior quality, bringing a
+            unique new culinary style to diners.
           </p>
         </div>
         {/* Middle content */}
-        <div className="flex flex-col md:flex-row md:h-[150px] gap-4 md:justify-between 2xl:justify-center 2xl:gap-[20px]  mt-[35px] mb-[45px] ">
-          <div className="py-[15px] md:py-[76px] md:px-[45px] border border-white rounded-3xl text-white  text-center flex items-center justify-center ">
+        <div className="mb-[45px] mt-[35px] flex flex-col gap-4 md:h-[150px] md:flex-row md:justify-between 2xl:justify-center 2xl:gap-[20px]">
+          <div className="flex items-center justify-center rounded-3xl border border-white py-[15px] text-center text-white md:px-[45px] md:py-[76px]">
             {/* item content */}
-            <div className="flex flex-col gap-[16px] items-center">
+            <div className="flex flex-col items-center gap-[16px]">
               <img
                 className={"w-[50px]"}
                 src="https://static.tastykitchen.vn/images/icon_conscientious_heart.png"
@@ -71,84 +59,55 @@ export default function About() {
               <p className="text-xl tracking-wide">TẬN TÂM</p>
             </div>
           </div>
-          <div className="py-[15px] md:py-[76px] md:px-[45px] border border-white rounded-3xl text-white  text-center flex items-center justify-center ">
+          <div className="flex items-center justify-center rounded-3xl border border-white py-[15px] text-center text-white md:px-[45px] md:py-[76px]">
             {/* item content */}
-            <div className="flex flex-col gap-[16px] items-center">
-              <img
-                className={"w-[50px]"}
-                src="https://static.tastykitchen.vn/images/icon_acknowledge.png"
-                alt=""
-              />
+            <div className="flex flex-col items-center gap-[16px]">
+              <img className={"w-[50px]"} src="https://static.tastykitchen.vn/images/icon_acknowledge.png" alt="" />
               <p className="text-xl tracking-wide">TẬN TÂM</p>
             </div>
           </div>
-          <div className="py-[15px] md:py-[76px] md:px-[45px] border border-white rounded-3xl text-white  text-center flex items-center justify-center ">
+          <div className="flex items-center justify-center rounded-3xl border border-white py-[15px] text-center text-white md:px-[45px] md:py-[76px]">
             {/* item content */}
-            <div className="flex flex-col gap-[16px] items-center">
-              <img
-                className={"w-[50px]"}
-                src="https://static.tastykitchen.vn/images/icon-loves.png"
-                alt=""
-              />
+            <div className="flex flex-col items-center gap-[16px]">
+              <img className={"w-[50px]"} src="https://static.tastykitchen.vn/images/icon-loves.png" alt="" />
               <p className="text-xl tracking-wide">TẬN TÂM</p>
             </div>
           </div>
-          <div className="py-[15px] md:py-[76px] md:px-[45px] border border-white rounded-3xl text-white  text-center flex items-center justify-center ">
+          <div className="flex items-center justify-center rounded-3xl border border-white py-[15px] text-center text-white md:px-[45px] md:py-[76px]">
             {/* item content */}
-            <div className="flex flex-col gap-[16px] items-center">
-              <img
-                className={"w-[50px]"}
-                src="https://static.tastykitchen.vn/images/icon-delicate.png"
-                alt=""
-              />
+            <div className="flex flex-col items-center gap-[16px]">
+              <img className={"w-[50px]"} src="https://static.tastykitchen.vn/images/icon-delicate.png" alt="" />
               <p className="text-xl tracking-wide">TẬN TÂM</p>
             </div>
           </div>
-          <div className="py-[15px] md:py-[76px] md:px-[45px] border border-white rounded-3xl text-white  text-center flex items-center justify-center ">
+          <div className="flex items-center justify-center rounded-3xl border border-white py-[15px] text-center text-white md:px-[45px] md:py-[76px]">
             {/* item content */}
-            <div className="flex flex-col gap-[16px] items-center">
-              <img
-                className={"w-[50px]"}
-                src="https://static.tastykitchen.vn/images/icon-loves.png"
-                alt=""
-              />
+            <div className="flex flex-col items-center gap-[16px]">
+              <img className={"w-[50px]"} src="https://static.tastykitchen.vn/images/icon-loves.png" alt="" />
               <p className="text-xl tracking-wide">TẬN TÂM</p>
             </div>
           </div>
         </div>
         {/* Bottom content */}
-        <div className="w-full md:w-[55%] mx-auto mt-[10px]">
-          <p className="text-center text-sm mb-3">
-            TASTY Kitchen, with a huge passion for cuisine, wants to bring you
-            more choices, at higher standards:
+        <div className="mx-auto mt-[10px] w-full md:w-[55%]">
+          <p className="mb-3 text-center text-sm">
+            TASTY Kitchen, with a huge passion for cuisine, wants to bring you more choices, at higher standards:
           </p>
-          <div className="about-bottom-flex flex flex-wrap flex-col justify-between md:flex-row gap-x-[50px] gap-y-7 text-sm md:text-base w-4/5 md:w-full mx-auto ">
-            <div className="flex  gap-4 items-center justify-center">
-              <img
-                src="https://static.tastykitchen.vn/images/checked.svg"
-                alt=""
-              />
+          <div className="about-bottom-flex mx-auto flex w-4/5 flex-col flex-wrap justify-between gap-x-[50px] gap-y-7 text-sm md:w-full md:flex-row md:text-base">
+            <div className="flex items-center justify-center gap-4">
+              <img src="https://static.tastykitchen.vn/images/checked.svg" alt="" />
               <span>Tasty, nutritious and safe meals</span>
             </div>
-            <div className="flex  gap-4 items-center justify-center">
-              <img
-                src="https://static.tastykitchen.vn/images/checked.svg"
-                alt=""
-              />
+            <div className="flex items-center justify-center gap-4">
+              <img src="https://static.tastykitchen.vn/images/checked.svg" alt="" />
               <span>Tasty, nutritious and safe meals</span>
             </div>
-            <div className="flex  gap-4 items-center justify-center">
-              <img
-                src="https://static.tastykitchen.vn/images/checked.svg"
-                alt=""
-              />
+            <div className="flex items-center justify-center gap-4">
+              <img src="https://static.tastykitchen.vn/images/checked.svg" alt="" />
               <span>Tasty, nutritious and safe meals</span>
             </div>
-            <div className="flex gap-4  items-center justify-center">
-              <img
-                src="https://static.tastykitchen.vn/images/checked.svg"
-                alt=""
-              />
+            <div className="flex items-center justify-center gap-4">
+              <img src="https://static.tastykitchen.vn/images/checked.svg" alt="" />
               <span>Tasty, nutritious and safe meals</span>
             </div>
           </div>
@@ -157,105 +116,83 @@ export default function About() {
       {/* services section */}
       <div className="container-big-screen services py-5 md:px-4">
         {/* services top content */}
-        <div className="flex flex-col md:flex-row justify-center gap-12 md:gap-32 mb-14">
+        <div className="mb-14 flex flex-col justify-center gap-12 md:flex-row md:gap-32">
           {/* item */}
-          <div className="flex flex-col gap-2 items-center">
-            <div className="w-[250px] md:w-[200px] h-[250px] md:h-[200px] bg-zinc-200 relative rounded-full">
+          <div className="flex flex-col items-center gap-2">
+            <div className="relative h-[250px] w-[250px] rounded-full bg-zinc-200 md:h-[200px] md:w-[200px]">
               <img
-                className="absolute top-1/2 left-[55%] translate-x-[-50%] translate-y-[-50%]"
+                className="absolute left-[55%] top-1/2 translate-x-[-50%] translate-y-[-50%]"
                 src="https://static.tastykitchen.vn/images/icon-oder.png"
                 alt=""
               />
             </div>
 
-            <p className="font-semibold mt-2 md:mt-0 text-5xl md:text-4xl">
-              PLACE ORDER
-            </p>
+            <p className="mt-2 text-5xl font-semibold md:mt-0 md:text-4xl">PLACE ORDER</p>
           </div>
-          <div className="flex flex-col gap-2 items-center">
-            <div className="w-[250px] md:w-[200px] h-[250px] md:h-[200px] bg-zinc-200 relative rounded-full">
+          <div className="flex flex-col items-center gap-2">
+            <div className="relative h-[250px] w-[250px] rounded-full bg-zinc-200 md:h-[200px] md:w-[200px]">
               <img
-                className="absolute top-1/2 left-[50%] translate-x-[-50%] translate-y-[-50%]"
+                className="absolute left-[50%] top-1/2 translate-x-[-50%] translate-y-[-50%]"
                 src="https://static.tastykitchen.vn/images/icon-try-stretching.png"
                 alt=""
               />
             </div>
 
-            <p className="font-semibold mt-2 md:mt-0 text-5xl md:text-4xl">
-              RELAX
-            </p>
+            <p className="mt-2 text-5xl font-semibold md:mt-0 md:text-4xl">RELAX</p>
           </div>
-          <div className="flex flex-col gap-2 items-center">
-            <div className="w-[250px] md:w-[200px] h-[250px] md:h-[200px] bg-zinc-200 relative rounded-full">
+          <div className="flex flex-col items-center gap-2">
+            <div className="relative h-[250px] w-[250px] rounded-full bg-zinc-200 md:h-[200px] md:w-[200px]">
               <img
-                className="absolute top-1/2 left-[50%] translate-x-[-50%] translate-y-[-50%]"
+                className="absolute left-[50%] top-1/2 translate-x-[-50%] translate-y-[-50%]"
                 src="https://static.tastykitchen.vn/images/icon-enjoy.png"
                 alt=""
               />
             </div>
 
-            <p className="font-semibold mt-2 md:mt-0 text-5xl md:text-4xl">
-              ENJOY
-            </p>
+            <p className="mt-2 text-5xl font-semibold md:mt-0 md:text-4xl">ENJOY</p>
           </div>
         </div>
         {/* services bottom content */}
-        <div className="flex flex-col md:flex-row gap-x-4 gap-y-12 mb-5 w-11/12 mx-auto">
+        <div className="mx-auto mb-5 flex w-11/12 flex-col gap-x-4 gap-y-12 md:flex-row">
           {/* item */}
-          <div className="flex flex-col md:flex-row gap-x-3 md:w-1/2">
+          <div className="flex flex-col gap-x-3 md:w-1/2 md:flex-row">
             <div className="w-full">
-              <img
-              className="w-full"
-                src="https://static.tastykitchen.vn/images/img16.jpg"
-                alt=""
-              />
+              <img className="w-full" src="https://static.tastykitchen.vn/images/img16.jpg" alt="" />
             </div>
             <p className="text-xl">
-              Pure taste from natural and fresh ingredients rigorously selected
-              from leading prestigious farms in Vietnam
+              Pure taste from natural and fresh ingredients rigorously selected from leading prestigious farms in
+              Vietnam
             </p>
           </div>
-          <div className="flex flex-col md:flex-row gap-x-3 md:w-1/2">
+          <div className="flex flex-col gap-x-3 md:w-1/2 md:flex-row">
             <div className="w-full">
-              <img
-              className="w-full"
-                src="https://static.tastykitchen.vn/images/img16.jpg"
-                alt=""
-              />
+              <img className="w-full" src="https://static.tastykitchen.vn/images/img16.jpg" alt="" />
             </div>
             <p className="text-xl">
-              Pure taste from natural and fresh ingredients rigorously selected
-              from leading prestigious farms in Vietnam
+              Pure taste from natural and fresh ingredients rigorously selected from leading prestigious farms in
+              Vietnam
             </p>
           </div>
         </div>
         {/* content 2 */}
-        <div className="flex flex-col md:flex-row gap-x-4 gap-y-12 w-11/12 mx-auto">
+        <div className="mx-auto flex w-11/12 flex-col gap-x-4 gap-y-12 md:flex-row">
           {/* item */}
-          <div className="flex flex-col md:flex-row gap-x-3 md:w-1/2">
+          <div className="flex flex-col gap-x-3 md:w-1/2 md:flex-row">
             <div className="w-full">
-              <img
-              className="w-full"
-                src="https://static.tastykitchen.vn/images/img16.jpg"
-                alt=""
-              />
+              <img className="w-full" src="https://static.tastykitchen.vn/images/img16.jpg" alt="" />
             </div>
             <p className="text-xl">
-              Pure taste from natural and fresh ingredients rigorously selected
-              from leading prestigious farms in Vietnam
+              Pure taste from natural and fresh ingredients rigorously selected from leading prestigious farms in
+              Vietnam
             </p>
           </div>
-          <div className="flex flex-col md:flex-row gap-x-3 md:w-1/2">
+          <div className="flex flex-col gap-x-3 md:w-1/2 md:flex-row">
             <div className="w-full">
-              <img
-              className="w-full"
-                src="https://static.tastykitchen.vn/images/img16.jpg"
-                alt=""
-              />
+              <img className="w-full" src="https://static.tastykitchen.vn/images/img16.jpg" alt="" />
             </div>
             <p className="text-xl">
-              Pure taste from natural and fresh ingredients rigorously selected
-              from leading prestigious farms in Vietnam
+              Pure taste from natural and fresh ingredients rigorously selected from leading prestigious farms in
+              Vietnam
             </p>
           </div>
         </div>

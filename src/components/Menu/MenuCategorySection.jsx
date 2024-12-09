@@ -10,9 +10,7 @@ import { toast } from "react-toastify";
 import ModalOrdering from "../ModalOrdering/ModalOrdering";
 import { fetchCategoryDetail } from "../../apis/category.api";
 
-export default function MenuCategorySection({ category, catQueryData, catName }) {
-  console.log("cat data", catQueryData);
-  console.log("check data", category);
+export default function MenuCategorySection({ category, catQueryData, catName, searchFoodList, searchName }) {
   const [idToDelete, setIdToDelete] = useState("");
   const queryClient = useQueryClient();
 
@@ -32,13 +30,10 @@ export default function MenuCategorySection({ category, catQueryData, catName })
     },
   });
 
-  console.log("data log xem ra gi", mostPopularData);
-
   // const URL = `${DOMAIN}dishes/category/${}`;
   let categoryNameURL = "";
-  if (category) {
+  if (category && !searchName) {
     categoryNameURL = transformCategoryNameToURL(`${category.categoryName}`);
-    console.log("category ton tai", category);
   }
   const {
     data: categoryData,
@@ -48,7 +43,7 @@ export default function MenuCategorySection({ category, catQueryData, catName })
   } = useQuery({
     queryKey: ["menu", categoryNameURL],
     queryFn: () => fetchCategoryDetail(categoryNameURL),
-    enabled: Boolean(category),
+    enabled: Boolean(category && !searchName),
   });
 
   let finalCategoryData = [];
@@ -58,6 +53,10 @@ export default function MenuCategorySection({ category, catQueryData, catName })
 
   if (catQueryData) {
     finalCategoryData = catQueryData;
+  }
+
+  if (searchFoodList) {
+    finalCategoryData = searchFoodList;
   }
 
   const deleteMutation = useMutation({
@@ -82,13 +81,13 @@ export default function MenuCategorySection({ category, catQueryData, catName })
   };
 
   const handleConfirmDelete = (id) => {
-    console.log("id xoa", id);
     deleteMutation.mutate(id);
     setIdToDelete("");
   };
 
   const mostPopularArray = mostPopularData?.map((food) => food.dishName);
-
+  if (searchFoodList && searchFoodList.length === 0)
+    return <p className="py-3 text-center font-yummy text-lg text-red-500">Không tìm thấy "{searchName}"</p>;
   return (
     <div className="menu-category">
       {category && finalCategoryData?.length > 0 && (

@@ -7,9 +7,13 @@ import LoadingIndicator from "../components/UI/LoadingIndicator";
 import { DOMAIN } from "../utils/const";
 import { transformCategoryNameToURL } from "../utils/util";
 import { fetchCategoryDetail } from "../apis/category.api";
+import useQueryParams from "../hooks/useQueryParams";
+import { searchFood } from "../apis/search.api";
 
 export default function MenuDetails() {
   const { id } = useParams();
+  const searchParams = useQueryParams();
+
   const correctId = transformCategoryNameToURL(id);
 
   //Kiểm tra hiện tại có đang chọn filter khác all hay là đang chọn all
@@ -23,15 +27,37 @@ export default function MenuDetails() {
       const result = await response.json();
       return result.data; // Trả về danh sách categories
     },
-    enabled: !isChoosingCategory, // Chỉ gọi khi không chọn một category cụ thể
+    enabled: !isChoosingCategory && !searchParams?.name, // Chỉ gọi khi không chọn một category cụ thể
   });
 
   // Query specific category (Để gọi data cho trường hợp chọn filter)
   const catQuery = useQuery({
     queryKey: ["menu", correctId],
     queryFn: () => fetchCategoryDetail(correctId),
-    enabled: isChoosingCategory, // Chỉ gọi khi chọn một category cụ thể
+    enabled: isChoosingCategory && !searchParams?.name, // Chỉ gọi khi chọn một category cụ thể
   });
+
+  // Khi search xong thì đường link thay đổi url -> bỏ active đi ở các mục , fetch về 1 list, truyền vào cho categorySection render
+  // Lấy query params từ url , rest nó ra, và dùng Object.fromEntries để biến nó thành object queryConfig đã, rồi mới lấy nó ở đây
+  const searchFoodQuery = useQuery({
+    queryKey: ["searchedList", searchParams.name],
+    queryFn: () => searchFood(searchParams),
+    enabled: Boolean(searchParams?.name),
+  });
+
+  let searchFoodQueryData = null;
+
+  if (searchFoodQuery.isError) {
+    console.log("loi search food query", searchFoodQuery.error);
+  }
+
+  if (searchFoodQuery.data) {
+    searchFoodQueryData = searchFoodQuery.data.data.data.pageContent;
+  }
+
+  if (searchFoodQuery.isLoading) {
+    return <LoadingIndicator />;
+  }
 
   // export const fetchCategoryDetail = (categoryName) => http.get(`dishes/category/${categoryName}`);
 
@@ -55,12 +81,14 @@ export default function MenuDetails() {
   // Chỉ render khi dữ liệu đã có
   let content = null;
 
-  if (isChoosingCategory && catQuery.isSuccess && catQuery.data.data) {
+  if (isChoosingCategory && catQuery.isSuccess && catQuery.data.data && !searchParams.name) {
     content = <MenuCategorySection catQueryData={catQuery.data.data.data} catName={id} />;
-  } else if (categoriesQuery.isSuccess && Array.isArray(categoriesQuery.data)) {
+  } else if (categoriesQuery.isSuccess && Array.isArray(categoriesQuery.data) && !searchParams.name) {
     content = categoriesQuery.data.map((category) => (
       <MenuCategorySection key={category.categoryId} category={category} />
     ));
+  } else if (Boolean(searchFoodQuery.isSuccess && searchFoodQueryData)) {
+    content = <MenuCategorySection searchFoodList={searchFoodQueryData} searchName={searchParams.name} />;
   } else {
     content = <ErrorBlock title={"No data found"} message={"No categories available"} />;
   }

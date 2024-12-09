@@ -19,6 +19,13 @@
   --form-control-disabled: #959495;
 }
 
+@font-face {
+  font-family: "YummyFoodies";
+  src: url("../src/assets/fonts/YummyFoodies-demo-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 a {
   font-weight: 500;
   color: #646cff;

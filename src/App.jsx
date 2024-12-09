@@ -93,7 +93,6 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  console.log("vlll", isEmail("213291814"));
   return (
     <QueryClientProvider client={queryClient}>
       <SearchingContextProvider>

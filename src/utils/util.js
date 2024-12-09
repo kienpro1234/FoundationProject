@@ -88,6 +88,5 @@ export const isPhoneNumber = (phoneNumber) => {
 };
 
 export const transformCategoryNameToURL = (categoryName) => {
-  console.log("transformCategoryNametoURL", categoryName.replace(" ", "%20").toLowerCase());
   return categoryName.replace(" ", "%20").toLowerCase().trim();
 };

@@ -171,7 +171,9 @@ export default function Table() {
         {/* Container */}
         <div className="px-8 py-3">
           {/* title */}
-          <h1 className="border-b-[1.5px] border-red-500 pb-3 text-6xl capitalize text-red-500">table {tableId}</h1>
+          <h1 className="font-yummy border-b-[1.5px] border-red-500 pb-3 text-6xl capitalize text-red-500">
+            table {tableId}
+          </h1>
           {/* Content top */}
           <div className="min-h-[400px] py-20">
             {/* flex*/}

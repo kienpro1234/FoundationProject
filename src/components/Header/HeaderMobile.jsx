@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from "react";
 import classes from "./HeaderMobile.module.css";
-import { Link } from "react-router-dom";
+import { createSearchParams, Link, useNavigate } from "react-router-dom";
 import SearchContext from "../../context/headerContext";
 import { useMediaQuery } from "react-responsive";
 import { countFoodInCartList, getAccessToken } from "../../utils/util";
@@ -8,23 +8,25 @@ import { CartContext } from "../../context/cartContext";
 import { TABLEURL } from "../../utils/const";
 import { useQuery } from "@tanstack/react-query";
 import { getTable } from "../../apis/tableApi";
+import { toast } from "react-toastify";
 
 export default function HeaderMobile({ configImg, title }) {
   const { tableId, cartList } = useContext(CartContext);
   const { isSearching, setIsSearching } = useContext(SearchContext);
   const { isMenuOpen, setIsMenuOpen } = useContext(SearchContext);
+  const [searchKeyWord, setSearchKeyWord] = useState("");
   const inputRef = useRef(null);
+  const navigate = useNavigate();
 
   const isDesktop = useMediaQuery({ minWidth: 1024 });
-  const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
-  const isMobile = useMediaQuery({ maxWidth: 767 });
+  // const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
+  const isMobile = useMediaQuery({ maxWidth: 1023 });
 
   const isUsingTableAndLogin = tableId && getAccessToken();
   const isUsingTableAndNotLogin = tableId && !getAccessToken();
   const isNotUsingTableAndLogin = !tableId && getAccessToken();
   const isNotUsingTableAndNotLogin = !tableId && !getAccessToken();
 
-  console.log("tablid ow day giong ma", tableId);
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["table", tableId],
     queryFn: () => getTable(tableId),
@@ -35,8 +37,6 @@ export default function HeaderMobile({ configImg, title }) {
 
   if (data) {
     dataTable = data.data.data.pageContent;
-    console.log("data table header mobile", dataTable);
-    console.log("datable lengthf", dataTable.length.toString());
   }
 
   const handleSearchClick = () => {
@@ -56,6 +56,31 @@ export default function HeaderMobile({ configImg, title }) {
 
   const handleCloseMenu = () => {
     setIsMenuOpen(false);
+  };
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+
+    setSearchKeyWord(value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!searchKeyWord) {
+      toast.warning("Không được bỏ trống", {
+        position: "top-center",
+      });
+      return;
+    }
+
+    navigate({
+      pathname: "/menu/search",
+      search: createSearchParams({
+        name: searchKeyWord,
+      }).toString(),
+    });
+
+    setIsSearching(false);
+    setSearchKeyWord("");
   };
 
   return (
@@ -89,21 +114,35 @@ export default function HeaderMobile({ configImg, title }) {
               <>
                 {isMobile && (
                   <div className={`${isSearching ? classes["header-search-open"] : classes["header-search"]}`}>
-                    <div className={`${isSearching ? classes.btnBack : classes.hidden}`}>
-                      <button className={`button-click-expand`} onClick={handleBackSearch}>
-                        <i className="fa fa-arrow-left"></i>
-                      </button>
-                    </div>
-                    <input
-                      ref={inputRef}
-                      className={`${isSearching ? classes["search-open"] : classes["search-close"]}`}
-                      type="text"
-                    />
-                    <div className={`${isSearching ? classes["button-search-open"] : classes["button-search"]}`}>
+                    <form onSubmit={handleSubmit}>
+                      <div className={`${isSearching ? classes.btnBack : classes.hidden}`}>
+                        <button type="button" className={`button-click-expand`} onClick={handleBackSearch}>
+                          <i className="fa fa-arrow-left"></i>
+                        </button>
+                      </div>
+                      <input
+                        ref={inputRef}
+                        className={`${isSearching ? classes["search-open"] : classes["search-close"]}`}
+                        type="text"
+                        value={searchKeyWord}
+                        onChange={handleChange}
+                      />
+                      <div className={`${isSearching ? classes["button-search-open"] : "hidden"}`}>
+                        <button type="submit" className={`button-click-expand`}>
+                          <i className="fa fa-search"></i>
+                        </button>
+                      </div>
+                      <div className={`${!isSearching ? classes["button-search-open"] : "hidden"}`}>
+                        <button type="button" className={`button-click-expand`} onClick={handleSearchClick}>
+                          <i className="fa fa-search"></i>
+                        </button>
+                      </div>
+                      {/* <div className={`${!isSearching ? classes["button-search-open"] : classes["button-search"]}`}>
                       <button className={`button-click-expand`} onClick={handleSearchClick}>
                         <i className="fa fa-search"></i>
                       </button>
-                    </div>
+                    </div> */}
+                    </form>
                   </div>
                 )}
 

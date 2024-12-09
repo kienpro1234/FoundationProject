@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require("tailwindcss/defaultTheme");
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -26,6 +27,9 @@ export default {
           xl: "5rem",
           "2xl": "6rem",
         },
+      },
+      fontFamily: {
+        yummy: ["YummyFoodies", ...defaultTheme.fontFamily.sans],
       },
     },
   },

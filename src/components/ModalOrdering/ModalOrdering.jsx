@@ -18,7 +18,6 @@ export default function ModalOrdering({ title, modalId, size, triggeredButton, f
   const isNotUsingTableAndLogin = !tableId && getAccessToken();
   const isNotUsingTableAndNotLogin = !tableId && !getAccessToken();
 
-  console.log("cartList sau them", cartList);
   const handleDecre = (Car) => {
     if (quantity === 1) {
       return;
@@ -44,9 +43,8 @@ export default function ModalOrdering({ title, modalId, size, triggeredButton, f
         positionId: tableId,
       }),
     onSuccess: (data) => {
-      console.log("res", data);
       setQuantity(1);
-      console.log("query key invalidate", tableId);
+
       queryClient.invalidateQueries({
         queryKey: ["table", tableId],
       });
@@ -59,11 +57,9 @@ export default function ModalOrdering({ title, modalId, size, triggeredButton, f
 
   // dùng context API ở đây , gửi đồ ăn này lên cartList bên context
   const handleOrder = () => {
-    console.log("handleOrder");
     if (isUsingTableAndNotLogin || isUsingTableAndLogin) {
       mutate();
     } else if (isNotUsingTableAndNotLogin) {
-      console.log("isNotUsingTableAndNotLogin");
       addItemToCart({
         ...itemCart,
         quantity: quantity,

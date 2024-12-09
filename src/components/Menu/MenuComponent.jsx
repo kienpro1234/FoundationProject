@@ -10,19 +10,15 @@ import LoadingIndicator from "../UI/LoadingIndicator";
 import { fetchCategory } from "../../apis/categoryIndex";
 
 export default function MenuComponent() {
-  console.log(DOMAIN + "categories");
-
   //Dùng axios
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["menu-navbar"],
     queryFn: fetchCategory,
   });
 
-  console.log("data", data);
   let content;
 
   if (isError) {
-    console.log("lỗi rồi", error);
     content = <ErrorBlock title={"An error occured"} message={error.message} />;
   }
 

@@ -10,7 +10,6 @@ import SiderMenu from "../components/Sider/SiderMenu";
 export default function Root() {
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const { isSearching, isMenuOpen } = useContext(SearchContext);
-  console.log(isSearching);
   let content = <></>;
 
   if (!isSearching && !isMenuOpen) {
@@ -27,7 +26,7 @@ export default function Root() {
           <SiderMenu />
         </div>
         <div className="sider-footer-mobile">
-          <div >
+          <div>
             <div className="sider-contact">
               <p>
                 <i className="fa fa-clock"></i> 10:00 - 18:00

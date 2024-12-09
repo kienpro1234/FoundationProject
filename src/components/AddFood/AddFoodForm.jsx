@@ -82,7 +82,6 @@ export default function AddFoodForm() {
     setSelectedValues(initialFormData);
   };
 
-  console.log("selectedArray", selectedValues);
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["menu-navbar"],
     queryFn: fetchCategory,
@@ -94,7 +93,6 @@ export default function AddFoodForm() {
       value: item.categoryName,
       label: item.categoryName[0].toUpperCase() + item.categoryName.slice(1),
     }));
-    console.log("options", options);
   }
 
   return (
@@ -177,7 +175,7 @@ export default function AddFoodForm() {
           />
         </div>
         <div className="mb-[12px]">
-          <label for="message" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+          <label htmlFor="message" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
             Ingredients
           </label>
           <textarea
@@ -191,7 +189,7 @@ export default function AddFoodForm() {
           ></textarea>
         </div>
         <div className="mb-[12px]">
-          <label for="message" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+          <label htmlFor="message" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
             Description
           </label>
           <textarea
