@@ -9,9 +9,11 @@ import { TABLEURL } from "../../utils/const";
 import { useQuery } from "@tanstack/react-query";
 import { getTable } from "../../apis/tableApi";
 import { toast } from "react-toastify";
+import { FavContext } from "../../context/favContext";
 
 export default function HeaderMobile({ configImg, title }) {
   const { tableId, cartList } = useContext(CartContext);
+  const { favList } = useContext(FavContext);
   const { isSearching, setIsSearching } = useContext(SearchContext);
   const { isMenuOpen, setIsMenuOpen } = useContext(SearchContext);
   const [searchKeyWord, setSearchKeyWord] = useState("");
@@ -153,10 +155,17 @@ export default function HeaderMobile({ configImg, title }) {
                     </button>
                   </Link>
                 </div>
-                <div className={`${classes["header-fav"]} transition-all hover:text-red-600`}>
-                  <button className={`button-click-expand`}>
-                    <i className="fa fa-heart"></i>
-                  </button>
+                <div className={`${classes["header-fav"]} relative transition-all hover:text-red-600`}>
+                  <Link to={"/fav"}>
+                    <button className={`button-click-expand`}>
+                      <i className="fa fa-heart"></i>
+                    </button>
+                    {favList.length > 0 && (
+                      <span className="absolute -left-2 -top-2 flex size-3 items-center justify-center rounded-full bg-red-500 text-[9px] text-white">
+                        {favList.length}
+                      </span>
+                    )}
+                  </Link>
                 </div>
                 {isMobile && (
                   <>

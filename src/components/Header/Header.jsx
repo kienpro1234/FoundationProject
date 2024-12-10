@@ -5,10 +5,14 @@ import { getRoleLS, getToken } from "../../utils/util";
 import Modal from "../UI/Modal";
 import AddFoodForm from "../AddFood/AddFoodForm";
 import { toast } from "react-toastify";
+import { FavContext } from "../../context/favContext";
+import { CartContext } from "../../context/cartContext";
 
 //THêm class riêng cho esapase, tắt luôn, chứ k chờ
 export default function Header({ className, ...props }) {
   //Dùng redux hay context api quản lý state sau
+  const { favList } = useContext(FavContext);
+  const { cartList } = useContext(CartContext);
   const inputDiv = useRef(null);
   const inputRef = useRef(null);
   const [searchKeyWord, setSearchKeyWord] = useState("");
@@ -163,15 +167,27 @@ export default function Header({ className, ...props }) {
     <div className={`${classes.header} ${className}`} {...props}>
       {content}
 
-      <div className={classes["header-fav"]}>
-        <button>
-          <i className="fa fa-heart"></i>
-        </button>
+      <div className={`${classes["header-fav"]} relative`}>
+        <Link to={"/fav"}>
+          <button>
+            <i className="fa fa-heart"></i>
+          </button>
+          {favList.length > 0 && (
+            <span className="absolute -top-1 left-0 flex size-4 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+              {favList.length}
+            </span>
+          )}
+        </Link>
       </div>
-      <div className={classes["header-cart"]}>
+      <div className={`${classes["header-cart"]} relative`}>
         <button>
           <Link to={"/cart"} className="fa fa-shopping-cart text-white"></Link>
         </button>
+        {cartList.length > 0 && (
+          <span className="absolute -top-1 left-0 flex size-4 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+            {cartList.length}
+          </span>
+        )}
       </div>
       {role === "admin" && (
         <div className={classes["header-addFood"]}>

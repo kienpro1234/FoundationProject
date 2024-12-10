@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Button from "../UI/Button";
 import classes from "./MenuCategorySection.module.css";
 import { formatName, getRoleLS, transformCategoryNameToURL } from "../../utils/util";
@@ -9,10 +9,14 @@ import { deleteFood } from "../../apis/foodApi";
 import { toast } from "react-toastify";
 import ModalOrdering from "../ModalOrdering/ModalOrdering";
 import { fetchCategoryDetail } from "../../apis/category.api";
+import { FavContext } from "../../context/favContext";
 
 export default function MenuCategorySection({ category, catQueryData, catName, searchFoodList, searchName }) {
   const [idToDelete, setIdToDelete] = useState("");
   const queryClient = useQueryClient();
+  const { favList, addItemToFav, removeItemFromFav } = useContext(FavContext);
+
+  console.log("favlist hien taij", favList);
 
   //Có thể viết query này ở component cha, tránh mỗi category lại call api 1 lần
   const { data: mostPopularData } = useQuery({
@@ -83,6 +87,10 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
   const handleConfirmDelete = (id) => {
     deleteMutation.mutate(id);
     setIdToDelete("");
+  };
+
+  const handleAddFav = (food) => () => {
+    addItemToFav(food);
   };
 
   const mostPopularArray = mostPopularData?.map((food) => food.dishName);
@@ -156,7 +164,7 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
                     ></ModalOrdering>
                   </div>
                 </div>
-                <button className={`${classes["foodInfo-fav-btn"]}`}>
+                <button className={`${classes["foodInfo-fav-btn"]}`} onClick={handleAddFav(food)}>
                   <i className="fa-regular fa-heart"></i>
                 </button>
 

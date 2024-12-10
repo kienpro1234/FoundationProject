@@ -47,6 +47,10 @@ export const getUserIdLS = () => {
   return localStorage.getItem("userId") || null;
 };
 
+export const setUserIdToLS = (userId) => {
+  localStorage.setItem("userId", userId);
+};
+
 export const getRoleLS = () => {
   return localStorage.getItem("role") || null;
 };

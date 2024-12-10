@@ -8,12 +8,15 @@ export const CartContext = createContext({
   decreaseItem: () => {},
   addItemToCart: () => {},
 
+  userId: "",
+  setUserId: () => "",
   tableId: "",
   setTableId: () => {},
 });
 
 const intitialState = {
   cartList: [],
+  userId: localStorage.getItem("userId") || "",
 };
 
 // Dùng cho tăng giảm trong cart , chứ không phải cho sau khi click vào nút order
@@ -86,7 +89,9 @@ const cartReducer = (state, action) => {
 export const CartContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, intitialState);
   const [tableId, setTableId] = useState("");
+  const [userId, setUserId] = useState(intitialState.userId);
 
+  console.log("userId o ben nay ntn", userId);
   // 3 function này để xử lý cart khi người dùng chưa đăng nhập, lưu vào LS
 
   const increaseItem = (item) => {
@@ -113,7 +118,16 @@ export const CartContextProvider = ({ children }) => {
   return (
     // <CartContext.Provider value={{ cartList: state.cartList, increaseItem, decreaseItem, addItemToCart }}>
     <CartContext.Provider
-      value={{ tableId, setTableId, cartList: state.cartList, increaseItem, decreaseItem, addItemToCart }}
+      value={{
+        tableId,
+        setTableId,
+        cartList: state.cartList,
+        increaseItem,
+        decreaseItem,
+        addItemToCart,
+        userId,
+        setUserId,
+      }}
     >
       {children}
     </CartContext.Provider>

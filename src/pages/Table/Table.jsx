@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { deleteOrder, getTable } from "../../apis/tableApi";
+import { deleteOrder, getTable, payOrders } from "../../apis/tableApi";
 import LoadingIndicator from "../../components/UI/LoadingIndicator";
 import ErrorBlock from "../../components/UI/ErrorBlock";
 import { CartContext } from "../../context/cartContext";
@@ -11,10 +11,11 @@ import { createPortal } from "react-dom";
 export default function Table() {
   // lấy url của page này để call api fetch đến thông tin của table này, để hiển thị tương ứng
   // Lấy url ra
-  const { setTableId } = useContext(CartContext);
+  const { setTableId, userId } = useContext(CartContext);
   const [orderIdDelete, setOrderIdDelete] = useState("");
   const queryClient = useQueryClient();
   const { tableId } = useParams();
+
   console.log("tableid", tableId);
   useEffect(() => {
     setTableId(tableId);
@@ -118,6 +119,8 @@ export default function Table() {
     queryFn: () => getTable(tableId),
     enabled: isPositionValid,
   });
+  const tableOrderList = data?.data?.data?.pageContent || [];
+  const tableOrderIdList = tableOrderList.map((order) => order.orderId);
 
   const { mutate, isPending } = useMutation({
     mutationFn: (orderId) => deleteOrder(orderId),
@@ -142,6 +145,34 @@ export default function Table() {
     setOrderIdDelete("");
   };
 
+  const paymentMutation = useMutation({
+    mutationFn: (data) => payOrders(data),
+    onSuccess: (data) => {
+      console.log("payment response data", data);
+      const paymentUrl = data.data.paymentUrl;
+      if (paymentUrl) {
+        window.location.href = paymentUrl;
+      }
+    },
+    onError: (err) => {
+      console.error("err payment", err);
+    },
+  });
+
+  const handlePayment = () => {
+    if (tableOrderIdList.length > 0) {
+      paymentMutation.mutate({
+        paymentMethod: "Vn-Pay",
+        userId: userId,
+        orderIds: [...tableOrderIdList],
+      });
+    } else {
+      toast.warning("Hiện không có order nào để thanh toán", {
+        position: "top-center",
+      });
+    }
+  };
+
   let dataTable = "";
   if (data) {
     console.log("data", data);
@@ -160,18 +191,19 @@ export default function Table() {
   if (dataTable) {
     content = (
       <div className="h-screen overflow-auto bg-pink-red">
-        {isPending &&
-          createPortal(
-            <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-black/70">
-              <LoadingIndicator />
-            </div>,
-            document.querySelector("#root"),
-          )}
+        {isPending ||
+          (paymentMutation.isPending &&
+            createPortal(
+              <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-black/70">
+                <LoadingIndicator />
+              </div>,
+              document.querySelector("#root"),
+            ))}
 
         {/* Container */}
         <div className="px-8 py-3">
           {/* title */}
-          <h1 className="font-yummy border-b-[1.5px] border-red-500 pb-3 text-6xl capitalize text-red-500">
+          <h1 className="border-b-[1.5px] border-red-500 pb-3 font-yummy text-6xl capitalize text-red-500">
             table {tableId}
           </h1>
           {/* Content top */}
@@ -179,7 +211,10 @@ export default function Table() {
             {/* flex*/}
             <div className="flex flex-col gap-3">
               {dataTable.map((order) => (
-                <div className="flex items-center justify-between rounded-3xl border-[1.5px] border-black bg-gray-50 px-3 py-2 font-bold">
+                <div
+                  key={order.orderId}
+                  className="flex items-center justify-between rounded-3xl border-[1.5px] border-black bg-gray-50 px-3 py-2 font-bold"
+                >
                   <div className="space-y-1">
                     <h3 className="text-xl text-red-500">{order.dish.dishName}</h3>
                     <p className="">Quantity: {order.quantity}</p>
@@ -236,7 +271,10 @@ export default function Table() {
           {/* Content bottom */}
           <div>
             <div className="flex justify-between">
-              <button className="w-32 rounded-xl bg-emerald-500 py-[11px] text-4xl font-bold text-white hover:bg-emerald-400">
+              <button
+                className="w-32 rounded-xl bg-emerald-500 py-[11px] text-4xl font-bold text-white hover:bg-emerald-400"
+                onClick={handlePayment}
+              >
                 Pay
               </button>
               <Link to={"/menu/all"}>

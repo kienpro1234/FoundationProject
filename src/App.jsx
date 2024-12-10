@@ -19,6 +19,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Table from "./pages/Table/Table";
 import { CartContextProvider } from "./context/cartContext";
 import { DOMAIN } from "./utils/const";
+import FavFood from "./pages/FavFood/FavFood";
+import FavContextProvider from "./context/favContext";
 
 function RejectedRoute() {
   const token = getToken();
@@ -34,6 +36,10 @@ const router = createBrowserRouter([
         index: true,
         // path: "/home",
         element: <Home />,
+      },
+      {
+        path: "/fav",
+        element: <FavFood />,
       },
       {
         path: "/about",
@@ -98,7 +104,9 @@ function App() {
       <SearchingContextProvider>
         <LoginContextProvider>
           <CartContextProvider>
-            <RouterProvider router={router} />
+            <FavContextProvider>
+              <RouterProvider router={router} />
+            </FavContextProvider>
           </CartContextProvider>
           <ReactQueryDevtools initialIsOpen={false} />
         </LoginContextProvider>

@@ -3,16 +3,17 @@ import Modal from "../UI/Modal";
 import { CartContext } from "../../context/cartContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { orderFood } from "../../apis/tableApi";
-import { getAccessToken, getUserIdLS } from "../../utils/util";
+import { getAccessToken, getUserIdLS, setUserIdToLS } from "../../utils/util";
 import { toast } from "react-toastify";
 import LoadingIndicator from "../UI/LoadingIndicator";
 import { createPortal } from "react-dom";
 
 export default function ModalOrdering({ title, modalId, size, triggeredButton, foodId, itemCart }) {
-  const { tableId, addItemToCart, cartList } = useContext(CartContext);
+  const { tableId, addItemToCart, cartList, userId, setUserId } = useContext(CartContext);
+  console.log("user id day", userId);
   const queryClient = useQueryClient();
   const [quantity, setQuantity] = useState(1);
-  const userId = getUserIdLS() || undefined;
+  // const userId = getUserIdLS() || undefined;
   const isUsingTableAndLogin = tableId && getAccessToken();
   const isUsingTableAndNotLogin = tableId && !getAccessToken();
   const isNotUsingTableAndLogin = !tableId && getAccessToken();
@@ -35,16 +36,24 @@ export default function ModalOrdering({ title, modalId, size, triggeredButton, f
   };
 
   const { mutate, isPending } = useMutation({
-    mutationFn: () =>
-      orderFood({
+    mutationFn: () => {
+      console.log("userid o trong mutate gui len api", userId);
+      return orderFood({
         quantity: quantity,
         userId: userId,
         dishId: foodId,
         positionId: tableId,
-      }),
+      });
+    },
+
     onSuccess: (data) => {
       setQuantity(1);
-
+      if (!userId) {
+        const newUserId = data.data.data.user.userId;
+        setUserId(newUserId);
+        setUserIdToLS(newUserId);
+      }
+      console.log("data o dy", data.data.data.user.userId);
       queryClient.invalidateQueries({
         queryKey: ["table", tableId],
       });
