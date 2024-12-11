@@ -75,7 +75,7 @@ export default function RatingForm({ order }) {
       </div>
 
       {/* Đánh giá sao */}
-      <div className="mt-3 flex gap-11">
+      <div className="mt-3 flex-col space-y-2 md:flex-row md:gap-11 md:space-y-0">
         <div>Chất lượng sản phẩm</div>
         <div>
           <div className="flex items-center space-x-2">

@@ -24,13 +24,13 @@ export default function UserOrderList({ orderList, loadingOrderList }) {
                 <div className="flex items-center justify-between">
                   {/* image */}
                   <div className="flex gap-3">
-                    <div className="bg-gray-400 p-1">
+                    <div className="flex-shrink-0 bg-gray-400 p-1">
                       <Link to={`/food/foodId`}>
-                        <img src={order.dish.image} alt="img" className="size-[70px]" />
+                        <img src={order.dish.image} alt="img" className="size-[70px] object-cover" />
                       </Link>
                     </div>
-                    <div className="overflow-hidden">
-                      <h3 className="mb-1 truncate text-lg font-bold">{order.dish.dishName}</h3>
+                    <div className="md:overflow-hidden">
+                      <h3 className="mb-1 text-nowrap text-sm font-bold md:text-lg">{order.dish.dishName}</h3>
                       <p className="text-sm">Portion: {order.dish.portion}</p>
                       <p className="text-sm">Price: {order.dish.price}</p>
                     </div>
