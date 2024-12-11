@@ -1,7 +1,7 @@
 import React from "react";
 import { createPortal } from "react-dom";
 
-export default function Modal({ title, children, id, size, triggeredButton, classNameButtonTrigger, btnClose }) {
+export default function Modal({ title, children, id, size, triggeredButton, classNameButtonTrigger, classNameTitle }) {
   return (
     <>
       <span className={classNameButtonTrigger || ""} type="button" data-bs-toggle="modal" data-bs-target={`#${id}`}>
@@ -13,7 +13,7 @@ export default function Modal({ title, children, id, size, triggeredButton, clas
           <div className={`modal-dialog ${size ? `modal-${size}` : ""}`}>
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">
+                <h5 className={`modal-title ${classNameTitle}`} id="exampleModalLabel">
                   {title}
                 </h5>
                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

@@ -22,6 +22,7 @@ export default function MenuDetails() {
   // Query all categories , để gọi data cho trường hợp all, tức là gọi toàn bộ categories
   const categoriesQuery = useQuery({
     queryKey: ["menu"],
+    staleTime: 20 * 1000,
     queryFn: async ({ signal }) => {
       const response = await fetch(`${DOMAIN}categories`, { signal });
       const result = await response.json();
@@ -41,6 +42,7 @@ export default function MenuDetails() {
   // Lấy query params từ url , rest nó ra, và dùng Object.fromEntries để biến nó thành object queryConfig đã, rồi mới lấy nó ở đây
   const searchFoodQuery = useQuery({
     queryKey: ["searchedList", searchParams.name],
+    staleTime: 20 * 1000,
     queryFn: () => searchFood(searchParams),
     enabled: Boolean(searchParams?.name),
   });

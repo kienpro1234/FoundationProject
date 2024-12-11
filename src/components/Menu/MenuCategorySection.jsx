@@ -21,6 +21,7 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
   //Có thể viết query này ở component cha, tránh mỗi category lại call api 1 lần
   const { data: mostPopularData } = useQuery({
     queryKey: ["menu", "most-popular"],
+    staleTime: 20 * 1000,
     queryFn: async ({ signal }) => {
       try {
         const res = await fetch(`${DOMAIN}dishes/category/most%20popular`, { signal });
@@ -46,6 +47,7 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
     error,
   } = useQuery({
     queryKey: ["menu", categoryNameURL],
+    staleTime: 20 * 1000,
     queryFn: () => fetchCategoryDetail(categoryNameURL),
     enabled: Boolean(category && !searchName),
   });

@@ -2,20 +2,41 @@ import HeaderUser from "../../components/Header/HeaderUser";
 import Greeting from "../../components/UserInformation/Greeting";
 import UserInformation from "../../components/UserInformation/UserInformation";
 import UserOrderList from "../../components/UserInformation/UserOrderList";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 import { Navigate, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import LoadingIndicator from "../../components/UI/LoadingIndicator";
 import ErrorBlock from "../../components/UI/ErrorBlock";
 import { getToken, getUserIdLS } from "../../utils/util";
 import { http } from "../../utils/http";
 import { toast } from "react-toastify";
+import { CartContext } from "../../context/cartContext";
+import { fetchOrderList } from "../../apis/order.api";
+import useQueryParams from "../../hooks/useQueryParams";
+import Pagination from "../../components/Pagination/Pagination";
 
 export default function UserInfo() {
+  const queryParams = useQueryParams();
+  console.log("query params", queryParams);
+
   //Call api kèm theo token để lấy user info
   const token = getToken();
   const navigate = useNavigate();
+
+  const { userId } = useContext(CartContext);
+  const orderListQuery = useQuery({
+    queryKey: ["orderList", queryParams],
+    queryFn: () => fetchOrderList(userId, queryParams),
+    placeholderData: keepPreviousData,
+  });
+
+  let orderList = [];
+  if (orderListQuery.data) {
+    console.log("datata", orderListQuery.data);
+    orderList = orderListQuery.data.data.data.pageContent;
+    console.log("orderList day", orderList);
+  }
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["userinfo"],
@@ -31,9 +52,6 @@ export default function UserInfo() {
           signal,
         });
 
-        console.error("res ne", result);
-
-        console.log("data", result);
         return result.data.data;
       } catch (err) {
         console.log(err);
@@ -41,6 +59,7 @@ export default function UserInfo() {
       }
     },
   });
+
   // useEffect(() => {
   //   if (!token) {
   //     toast.warning("Vui lòng đăng nhập để sử dụng chức năng này");
@@ -66,7 +85,6 @@ export default function UserInfo() {
   }
 
   if (data) {
-    console.log("data", data);
     content = (
       <>
         <div className="headerGreeting-userinfo">
@@ -79,7 +97,9 @@ export default function UserInfo() {
           {/* <Header/> */}
 
           <UserInformation user={data} />
-          <UserOrderList />
+          <div className="max-auto mt-12 h-[1px] bg-slate-500"></div>
+          <UserOrderList orderList={orderList} loadingOrderList={orderListQuery.isFetching} />
+          <Pagination totalPages={orderListQuery?.data?.data?.data.totalPages} queryParams={queryParams} />
         </div>
       </>
     );
