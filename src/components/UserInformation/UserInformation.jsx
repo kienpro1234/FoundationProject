@@ -113,22 +113,46 @@ export default function UserInformation({ user }) {
     content = (
       <>
         <div className="userInfo-content row justify-content-center gx-0 gap-5">
+          {updateUserMutation.isPending &&
+            createPortal(
+              <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/70">
+                <LoadingIndicator />
+              </div>,
+              document.querySelector("#root"),
+            )}
           <div className={`${classes["userinfo-content-update"]} col-md-12`}>
             <div className={`${classes["avatar-right"]}`}>
-              <img
-                src={
-                  "https://scontent.fhan2-5.fna.fbcdn.net/v/t39.30808-6/431240968_431190712682006_1668401436782837892_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=Q_Xk-HlaJaUQ7kNvgEe2G5e&_nc_zt=23&_nc_ht=scontent.fhan2-5.fna&_nc_gid=AFfXrKsIi48of07fUdasUbc&oh=00_AYBc4VrX1skg2JbkYoIa9Uu0WE19G_GERlEff6h1FwsrDA&oe=673BBC64"
-                }
-                alt=""
-              />
+              <img src={user.imageUrl} alt="" />
             </div>
+            {/* sua den day */}
 
             <h1 className={`${classes["profile-picture-title"]} ${classes["contact-title"]}`}>
               {"Contact information"}
             </h1>
             <div className={`d-flex flex-col gap-3`}>
               <div className={`${classes["contact-info-title"]}`}>
-                <h3>Name</h3>
+                {isEditing ? (
+                  <Fragment>
+                    <label htmlFor="date" className="block text-lg font-medium text-gray-700">
+                      Chọn ngày:
+                    </label>
+                    <input
+                      type="date"
+                      id="date"
+                      name="date"
+                      value={selectedDate}
+                      onChange={handleDateChange}
+                      className="w-full rounded-lg border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      required
+                    />
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <h3 className="mb-2">Date of birth</h3>
+                    <p>{`${newDate.getDate()}/${newDate.getMonth()}/${newDate.getFullYear()}`}</p>
+                  </Fragment>
+                )}
+                {/* <h3>Name</h3>
                 <p>{user.firstName}</p>
               </div>
               <div className={`${classes["contact-info-title"]}`}>
@@ -137,7 +161,58 @@ export default function UserInformation({ user }) {
               </div>
               <div className={`${classes["contact-info-title"]}`}>
                 <h3>Gender</h3>
-                <p>123123123</p>
+                <p>123123123</p> */}
+              </div>
+              <div className={`${classes["contact-info-title"]}`}>
+                {isEditing ? (
+                  <Fragment>
+                    {/* Input Gender */}
+                    {/* Input chọn giới tính */}
+                    <div>
+                      <span className="block text-lg font-medium text-gray-700">Giới tính:</span>
+                      <div className="mt-2 flex items-center space-x-4">
+                        <label className="flex items-center space-x-2">
+                          <input
+                            type="radio"
+                            name="gender"
+                            value="Male"
+                            checked={gender === "Male"}
+                            onChange={handleGenderChange}
+                            className="form-radio h-4 w-4 text-blue-600"
+                          />
+                          <span>Nam</span>
+                        </label>
+                        <label className="flex items-center space-x-2">
+                          <input
+                            type="radio"
+                            name="gender"
+                            value="Female"
+                            checked={gender === "Female"}
+                            onChange={handleGenderChange}
+                            className="form-radio h-4 w-4 text-pink-600"
+                          />
+                          <span>Nữ</span>
+                        </label>
+                        <label className="flex items-center space-x-2">
+                          <input
+                            type="radio"
+                            name="gender"
+                            value="Other"
+                            checked={gender === "Other"}
+                            onChange={handleGenderChange}
+                            className="form-radio h-4 w-4 text-gray-600"
+                          />
+                          <span>Khác</span>
+                        </label>
+                      </div>
+                    </div>
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <h3 className="mb-2">Gender</h3>
+                    <p>{gender}</p>
+                  </Fragment>
+                )}
               </div>
             </div>
           </div>
@@ -149,24 +224,40 @@ export default function UserInformation({ user }) {
                   <i className="fa fa-user"></i> <span>Name</span>
                 </p>
                 {/* Mở đóng edit dựa theo state của isEditing */}
-                <input type="text" value={`${user.firstName}`} />
+                <input disabled={!isEditing} type="text" value={`${userName}`} onChange={handleChangeName} />
               </div>
               <div>
                 <p>
-                  <i className="fa fa-envelope"></i> <span>Email</span>
+                  <i className="fa fa-envelope"></i> <span>Contact</span>
                 </p>
                 {/* Mở đóng edit dựa theo state của isEditing */}
-                <input type="email" value={`${isEmail(user.emailOrPhone) ? user.emailOrPhone : ""}`} />
+                <input disabled={true} type="email" value={`${isEmail(user.emailOrPhone) ? user.emailOrPhone : ""}`} />
               </div>
 
-              <div>
+              {/* <div>
                 <p>
                   <i className="fa fa-phone"></i> <span>PhoneNumber</span>
-                </p>
-                {/* Mở đóng edit dựa theo state của isEditing */}
-                <input type="tel" value={`${isPhoneNumber(user.emailOrPhone) ? user.emailOrPhone : ""}`} />
-              </div>
-              <div className="text-end">{/* <Button>Edit Information</Button> */}</div>
+                </p> */}
+              {/* Mở đóng edit dựa theo state của isEditing */}
+              {/* <input type="tel" value={`${isPhoneNumber(user.emailOrPhone) ? user.emailOrPhone : ""}`} />
+              </div> */}
+              {isEditing && (
+                <div className="flex justify-end gap-3">
+                  <div className="text-end">
+                    <button
+                      onClick={handleCancelEdit}
+                      className={`${userGreetingClasses.editBtnUserInfo} bg-red-600 hover:bg-red-700`}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <div className="text-end">
+                    <button onClick={handleSubmit} className={userGreetingClasses.editBtnUserInfo}>
+                      Confirm
+                    </button>
+                  </div>
+                </div>
+              )}
             </form>
           </div>
         </div>

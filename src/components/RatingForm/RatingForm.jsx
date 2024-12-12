@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useContext, useRef, useState } from "react";
 import { rateOrder } from "../../apis/order.api";
 import { toast } from "react-toastify";
@@ -8,6 +8,7 @@ import LoadingIndicator from "../UI/LoadingIndicator";
 import { http } from "../../utils/http";
 
 export default function RatingForm({ order }) {
+  const queryClient = useQueryClient();
   const [rating, setRating] = useState(0); // Lưu trạng thái ngôi sao được chọn
   const [comment, setComment] = useState("");
   const cencalBtnRef = useRef(null);
@@ -32,6 +33,7 @@ export default function RatingForm({ order }) {
     mutationFn: async (orderId) => http.patch(`orders/${orderId}/update-rating-status`),
     onSuccess: (data) => {
       console.log("update tc", data);
+      queryClient.invalidateQueries(["userinfo"]);
     },
     onError: (err) => {
       console.error("errr", err);
