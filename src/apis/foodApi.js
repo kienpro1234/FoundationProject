@@ -21,3 +21,7 @@ export const deleteFood = async (id) => {
     },
   });
 };
+
+export const editFood = async ({ id, formData }) => {
+  return http.put(`dishes/${id}`, formData);
+};

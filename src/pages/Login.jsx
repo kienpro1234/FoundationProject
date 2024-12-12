@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import classes from "./Login.module.css";
 import Input from "../components/UI/Input";
 import ButtonLogin from "../components/UI/ButtonLogin";
@@ -6,6 +6,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { http } from "../utils/http";
 import { toast } from "react-toastify";
+import { CartContext } from "../context/cartContext";
 export default function Login() {
   const [eyeOpen, setEyeOpen] = useState(true);
   const initialUserData = {
@@ -13,6 +14,7 @@ export default function Login() {
     password: "",
   };
   const [userData, setUserData] = useState(initialUserData);
+  const { setUserId } = useContext(CartContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -50,6 +52,7 @@ export default function Login() {
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("userId", userId);
         localStorage.setItem("role", role);
+        setUserId(userId);
       }
       setUserData(initialUserData);
       toast.success("Đăng nhập thành công", {
@@ -163,7 +166,7 @@ export default function Login() {
               />
             </svg>
           </Link>
-
+          {/* fda */}
           <span>
             <span className="mr-2">Bạn chưa có tài khoản?</span>
             <Link to={"/register"} className="text-red-500 hover:text-red-700" href="#">

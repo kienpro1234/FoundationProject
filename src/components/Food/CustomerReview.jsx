@@ -1,39 +1,37 @@
 import React, { useState } from "react";
 import classes from "./CustomerReview.module.css";
 import { NavLink } from "react-router-dom";
-export default function CustomerReview() {
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { fetchDishRanking } from "../../apis/raking.api";
+import Pagination from "../Pagination/Pagination";
+import useQueryParams from "../../hooks/useQueryParams";
+export default function CustomerReview({ dishId }) {
   const [activeButton, setActiveButton] = useState(null);
   const buttonLabels = ["All", "5 stars", "4 stars", "3 stars", "2 stars", "1 star"];
+  console.log("dishId", dishId);
 
-  //Ví dụ của kind 5 stars
-  const dummyDataFeedback = {
-    id: 0,
-    name: "all",
-    reviews: [
-      {
-        id: 123,
-        reviewer: "Kiendeptrai",
-        avatar:
-          "https://duet-cdn.vox-cdn.com/thumbor/0x0:2370x1574/828x552/filters:focal(1185x787:1186x788):format(webp)/cdn.vox-cdn.com/uploads/chorus_asset/file/20103707/Screen_Shot_2020_07_21_at_9.38.25_AM.png",
-        date: "10 / 7 / 2024",
-        15: 31,
-        stars: 4,
-        comment: "Very delicious",
-        replies: [
-          {
-            id: 456,
-            replier: "MeoMeo",
-            comment: "Thank for your comment",
-          },
-        ],
-      },
-    ],
-  };
+  const queryParams = useQueryParams();
+
+  const rankingQuery = useQuery({
+    queryKey: ["commentList", dishId],
+    queryFn: () => fetchDishRanking(dishId, queryParams),
+    placeholderData: keepPreviousData,
+  });
+
+  console.log("rankingQuery data", rankingQuery.data);
+  let commentList = [];
+  if (rankingQuery.data) {
+    console.log("datata", rankingQuery.data);
+    commentList = rankingQuery.data.data.data.pageContent;
+    console.log("commentList day", commentList);
+  }
 
   const handleButtonClick = (index) => {
     setActiveButton(index);
     //Lấy index hoặc id hoặc tên của kind(5 stars chẳng hạn) , sau đó gửi api đến server lấy về data review thuộc kind này, lưu vào state để render ra giao diện, hoặc thử lưu vào biến data nào đó rồi render ra giao diện được không ?, vì state hiện tại đã có activeButton re-render lại giúp mình rồi
   };
+
+  const currentPath = `/food/${dishId}`;
 
   console.log(activeButton);
   return (
@@ -140,35 +138,36 @@ export default function CustomerReview() {
           </div>
         </div>
       </div>
-      <div className={`${classes["customerRv-feedback"]} `}>
-        <ul>
-          {dummyDataFeedback.reviews.map((feedback, index) => (
-            <li className="row" key={index}>
+
+      <div className={`${classes["customerRv-feedback"]}`}>
+        <ul className="flex-column flex gap-3">
+          {commentList.map((feedback, index) => (
+            <li className="row border-bottom pb-3 last:!border-b-0" key={feedback.rankingId}>
               <div className={`${classes.avatar} col-md-1 col-2`}>
-                <img src={feedback.avatar} alt={feedback.avatar} />
+                <img
+                  src={feedback.user.imageUrl || "default-avatar-url.jpg"}
+                  alt={`${feedback.user.firstName} ${feedback.user.lastName}`}
+                />
               </div>
               <div className={`col-md-11 col-10 ${classes["feedback-content"]}`}>
-                <h3>{feedback.reviewer}</h3>
-                <p>{feedback.date}</p>
-                <span className="star">
-                  {Array.from({ length: feedback.stars }).map((_, index) => (
+                <h3>{`${feedback.user.firstName} ${feedback.user.lastName}`}</h3>
+                <span className="star my-1 inline-block">
+                  {Array.from({ length: feedback.rankingStars }).map((_, index) => (
                     <i key={index} className="fa fa-star"></i>
                   ))}
                 </span>
                 <p>{feedback.comment}</p>
-                <div className={`${classes["feedback-replies"]}`}>
-                  {feedback.replies.map((reply) => (
-                    <div key={reply.id} className={`${classes.reply}`}>
-                      <h3 className={`${classes.replier}`}>{reply.replier}</h3>
-                      <p>{reply.comment}</p>
-                    </div>
-                  ))}
-                </div>
               </div>
             </li>
           ))}
         </ul>
       </div>
+      {/* <UserOrderList orderList={orderList} loadingOrderList={orderListQuery.isFetching} /> */}
+      <Pagination
+        totalPages={rankingQuery?.data?.data?.data.totalPages}
+        queryParams={queryParams}
+        pathname={currentPath}
+      />
     </div>
   );
 }

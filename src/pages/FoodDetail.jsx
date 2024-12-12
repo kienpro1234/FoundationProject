@@ -31,31 +31,26 @@ export default function FoodDetail() {
     },
   });
 
-  console.log("dataDay", data)
+  console.log("dataDay", data);
 
   let content;
 
   if (isError) {
-    content = (
-      <ErrorBlock title={"Something went wrong"} message={error.message} />
-    );
+    content = <ErrorBlock title={"Something went wrong"} message={error.message} />;
   }
 
   if (isLoading) {
     content = <LoadingIndicator />;
   }
 
-  
-
   if (data) {
     const foodCategories = data.categories;
     content = (
       <>
-        <MenuLanding foodCategories={foodCategories}/>
+        <MenuLanding foodCategories={foodCategories} />
         <main className="food-detail-big-screen">
-            <Food food={data} />
-            <CustomerReview />
-            
+          <Food food={data} />
+          <CustomerReview dishId={data.dishId} />
         </main>
       </>
     );

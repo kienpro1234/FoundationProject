@@ -21,6 +21,10 @@ import { CartContextProvider } from "./context/cartContext";
 import { DOMAIN } from "./utils/const";
 import FavFood from "./pages/FavFood/FavFood";
 import FavContextProvider from "./context/favContext";
+import { UserContextProvider } from "./context/userContext";
+import ManageUsers from "./pages/admin/ManageUsers";
+import Bill from "./pages/Bill/Bill";
+import PaymentsList from "./pages/admin/ManagePayments";
 
 function RejectedRoute() {
   const token = getToken();
@@ -32,6 +36,20 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root />,
     children: [
+      {
+        path: "/admin",
+
+        children: [
+          {
+            path: "/admin/payments",
+            element: <PaymentsList />,
+          },
+          {
+            path: "/admin/users",
+            element: <ManageUsers />,
+          },
+        ],
+      },
       {
         index: true,
         // path: "/home",
@@ -87,7 +105,10 @@ const router = createBrowserRouter([
       },
     ],
   },
-
+  {
+    path: "/bill/:paymentId",
+    element: <Bill />,
+  },
   {
     path: "/cart",
     element: <ShoppingCart />,
@@ -105,7 +126,9 @@ function App() {
         <LoginContextProvider>
           <CartContextProvider>
             <FavContextProvider>
-              <RouterProvider router={router} />
+              <UserContextProvider>
+                <RouterProvider router={router} />
+              </UserContextProvider>
             </FavContextProvider>
           </CartContextProvider>
           <ReactQueryDevtools initialIsOpen={false} />

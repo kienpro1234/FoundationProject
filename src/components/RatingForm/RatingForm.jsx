@@ -5,12 +5,38 @@ import { toast } from "react-toastify";
 import { CartContext } from "../../context/cartContext";
 
 import LoadingIndicator from "../UI/LoadingIndicator";
+import { http } from "../../utils/http";
 
 export default function RatingForm({ order }) {
   const [rating, setRating] = useState(0); // Lưu trạng thái ngôi sao được chọn
   const [comment, setComment] = useState("");
   const cencalBtnRef = useRef(null);
   const { userId } = useContext(CartContext);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: rateOrder,
+    onSuccess: (data) => {
+      console.log("dataâ", data);
+      toast.success("Thành công");
+      setComment("");
+      setRating("");
+      cencalBtnRef.current.click();
+    },
+    onError: (err) => {
+      toast.error("Thất bại");
+      console.log("err rrr", err);
+    },
+  });
+
+  const updateRankingStatusMutation = useMutation({
+    mutationFn: async (orderId) => http.patch(`orders/${orderId}/update-rating-status`),
+    onSuccess: (data) => {
+      console.log("update tc", data);
+    },
+    onError: (err) => {
+      console.error("errr", err);
+    },
+  });
 
   // Hàm cập nhật khi người dùng click vào ngôi sao
   const handleStarClick = (index) => {
@@ -35,28 +61,21 @@ export default function RatingForm({ order }) {
       return;
     }
 
-    mutate({
-      comment: comment,
-      rankingStars: rating,
-      dishID: order.dish.dishId,
-      userId: userId,
-    });
+    mutate(
+      {
+        comment: comment,
+        rankingStars: rating,
+        dishID: order.dish.dishId,
+        userId: userId,
+      },
+      {
+        onSuccess: () => {
+          updateRankingStatusMutation.mutate(order.orderId);
+        },
+      },
+    );
   };
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: rateOrder,
-    onSuccess: (data) => {
-      console.log("dataâ", data);
-      toast.success("Thành công");
-      setComment("");
-      setRating("");
-      cencalBtnRef.current.click();
-    },
-    onError: (err) => {
-      toast.error("Thất bại");
-      console.log("err rrr", err);
-    },
-  });
   return (
     <div>
       {isPending && (
@@ -75,7 +94,7 @@ export default function RatingForm({ order }) {
       </div>
 
       {/* Đánh giá sao */}
-      <div className="mt-3 flex-col space-y-2 md:flex-row md:gap-11 md:space-y-0">
+      <div className="mt-3 flex flex-col space-y-2 md:flex-row md:gap-11 md:space-y-0">
         <div>Chất lượng sản phẩm</div>
         <div>
           <div className="flex items-center space-x-2">

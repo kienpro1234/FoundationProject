@@ -19,6 +19,10 @@ import Pagination from "../../components/Pagination/Pagination";
 export default function UserInfo() {
   const queryParams = useQueryParams();
   console.log("query params", queryParams);
+  const newQueryParams = {
+    ...queryParams,
+    pageNo: queryParams.pageNo || 1,
+  };
 
   //Call api kèm theo token để lấy user info
   const token = getToken();
@@ -26,8 +30,8 @@ export default function UserInfo() {
 
   const { userId } = useContext(CartContext);
   const orderListQuery = useQuery({
-    queryKey: ["orderList", queryParams],
-    queryFn: () => fetchOrderList(userId, queryParams),
+    queryKey: ["orderList", newQueryParams],
+    queryFn: () => fetchOrderList(userId, newQueryParams),
     placeholderData: keepPreviousData,
   });
 
@@ -99,7 +103,11 @@ export default function UserInfo() {
           <UserInformation user={data} />
           <div className="max-auto mt-12 h-[1px] bg-slate-500"></div>
           <UserOrderList orderList={orderList} loadingOrderList={orderListQuery.isFetching} />
-          <Pagination totalPages={orderListQuery?.data?.data?.data.totalPages} queryParams={queryParams} />
+          <Pagination
+            totalPages={orderListQuery?.data?.data?.data.totalPages}
+            queryParams={queryParams}
+            pathname={"/userinfo"}
+          />
         </div>
       </>
     );

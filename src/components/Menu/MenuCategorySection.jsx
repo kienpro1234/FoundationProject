@@ -5,14 +5,17 @@ import { formatName, getRoleLS, transformCategoryNameToURL } from "../../utils/u
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DOMAIN } from "../../utils/const";
-import { deleteFood } from "../../apis/foodApi";
+import { deleteFood, editFood } from "../../apis/foodApi";
 import { toast } from "react-toastify";
 import ModalOrdering from "../ModalOrdering/ModalOrdering";
 import { fetchCategoryDetail } from "../../apis/category.api";
 import { FavContext } from "../../context/favContext";
+import EditFoodForm from "../EditFoodForm/EditFoodForm";
 
 export default function MenuCategorySection({ category, catQueryData, catName, searchFoodList, searchName }) {
   const [idToDelete, setIdToDelete] = useState("");
+  const [editingFood, setEditingFood] = useState(null);
+  const [foodToEdit, setFoodToEdit] = useState(null);
   const queryClient = useQueryClient();
   const { favList, addItemToFav, removeItemFromFav } = useContext(FavContext);
 
@@ -55,6 +58,7 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
   let finalCategoryData = [];
   if (categoryData) {
     finalCategoryData = categoryData.data.data;
+    console.log("categoryData.data.data", categoryData.data.data);
   }
 
   if (catQueryData) {
@@ -78,6 +82,18 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
     },
   });
 
+  const editMutation = useMutation({
+    mutationFn: editFood,
+    onSuccess: () => {
+      toast.success("Update food successfully");
+      queryClient.invalidateQueries(["menu"]);
+    },
+    onError: (err) => {
+      console.error("Sửa thất bại", err);
+      toast.error("update food failed");
+    },
+  });
+
   const handleClickDelete = (id) => {
     setIdToDelete(id);
   };
@@ -95,11 +111,30 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
     addItemToFav(food);
   };
 
+  const clickEdit = (food) => () => {
+    setEditingFood(true);
+    setFoodToEdit(food);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingFood(false);
+  };
+
+  const handleSaveEdit = (foodAfterEdit) => {
+    setEditingFood(false);
+
+    editMutation.mutate({
+      id: foodToEdit.dishId,
+      formData: foodAfterEdit,
+    });
+  };
+
   const mostPopularArray = mostPopularData?.map((food) => food.dishName);
   if (searchFoodList && searchFoodList.length === 0)
     return <p className="py-3 text-center font-yummy text-lg text-red-500">Không tìm thấy "{searchName}"</p>;
   return (
     <div className="menu-category">
+      {editingFood && <EditFoodForm food={foodToEdit} onCancel={handleCancelEdit} onSave={handleSaveEdit} />}
       {category && finalCategoryData?.length > 0 && (
         <h3 className={classes.title}>
           {category && <span>{formatName(category?.categoryName.toUpperCase() || "")}</span>}
@@ -172,7 +207,7 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
 
                 {getRoleLS() === "admin" && (
                   <>
-                    <button className={`${classes["foodInfo-edit-btn"]}`}>
+                    <button onClick={clickEdit(food)} className={`${classes["foodInfo-edit-btn"]}`}>
                       <i className="fa-solid fa-pen-to-square"></i>
                     </button>
                     <div>

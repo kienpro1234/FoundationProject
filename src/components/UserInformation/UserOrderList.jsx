@@ -20,7 +20,7 @@ export default function UserOrderList({ orderList, loadingOrderList }) {
             <div key={order.orderId} className="mt-3 space-y-4">
               {/* content */}
               {/* item */}
-              <div className="shadow-orderItem bg-white px-9 py-3 ps-4">
+              <div className="bg-white px-9 py-3 ps-4 shadow-orderItem">
                 <div className="flex items-center justify-between">
                   {/* image */}
                   <div className="flex gap-3">
@@ -46,6 +46,13 @@ export default function UserOrderList({ orderList, loadingOrderList }) {
                   </div>
                 </div>
                 <div className="flex justify-end">
+                  {order?.ratingStatus && (
+                    <Link to={`/food/${order.dish.dishId}`}>
+                      <button className="rounded-lg bg-orange-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-300 dark:focus:ring-orange-900">
+                        Mua lại{" "}
+                      </button>
+                    </Link>
+                  )}
                   <Modal
                     classNameTitle={"text-2xl"}
                     title="Đánh giá món ăn"

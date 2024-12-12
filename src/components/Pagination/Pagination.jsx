@@ -24,8 +24,8 @@ Với range = 2 áp dụng cho khoảng cách đầu, cuối và xung quanh curr
 
 const RANGE = 2;
 
-export default function Pagination({ queryParams, totalPages: pageSize }) {
-  const page = Number(queryParams.pageNo);
+export default function Pagination({ queryParams, totalPages: pageSize, pathname }) {
+  const page = Number(queryParams.pageNo || 1);
 
   const renderPagination = () => {
     let dotAfter = false;
@@ -73,7 +73,7 @@ export default function Pagination({ queryParams, totalPages: pageSize }) {
         return (
           <Link
             to={{
-              pathname: "/userinfo",
+              pathname: pathname,
               search: createSearchParams({
                 pageNo: pageNumber.toString(),
               }).toString(),
@@ -96,7 +96,7 @@ export default function Pagination({ queryParams, totalPages: pageSize }) {
       ) : (
         <Link
           to={{
-            pathname: "/userinfo",
+            pathname: pathname,
             search: createSearchParams({
               ...queryParams,
               pageNo: (page - 1).toString(),
@@ -114,7 +114,7 @@ export default function Pagination({ queryParams, totalPages: pageSize }) {
       ) : (
         <Link
           to={{
-            pathname: "/userinfo",
+            pathname: pathname,
             search: createSearchParams({
               ...queryParams,
               pageNo: (page + 1).toString(),
