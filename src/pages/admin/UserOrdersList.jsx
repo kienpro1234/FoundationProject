@@ -69,7 +69,7 @@ export default function UserOrdersList({ userId, onClose }) {
                     <span
                       className={`rounded-full px-2 py-1 text-xs ${order.status ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
                     >
-                      {order.status ? "Active" : "Inactive"}
+                      {order.status ? "Đã thanh toán" : "Chưa thanh toán"}
                     </span>
                   </td>
                   <td className="whitespace-nowrap px-6 py-4">{order.position.positionName}</td>

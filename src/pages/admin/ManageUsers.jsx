@@ -4,10 +4,12 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { http } from "../../utils/http";
 import { toast } from "react-toastify";
 import UserOrdersList from "./UserOrdersList";
+import UserInfoModal from "./UserInfoModal";
 
 export default function ManageUsers() {
   const [editingUser, setEditingUser] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const [selectedUserForInfo, setSelectedUserForInfo] = useState(null);
 
   // Fetch users
   const {
@@ -93,6 +95,11 @@ export default function ManageUsers() {
   return (
     <div className="menu p-4">
       <h2 className="mb-4 text-2xl font-bold">Manage Users</h2>
+
+      {selectedUserForInfo && (
+        <UserInfoModal userId={selectedUserForInfo} onClose={() => setSelectedUserForInfo(null)} />
+      )}
+
       {selectedUserId && <UserOrdersList userId={selectedUserId} onClose={() => setSelectedUserId(null)} />}
       {/* Edit User Modal */}
       {editingUser && (
@@ -149,8 +156,10 @@ export default function ManageUsers() {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Name</th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Email</th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Phone</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                Contact
+              </th>
+
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Role</th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                 Actions
@@ -160,10 +169,18 @@ export default function ManageUsers() {
           <tbody className="divide-y divide-gray-200 bg-white">
             {userList?.map((user) => (
               <tr key={user.userId}>
+                <td
+                  onClick={() => setSelectedUserForInfo(user.userId)}
+                  className="cursor-pointer whitespace-nowrap px-6 py-4 text-blue-600 hover:text-blue-900"
+                >{`${user.lastName} ${user.firstName}`}</td>
                 <td className="whitespace-nowrap px-6 py-4">{user.emailOrPhone}</td>
-                <td className="whitespace-nowrap px-6 py-4">{user.emailOrPhone}</td>
-                <td className="whitespace-nowrap px-6 py-4">{user.emailOrPhone}</td>
-                <td className="whitespace-nowrap px-6 py-4">{user.roles?.map((role) => role.roleName).join(", ")}</td>
+                <td className="whitespace-nowrap px-6 py-4">
+                  {user.roles?.map((role) => (
+                    <div key={role.roleName} className="whitespace-nowrap">
+                      {role.roleName}
+                    </div>
+                  ))}
+                </td>
                 <td className="space-x-3 whitespace-nowrap px-6 py-4">
                   <button onClick={() => handleViewOrders(user.userId)} className="text-green-600 hover:text-green-900">
                     View Orders

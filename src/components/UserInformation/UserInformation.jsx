@@ -149,7 +149,7 @@ export default function UserInformation({ user }) {
                 ) : (
                   <Fragment>
                     <h3 className="mb-2">Date of birth</h3>
-                    <p>{`${newDate.getDate()}/${newDate.getMonth()}/${newDate.getFullYear()}`}</p>
+                    <p>{`${newDate.getDate()}/${newDate.getMonth() + 1}/${newDate.getFullYear()}`}</p>
                   </Fragment>
                 )}
                 {/* <h3>Name</h3>
@@ -348,7 +348,7 @@ export default function UserInformation({ user }) {
               ) : (
                 <Fragment>
                   <h3 className="mb-2">Date of birth</h3>
-                  <p>{`${newDate.getDate()}/${newDate.getMonth()}/${newDate.getFullYear()}`}</p>
+                  <p>{`${newDate.getDate()}/${newDate.getMonth() + 1}/${newDate.getFullYear()}`}</p>
                 </Fragment>
               )}
             </div>
