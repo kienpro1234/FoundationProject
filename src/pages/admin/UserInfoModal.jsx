@@ -27,7 +27,7 @@ export default function UserInfoModal({ userId, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="w-[600px] rounded-lg bg-white p-6">
+      <div className="w-[700px] rounded-lg bg-white p-6">
         <div className="flex justify-between">
           <h3 className="mb-4 text-xl font-bold">User Information</h3>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
@@ -35,7 +35,7 @@ export default function UserInfoModal({ userId, onClose }) {
           </button>
         </div>
 
-        <div className="flex gap-6">
+        <div className="flex">
           <div className="w-1/3">
             <img
               src={user?.imageUrl}
@@ -45,15 +45,15 @@ export default function UserInfoModal({ userId, onClose }) {
           </div>
 
           <div className="w-2/3">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3">
               <div>
                 <p className="text-sm text-gray-500">Full Name</p>
-                <p className="font-medium">{`${user?.lastName} ${user?.firstName}`}</p>
+                <p className="font-medium">{`${user?.lastName || ""} ${user?.firstName || ""}`}</p>
               </div>
 
               <div>
                 <p className="text-sm text-gray-500">Email/Phone</p>
-                <p className="font-medium">{user?.emailOrPhone}</p>
+                <p className="break-words font-medium">{user?.emailOrPhone}</p>
               </div>
 
               <div>

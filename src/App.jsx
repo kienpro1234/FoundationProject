@@ -25,6 +25,7 @@ import { UserContextProvider } from "./context/userContext";
 import ManageUsers from "./pages/admin/ManageUsers";
 import Bill from "./pages/Bill/Bill";
 import PaymentsList from "./pages/admin/ManagePayments";
+import ManageTable from "./pages/admin/ManageTables";
 
 function RejectedRoute() {
   const token = getToken();
@@ -41,12 +42,20 @@ const router = createBrowserRouter([
 
         children: [
           {
+            index: true,
+            element: <Navigate to={"/admin/users"} />,
+          },
+          {
             path: "/admin/payments",
             element: <PaymentsList />,
           },
           {
             path: "/admin/users",
             element: <ManageUsers />,
+          },
+          {
+            path: "/admin/tables",
+            element: <ManageTable />,
           },
         ],
       },

@@ -5,6 +5,7 @@ import { http } from "../../utils/http";
 import { toast } from "react-toastify";
 import UserOrdersList from "./UserOrdersList";
 import UserInfoModal from "./UserInfoModal";
+import AdminNavbar from "./AdminNavbar";
 
 export default function ManageUsers() {
   const [editingUser, setEditingUser] = useState(null);
@@ -93,6 +94,8 @@ export default function ManageUsers() {
   }
 
   return (
+    <div>
+      <AdminNavbar />
     <div className="menu p-4">
       <h2 className="mb-4 text-2xl font-bold">Manage Users</h2>
 
@@ -172,7 +175,9 @@ export default function ManageUsers() {
                 <td
                   onClick={() => setSelectedUserForInfo(user.userId)}
                   className="cursor-pointer whitespace-nowrap px-6 py-4 text-blue-600 hover:text-blue-900"
-                >{`${user.lastName} ${user.firstName}`}</td>
+                >
+                  {`${user.lastName || ""} ${user.firstName || ""}`} {!user.lastName && !user.firstName && "Guest"}
+                </td>
                 <td className="whitespace-nowrap px-6 py-4">{user.emailOrPhone}</td>
                 <td className="whitespace-nowrap px-6 py-4">
                   {user.roles?.map((role) => (
@@ -197,6 +202,7 @@ export default function ManageUsers() {
           </tbody>
         </table>
       </div>
+    </div>
     </div>
   );
 }

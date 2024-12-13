@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { Fragment, useContext, useEffect, useRef, useState } from "react";
 import classes from "./Header.module.css";
 import { createSearchParams, Link, useLocation, useNavigate } from "react-router-dom";
 import { getRoleLS, getToken } from "../../utils/util";
@@ -7,6 +7,7 @@ import AddFoodForm from "../AddFood/AddFoodForm";
 import { toast } from "react-toastify";
 import { FavContext } from "../../context/favContext";
 import { CartContext } from "../../context/cartContext";
+import { RiAdminFill } from "react-icons/ri";
 
 //THêm class riêng cho esapase, tắt luôn, chứ k chờ
 export default function Header({ className, ...props }) {
@@ -190,23 +191,32 @@ export default function Header({ className, ...props }) {
         )}
       </div>
       {role === "admin" && (
-        <div className={classes["header-addFood"]}>
-          {/* Button kích hoạt Modal */}
-          <Modal
-            title="Thêm mới dữ liệu"
-            id="addModal"
-            size="lg" // md, sm
-            triggeredButton={
-              <button>
-                <i className="fa-solid fa-plus"></i>
-              </button>
-            }
-          >
-            {/* Nội dung bên trong modal */}
-            {/* component form sẽ thêm ở đây  */}
-            <AddFoodForm />
-          </Modal>
-        </div>
+        <Fragment>
+          <div className={classes["header-addFood"]}>
+            {/* Button kích hoạt Modal */}
+            <Modal
+              title="Thêm mới dữ liệu"
+              id="addModal"
+              size="lg" // md, sm
+              triggeredButton={
+                <button>
+                  <i className="fa-solid fa-plus"></i>
+                </button>
+              }
+            >
+              {/* Nội dung bên trong modal */}
+              {/* component form sẽ thêm ở đây  */}
+              <AddFoodForm />
+            </Modal>
+          </div>
+          <div className={`${classes["header-cart"]} relative`}>
+            <button className="flex items-center justify-center">
+              <Link to={"/admin"}>
+                <RiAdminFill color="white" />
+              </Link>
+            </button>
+          </div>
+        </Fragment>
       )}
     </div>
   );

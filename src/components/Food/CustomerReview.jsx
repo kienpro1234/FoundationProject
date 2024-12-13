@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import classes from "./CustomerReview.module.css";
-import { NavLink } from "react-router-dom";
+import { createSearchParams, NavLink, useNavigate } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchDishRanking } from "../../apis/raking.api";
 import Pagination from "../Pagination/Pagination";
@@ -11,6 +11,7 @@ export default function CustomerReview({ dishId }) {
   console.log("dishId", dishId);
 
   const queryParams = useQueryParams();
+  const navigate = useNavigate();
 
   const rankingQuery = useQuery({
     queryKey: ["commentList", dishId],
@@ -29,6 +30,13 @@ export default function CustomerReview({ dishId }) {
   const handleButtonClick = (index) => {
     setActiveButton(index);
     //Lấy index hoặc id hoặc tên của kind(5 stars chẳng hạn) , sau đó gửi api đến server lấy về data review thuộc kind này, lưu vào state để render ra giao diện, hoặc thử lưu vào biến data nào đó rồi render ra giao diện được không ?, vì state hiện tại đã có activeButton re-render lại giúp mình rồi
+    // navigate({
+    //   pathname: `/food${dishId}`,
+    //   search: createSearchParams({
+    //     ...queryParams,
+
+    //   })
+    // })
   };
 
   const currentPath = `/food/${dishId}`;
