@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { http } from "../../utils/http";
+import AdminNavbar from "./AdminNavbar";
 
 const fetchTables = async () => {
   console.log("fetching tables");
@@ -53,50 +54,53 @@ const TableOrders = () => {
   if (tablesError) return <div className="!ml-[200px] p-6">Error loading tables: {tablesError.message}</div>;
 
   return (
-    <div className="!ml-[200px] p-4">
-      {/* Tables Navigation */}
-      <div className="mb-6 flex gap-4 overflow-x-auto">
-        {tables.map((table) => (
-          <button
-            key={table.positionId}
-            onClick={() => setSelectedTable(table.positionId)}
-            className={`rounded-lg px-4 py-2 capitalize ${
-              selectedTable === table.positionId ? "bg-blue-600 text-white" : "bg-gray-200 hover:bg-gray-300"
-            }`}
-          >
-            {table.positionName}
-          </button>
-        ))}
-      </div>
-
-      {/* Orders Display */}
-      {isOrdersLoading ? (
-        <div>Loading orders...</div>
-      ) : ordersError ? (
-        <div>Error loading orders: {ordersError.message}</div>
-      ) : (
-        <div className="grid gap-4">
-          {orders.map((order) => (
-            <div key={order.orderId} className="rounded-lg border p-4 shadow-sm">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="font-bold">{order.dish.dishName}</h3>
-                  <p>Quantity: {order.quantity}</p>
-                  <p>Cooking Time: {order.timeServing} mins</p>
-                  <p>Total Price: ${order.totalPrice}</p>
-                  <p>Status: {order.orderStatus ? "Completed" : "Pending"}</p>
-                </div>
-                <img src={order.dish.image} alt={order.dish.dishName} className="size-32 rounded object-cover" />
-              </div>
-              <div className="mt-2 text-sm text-gray-600">
-                <p>Customer: {order.user.emailOrPhone}</p>
-                <p>Table: {order.position.positionName}</p>
-              </div>
-            </div>
+    <div>
+      <AdminNavbar />
+      <div className="!ml-[200px] p-4">
+        {/* Tables Navigation */}
+        <div className="mb-6 flex gap-4 overflow-x-auto">
+          {tables.map((table) => (
+            <button
+              key={table.positionId}
+              onClick={() => setSelectedTable(table.positionId)}
+              className={`rounded-lg px-4 py-2 capitalize ${
+                selectedTable === table.positionId ? "bg-blue-600 text-white" : "bg-gray-200 hover:bg-gray-300"
+              }`}
+            >
+              {table.positionName}
+            </button>
           ))}
-          {orders.length === 0 && <div className="text-center text-gray-500">No orders for this table</div>}
         </div>
-      )}
+
+        {/* Orders Display */}
+        {isOrdersLoading ? (
+          <div>Loading orders...</div>
+        ) : ordersError ? (
+          <div>Error loading orders: {ordersError.message}</div>
+        ) : (
+          <div className="grid gap-4">
+            {orders.map((order) => (
+              <div key={order.orderId} className="rounded-lg border p-4 shadow-sm">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h3 className="font-bold">{order.dish.dishName}</h3>
+                    <p>Quantity: {order.quantity}</p>
+                    <p>Cooking Time: {order.timeServing} mins</p>
+                    <p>Total Price: ${order.totalPrice}</p>
+                    <p>Status: {order.orderStatus ? "Completed" : "Pending"}</p>
+                  </div>
+                  <img src={order.dish.image} alt={order.dish.dishName} className="size-32 rounded object-cover" />
+                </div>
+                <div className="mt-2 text-sm text-gray-600">
+                  <p>Customer: {order.user.emailOrPhone}</p>
+                  <p>Table: {order.position.positionName}</p>
+                </div>
+              </div>
+            ))}
+            {orders.length === 0 && <div className="text-center text-gray-500">No orders for this table</div>}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

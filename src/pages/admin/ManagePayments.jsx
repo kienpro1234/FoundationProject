@@ -2,6 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 
 import { http } from "../../utils/http";
 import AdminNavbar from "./AdminNavbar";
+import { useState } from "react";
+import UserInfoModal from "./UserInfoModal";
+import { formatVietnamCurrency } from "../../utils/util";
 
 const fetchPayments = async () => {
   const response = await http.get("payments");
@@ -9,6 +12,7 @@ const fetchPayments = async () => {
 };
 
 const PaymentsList = () => {
+  const [selectedUserForInfo, setSelectedUserForInfo] = useState(null);
   const {
     data: paymentsData,
     isLoading,
@@ -30,24 +34,29 @@ const PaymentsList = () => {
   return (
     <div>
       <AdminNavbar />
-      <div className="container mx-auto !ml-[200px] px-4 py-8">
+      {selectedUserForInfo && (
+        <UserInfoModal userId={selectedUserForInfo} onClose={() => setSelectedUserForInfo(null)} />
+      )}
+      <div className="!ml-[200px] px-4 py-8">
         <h1 className="mb-6 text-2xl font-bold">User Payments</h1>
 
         <div className="overflow-x-auto">
           <table className="min-w-full rounded-lg bg-white shadow-md">
             <thead className="bg-gray-100">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="w-fit px-6 py-3 pr-0 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Payment ID
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">User</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="w-fit px-6 py-3 pr-0 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  User
+                </th>
+                <th className="w-fit px-6 py-3 pr-0 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Method
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="w-fit px-6 py-3 pr-0 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Amount
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="w-fit px-6 py-3 pr-0 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Email
                 </th>
               </tr>
@@ -55,9 +64,12 @@ const PaymentsList = () => {
             <tbody className="divide-y divide-gray-200">
               {payments.map((payment) => (
                 <tr key={payment.paymentId} className="hover:bg-gray-50">
-                  <td className="whitespace-nowrap px-6 py-4">{payment.paymentId}</td>
-                  <td className="whitespace-nowrap px-6 py-4">
-                    <div className="flex items-center">
+                  <td className="w-fit whitespace-nowrap px-6 py-4">{payment.paymentId}</td>
+                  <td className="w-fit whitespace-nowrap px-6 py-4">
+                    <div
+                      className="flex cursor-pointer items-center text-blue-600 hover:text-blue-900"
+                      onClick={() => setSelectedUserForInfo(payment.user.userId)}
+                    >
                       <img
                         src={payment.user.imageUrl}
                         alt={`${payment.user.firstName} ${payment.user.lastName}`}
@@ -68,9 +80,9 @@ const PaymentsList = () => {
                       </span>
                     </div>
                   </td>
-                  <td className="whitespace-nowrap px-6 py-4">{payment.paymentMethod}</td>
-                  <td className="whitespace-nowrap px-6 py-4">${payment.amount.toFixed(2)}</td>
-                  <td className="whitespace-nowrap px-6 py-4">{payment.user.emailOrPhone}</td>
+                  <td className="w-fit whitespace-nowrap px-6 py-4">{payment.paymentMethod}</td>
+                  <td className="w-fit whitespace-nowrap px-6 py-4">{formatVietnamCurrency(payment.amount)}</td>
+                  <td className="w-fit whitespace-nowrap px-6 py-4">{payment.user.emailOrPhone}</td>
                 </tr>
               ))}
             </tbody>

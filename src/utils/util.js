@@ -94,3 +94,9 @@ export const isPhoneNumber = (phoneNumber) => {
 export const transformCategoryNameToURL = (categoryName) => {
   return categoryName.replace(" ", "%20").toLowerCase().trim();
 };
+
+export const formatVietnamCurrency = (amount) => {
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'decimal',
+  }).format(amount) + 'đ';
+};

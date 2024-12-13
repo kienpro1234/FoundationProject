@@ -42,7 +42,7 @@ export default function EditFoodForm({ food, onCancel, onSave }) {
       <div className="max-h-[90vh] w-[800px] overflow-y-auto rounded-lg bg-white p-6">
         <div className="top-0 z-10 mb-4 flex items-center justify-between bg-white pb-4">
           <h2 className="text-xl font-bold">Edit Food Item</h2>
-          <button className="text-gray-500 hover:text-gray-700">
+          <button onClick={onCancel} className="text-gray-500 hover:text-gray-700">
             <i className="fa-solid fa-times"></i>
           </button>
         </div>

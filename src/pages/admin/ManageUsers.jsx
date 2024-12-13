@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import UserOrdersList from "./UserOrdersList";
 import UserInfoModal from "./UserInfoModal";
 import AdminNavbar from "./AdminNavbar";
+import LoadingModal from "../../components/LoadingModal/LoadingModal";
 
 export default function ManageUsers() {
   const [editingUser, setEditingUser] = useState(null);
@@ -38,7 +39,7 @@ export default function ManageUsers() {
   // Delete user mutation
   const deleteUserMutation = useMutation({
     mutationFn: async (userId) => {
-      return http.delete(`/users/${userId}`);
+      return http.delete(`users/${userId}`);
     },
     onSuccess: () => {
       toast.success("User deleted successfully");
@@ -53,7 +54,7 @@ export default function ManageUsers() {
   // Update user mutation
   const updateUserMutation = useMutation({
     mutationFn: async (userData) => {
-      return http.put(`/users/${userData.userId}`, userData);
+      return http.put(`users/${userData.userId}`, userData);
     },
     onSuccess: () => {
       toast.success("User updated successfully");
@@ -73,7 +74,35 @@ export default function ManageUsers() {
   };
 
   const handleEdit = (user) => {
-    setEditingUser({ ...user });
+    setEditingUser({
+      ...user,
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      imageUrl: user?.imageUrl,
+      emailOrPhone: user?.emailOrPhone,
+      address: user?.address,
+      gender: user?.gender,
+      dob: user?.dob,
+    });
+  };
+
+  const handleSubmitUserEdit = () => {
+    let valid = true;
+    console.log("userEdit", editingUser);
+    for (let key in editingUser) {
+      console.log(`Key: ${key}, Value:`, editingUser[key]);
+      if (editingUser[key] === "") {
+        valid = false;
+        toast.error("Không được bỏ trống trường nào!", { position: "top-center" });
+        break;
+      }
+    }
+
+    if (!valid) {
+      return;
+    }
+
+    updateUserMutation.mutate(editingUser);
   };
 
   const handleUpdate = (e) => {
@@ -96,113 +125,196 @@ export default function ManageUsers() {
   return (
     <div>
       <AdminNavbar />
-    <div className="menu p-4">
-      <h2 className="mb-4 text-2xl font-bold">Manage Users</h2>
+      <div className="menu p-4">
+        <h2 className="mb-4 text-2xl font-bold">Manage Users</h2>
 
-      {selectedUserForInfo && (
-        <UserInfoModal userId={selectedUserForInfo} onClose={() => setSelectedUserForInfo(null)} />
-      )}
+        {deleteUserMutation.isPending && <LoadingModal />}
+        {updateUserMutation.isPending && <LoadingModal />}
+        {selectedUserForInfo && (
+          <UserInfoModal userId={selectedUserForInfo} onClose={() => setSelectedUserForInfo(null)} />
+        )}
 
-      {selectedUserId && <UserOrdersList userId={selectedUserId} onClose={() => setSelectedUserId(null)} />}
-      {/* Edit User Modal */}
-      {editingUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-96 rounded-lg bg-white p-6">
-            <h3 className="mb-4 text-xl font-bold">Edit User</h3>
-            <form onSubmit={handleUpdate}>
-              <div className="mb-4">
-                <label className="mb-1 block text-sm font-medium">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={editingUser.name || ""}
-                  onChange={handleInputChange}
-                  className="w-full rounded border p-2"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="mb-1 block text-sm font-medium">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={editingUser.email || ""}
-                  onChange={handleInputChange}
-                  className="w-full rounded border p-2"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="mb-1 block text-sm font-medium">Phone</label>
-                <input
-                  type="text"
-                  name="phone"
-                  value={editingUser.phone || ""}
-                  onChange={handleInputChange}
-                  className="w-full rounded border p-2"
-                />
-              </div>
-              <div className="flex justify-end gap-2">
-                <button type="button" onClick={() => setEditingUser(null)} className="rounded bg-gray-200 px-4 py-2">
-                  Cancel
-                </button>
-                <button type="submit" className="rounded bg-blue-500 px-4 py-2 text-white">
-                  Save Changes
-                </button>
-              </div>
-            </form>
+        {selectedUserId && <UserOrdersList userId={selectedUserId} onClose={() => setSelectedUserId(null)} />}
+        {/* Edit User Modal */}
+        {editingUser && (
+          <div className="fixed inset-0 z-30 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="max-h-[563px] w-[700px] overflow-auto rounded-lg bg-white p-6">
+              <h3 className="mb-4 text-xl font-bold">Edit User</h3>
+              <form onSubmit={handleUpdate}>
+                <div className="mb-4">
+                  <label className="mb-1 block text-sm font-medium">First Name</label>
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={editingUser.firstName || ""}
+                    onChange={handleInputChange}
+                    className="w-full rounded border p-2"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="mb-1 block text-sm font-medium">Last Name</label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={editingUser.lastName || ""}
+                    onChange={handleInputChange}
+                    className="w-full rounded border p-2"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="mb-1 block text-sm font-medium">Image URL</label>
+                  <input
+                    type="text"
+                    name="imageUrl"
+                    value={editingUser.imageUrl || ""}
+                    onChange={handleInputChange}
+                    className="w-full rounded border p-2"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="mb-1 block text-sm font-medium">Email/Phone</label>
+                  <input
+                    type="text"
+                    name="emailOrPhone"
+                    value={editingUser.emailOrPhone || ""}
+                    onChange={handleInputChange}
+                    className="w-full rounded border p-2"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="mb-1 block text-sm font-medium">Address</label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={editingUser.address || ""}
+                    onChange={handleInputChange}
+                    className="w-full rounded border p-2"
+                  />
+                </div>
+
+                <div>
+                  <span className="block text-lg font-medium text-gray-700">Giới tính:</span>
+                  <div className="mt-2 flex items-center space-x-4">
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="Male"
+                        checked={editingUser.gender === "Male"}
+                        onChange={handleInputChange}
+                        className="form-radio h-4 w-4 text-blue-600"
+                      />
+                      <span>Nam</span>
+                    </label>
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="Female"
+                        checked={editingUser.gender === "Female"}
+                        onChange={handleInputChange}
+                        className="form-radio h-4 w-4 text-pink-600"
+                      />
+                      <span>Nữ</span>
+                    </label>
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="Other"
+                        checked={editingUser.gender === "Other"}
+                        onChange={handleInputChange}
+                        className="form-radio h-4 w-4 text-gray-600"
+                      />
+                      <span>Khác</span>
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="date" className="block text-lg font-medium text-gray-700">
+                    Chọn ngày:
+                  </label>
+                  <input
+                    type="date"
+                    id="date"
+                    name="dob"
+                    value={editingUser.dob}
+                    onChange={handleInputChange}
+                    className="w-full rounded-lg border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+
+                <div className="flex justify-end gap-2">
+                  <button type="button" onClick={() => setEditingUser(null)} className="rounded bg-gray-200 px-4 py-2">
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleSubmitUserEdit}
+                    type="button"
+                    className="rounded bg-blue-500 px-4 py-2 text-white"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Users Table */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full rounded-lg bg-white shadow-md">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Name</th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                Contact
-              </th>
+        {/* Users Table */}
+        <div className="overflow-x-auto">
+          <table className="min-w-full rounded-lg bg-white shadow-md">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  Contact
+                </th>
 
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Role</th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200 bg-white">
-            {userList?.map((user) => (
-              <tr key={user.userId}>
-                <td
-                  onClick={() => setSelectedUserForInfo(user.userId)}
-                  className="cursor-pointer whitespace-nowrap px-6 py-4 text-blue-600 hover:text-blue-900"
-                >
-                  {`${user.lastName || ""} ${user.firstName || ""}`} {!user.lastName && !user.firstName && "Guest"}
-                </td>
-                <td className="whitespace-nowrap px-6 py-4">{user.emailOrPhone}</td>
-                <td className="whitespace-nowrap px-6 py-4">
-                  {user.roles?.map((role) => (
-                    <div key={role.roleName} className="whitespace-nowrap">
-                      {role.roleName}
-                    </div>
-                  ))}
-                </td>
-                <td className="space-x-3 whitespace-nowrap px-6 py-4">
-                  <button onClick={() => handleViewOrders(user.userId)} className="text-green-600 hover:text-green-900">
-                    View Orders
-                  </button>
-                  <button onClick={() => handleEdit(user)} className="mr-3 text-blue-600 hover:text-blue-900">
-                    Edit
-                  </button>
-                  <button onClick={() => handleDelete(user.userId)} className="text-red-600 hover:text-red-900">
-                    Delete
-                  </button>
-                </td>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Role</th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  Actions
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-200 bg-white">
+              {userList?.map((user) => (
+                <tr key={user.userId}>
+                  <td
+                    onClick={() => setSelectedUserForInfo(user.userId)}
+                    className="cursor-pointer whitespace-nowrap px-6 py-4 text-blue-600 hover:text-blue-900"
+                  >
+                    {`${user.lastName || ""} ${user.firstName || ""}`} {!user.lastName && !user.firstName && "Guest"}
+                  </td>
+                  <td className="whitespace-nowrap px-6 py-4">{user.emailOrPhone}</td>
+                  <td className="whitespace-nowrap px-6 py-4">
+                    {user.roles?.map((role) => (
+                      <div key={role.roleName} className="whitespace-nowrap">
+                        {role.roleName}
+                      </div>
+                    ))}
+                  </td>
+                  <td className="space-x-3 whitespace-nowrap px-6 py-4">
+                    <button
+                      onClick={() => handleViewOrders(user.userId)}
+                      className="text-green-600 hover:text-green-900"
+                    >
+                      View Orders
+                    </button>
+                    <button onClick={() => handleEdit(user)} className="mr-3 text-blue-600 hover:text-blue-900">
+                      Edit
+                    </button>
+                    <button onClick={() => handleDelete(user.userId)} className="text-red-600 hover:text-red-900">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
     </div>
   );
 }

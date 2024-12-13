@@ -11,6 +11,7 @@ import ModalOrdering from "../ModalOrdering/ModalOrdering";
 import { fetchCategoryDetail } from "../../apis/category.api";
 import { FavContext } from "../../context/favContext";
 import EditFoodForm from "../EditFoodForm/EditFoodForm";
+import LoadingIndicator from "../UI/LoadingIndicator";
 
 export default function MenuCategorySection({ category, catQueryData, catName, searchFoodList, searchName }) {
   const [idToDelete, setIdToDelete] = useState("");
@@ -121,6 +122,7 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
   };
 
   const handleSaveEdit = (foodAfterEdit) => {
+    console.log("foodAfterEdit", foodAfterEdit);
     setEditingFood(false);
 
     editMutation.mutate({
@@ -134,6 +136,13 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
     return <p className="py-3 text-center font-yummy text-lg text-red-500">Không tìm thấy "{searchName}"</p>;
   return (
     <div className="menu-category">
+      {editMutation.isPending && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="relative translate-x-20">
+            <LoadingIndicator />
+          </div>
+        </div>
+      )}
       {editingFood && <EditFoodForm food={foodToEdit} onCancel={handleCancelEdit} onSave={handleSaveEdit} />}
       {category && finalCategoryData?.length > 0 && (
         <h3 className={classes.title}>
