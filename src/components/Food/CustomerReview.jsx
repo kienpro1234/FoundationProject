@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import classes from "./CustomerReview.module.css";
 import { createSearchParams, NavLink, useNavigate } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { fetchDishRanking } from "../../apis/raking.api";
+import { fetchAllDishRanking, fetchDishRanking } from "../../apis/raking.api";
 import Pagination from "../Pagination/Pagination";
 import useQueryParams from "../../hooks/useQueryParams";
+import LoadingIndicator from "../UI/LoadingIndicator";
 export default function CustomerReview({ dishId }) {
   const [activeButton, setActiveButton] = useState(null);
   const buttonLabels = ["All", "5 stars", "4 stars", "3 stars", "2 stars", "1 star"];
@@ -14,14 +15,31 @@ export default function CustomerReview({ dishId }) {
   const navigate = useNavigate();
 
   const rankingQuery = useQuery({
-    queryKey: ["commentList", dishId],
+    queryKey: ["commentList", { dishId, queryParams }],
     queryFn: () => fetchDishRanking(dishId, queryParams),
-    placeholderData: keepPreviousData,
+    enabled: !!queryParams?.rankingStars,
   });
+
+  const rankingFetchAllQuery = useQuery({
+    queryKey: ["commentList"],
+    queryFn: () => fetchAllDishRanking(dishId, queryParams),
+  });
+
+  useEffect(() => {
+    if (queryParams?.rankingStars) {
+      setActiveButton(6 - queryParams.rankingStars);
+    } else {
+      setActiveButton(0);
+    }
+  }, [queryParams?.rankingStars]);
 
   console.log("rankingQuery data", rankingQuery.data);
   let commentList = [];
-  if (rankingQuery.data) {
+  if (rankingFetchAllQuery.data && !queryParams.rankingStars) {
+    commentList = rankingFetchAllQuery.data.data.data.pageContent;
+  }
+
+  if (rankingQuery.data && queryParams.rankingStars) {
     console.log("datata", rankingQuery.data);
     commentList = rankingQuery.data.data.data.pageContent;
     console.log("commentList day", commentList);
@@ -29,14 +47,18 @@ export default function CustomerReview({ dishId }) {
 
   const handleButtonClick = (index) => {
     setActiveButton(index);
-    //Lấy index hoặc id hoặc tên của kind(5 stars chẳng hạn) , sau đó gửi api đến server lấy về data review thuộc kind này, lưu vào state để render ra giao diện, hoặc thử lưu vào biến data nào đó rồi render ra giao diện được không ?, vì state hiện tại đã có activeButton re-render lại giúp mình rồi
-    // navigate({
-    //   pathname: `/food${dishId}`,
-    //   search: createSearchParams({
-    //     ...queryParams,
-
-    //   })
-    // })
+    // Lấy index hoặc id hoặc tên của kind(5 stars chẳng hạn) , sau đó gửi api đến server lấy về data review thuộc kind này, lưu vào state để render ra giao diện, hoặc thử lưu vào biến data nào đó rồi render ra giao diện được không ?, vì state hiện tại đã có activeButton re-render lại giúp mình rồi
+    if (index === 0) {
+      navigate(`/food/${dishId}`);
+    } else {
+      navigate({
+        pathname: `/food/${dishId}`,
+        search: createSearchParams({
+          ...queryParams,
+          rankingStars: Number(6 - index),
+        }).toString(),
+      });
+    }
   };
 
   const currentPath = `/food/${dishId}`;
@@ -146,36 +168,42 @@ export default function CustomerReview({ dishId }) {
           </div>
         </div>
       </div>
+      {rankingQuery.isLoading || rankingFetchAllQuery.isLoading ? (
+        <LoadingIndicator />
+      ) : (
+        <Fragment>
+          <div className={`${classes["customerRv-feedback"]}`}>
+            <ul className="flex-column flex gap-3">
+              {commentList.map((feedback, index) => (
+                <li className="row border-bottom pb-3 last:!border-b-0" key={feedback.rankingId}>
+                  <div className={`${classes.avatar} col-md-1 col-2`}>
+                    <img
+                      src={feedback.user.imageUrl || "default-avatar-url.jpg"}
+                      alt={`${feedback.user.firstName} ${feedback.user.lastName}`}
+                    />
+                  </div>
+                  <div className={`col-md-11 col-10 ${classes["feedback-content"]}`}>
+                    <h3>{`${feedback.user.firstName} ${feedback.user.lastName}`}</h3>
+                    <span className="star my-1 inline-block">
+                      {Array.from({ length: feedback.rankingStars }).map((_, index) => (
+                        <i key={index} className="fa fa-star"></i>
+                      ))}
+                    </span>
+                    <p>{feedback.comment}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <Pagination
+            totalPages={rankingQuery?.data?.data?.data.totalPages}
+            queryParams={queryParams}
+            pathname={currentPath}
+          />
+        </Fragment>
+      )}
 
-      <div className={`${classes["customerRv-feedback"]}`}>
-        <ul className="flex-column flex gap-3">
-          {commentList.map((feedback, index) => (
-            <li className="row border-bottom pb-3 last:!border-b-0" key={feedback.rankingId}>
-              <div className={`${classes.avatar} col-md-1 col-2`}>
-                <img
-                  src={feedback.user.imageUrl || "default-avatar-url.jpg"}
-                  alt={`${feedback.user.firstName} ${feedback.user.lastName}`}
-                />
-              </div>
-              <div className={`col-md-11 col-10 ${classes["feedback-content"]}`}>
-                <h3>{`${feedback.user.firstName} ${feedback.user.lastName}`}</h3>
-                <span className="star my-1 inline-block">
-                  {Array.from({ length: feedback.rankingStars }).map((_, index) => (
-                    <i key={index} className="fa fa-star"></i>
-                  ))}
-                </span>
-                <p>{feedback.comment}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
       {/* <UserOrderList orderList={orderList} loadingOrderList={orderListQuery.isFetching} /> */}
-      <Pagination
-        totalPages={rankingQuery?.data?.data?.data.totalPages}
-        queryParams={queryParams}
-        pathname={currentPath}
-      />
     </div>
   );
 }

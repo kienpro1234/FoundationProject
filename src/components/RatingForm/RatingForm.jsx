@@ -8,6 +8,7 @@ import LoadingIndicator from "../UI/LoadingIndicator";
 import { http } from "../../utils/http";
 
 export default function RatingForm({ order }) {
+  console.log("order", order);
   const queryClient = useQueryClient();
   const [rating, setRating] = useState(0); // Lưu trạng thái ngôi sao được chọn
   const [comment, setComment] = useState("");
@@ -21,6 +22,7 @@ export default function RatingForm({ order }) {
       toast.success("Thành công");
       setComment("");
       setRating("");
+      // queryClient.invalidateQueries(["userinfo"]);
       cencalBtnRef.current.click();
     },
     onError: (err) => {
@@ -30,7 +32,7 @@ export default function RatingForm({ order }) {
   });
 
   const updateRankingStatusMutation = useMutation({
-    mutationFn: async (orderId) => http.patch(`orders/${orderId}/update-rating-status`),
+    mutationFn: async () => http.patch(`orders/${order.orderId}/update-rating-status`),
     onSuccess: (data) => {
       console.log("update tc", data);
       queryClient.invalidateQueries(["userinfo"]);
@@ -72,7 +74,7 @@ export default function RatingForm({ order }) {
       },
       {
         onSuccess: () => {
-          updateRankingStatusMutation.mutate(order.orderId);
+          updateRankingStatusMutation.mutate();
         },
       },
     );
