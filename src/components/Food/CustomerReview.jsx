@@ -6,6 +6,7 @@ import { fetchAllDishRanking, fetchDishRanking } from "../../apis/raking.api";
 import Pagination from "../Pagination/Pagination";
 import useQueryParams from "../../hooks/useQueryParams";
 import LoadingIndicator from "../UI/LoadingIndicator";
+import omit from "lodash/omit";
 export default function CustomerReview({ dishId }) {
   const [activeButton, setActiveButton] = useState(null);
   const buttonLabels = ["All", "5 stars", "4 stars", "3 stars", "2 stars", "1 star"];
@@ -21,7 +22,7 @@ export default function CustomerReview({ dishId }) {
   });
 
   const rankingFetchAllQuery = useQuery({
-    queryKey: ["commentList"],
+    queryKey: ["commentList", queryParams],
     queryFn: () => fetchAllDishRanking(dishId, queryParams),
   });
 
@@ -35,14 +36,17 @@ export default function CustomerReview({ dishId }) {
 
   console.log("rankingQuery data", rankingQuery.data);
   let commentList = [];
+  let totalPage = 0;
   if (rankingFetchAllQuery.data && !queryParams.rankingStars) {
     commentList = rankingFetchAllQuery.data.data.data.pageContent;
+    totalPage = rankingFetchAllQuery.data.data.data.totalPages;
+    console.log("totalpage", rankingFetchAllQuery.data.data.data.totalPages);
   }
 
   if (rankingQuery.data && queryParams.rankingStars) {
-    console.log("datata", rankingQuery.data);
     commentList = rankingQuery.data.data.data.pageContent;
-    console.log("commentList day", commentList);
+    totalPage = rankingQuery.data.data.data.totalPages;
+    console.log("total page", rankingQuery.data.data.data.totalPages);
   }
 
   const handleButtonClick = (index) => {
@@ -53,10 +57,15 @@ export default function CustomerReview({ dishId }) {
     } else {
       navigate({
         pathname: `/food/${dishId}`,
-        search: createSearchParams({
-          ...queryParams,
-          rankingStars: Number(6 - index),
-        }).toString(),
+        search: createSearchParams(
+          omit(
+            {
+              ...queryParams,
+              rankingStars: Number(6 - index),
+            },
+            ["pageNo"],
+          ),
+        ).toString(),
       });
     }
   };
@@ -195,11 +204,7 @@ export default function CustomerReview({ dishId }) {
               ))}
             </ul>
           </div>
-          <Pagination
-            totalPages={rankingQuery?.data?.data?.data.totalPages}
-            queryParams={queryParams}
-            pathname={currentPath}
-          />
+          <Pagination totalPages={totalPage} queryParams={queryParams} pathname={currentPath} />
         </Fragment>
       )}
 
