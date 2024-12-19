@@ -10,7 +10,6 @@ import omit from "lodash/omit";
 export default function CustomerReview({ dishId }) {
   const [activeButton, setActiveButton] = useState(null);
   const buttonLabels = ["All", "5 stars", "4 stars", "3 stars", "2 stars", "1 star"];
-  console.log("dishId", dishId);
 
   const queryParams = useQueryParams();
   const navigate = useNavigate();
@@ -34,19 +33,16 @@ export default function CustomerReview({ dishId }) {
     }
   }, [queryParams?.rankingStars]);
 
-  console.log("rankingQuery data", rankingQuery.data);
   let commentList = [];
   let totalPage = 0;
   if (rankingFetchAllQuery.data && !queryParams.rankingStars) {
     commentList = rankingFetchAllQuery.data.data.data.pageContent;
     totalPage = rankingFetchAllQuery.data.data.data.totalPages;
-    console.log("totalpage", rankingFetchAllQuery.data.data.data.totalPages);
   }
 
   if (rankingQuery.data && queryParams.rankingStars) {
     commentList = rankingQuery.data.data.data.pageContent;
     totalPage = rankingQuery.data.data.data.totalPages;
-    console.log("total page", rankingQuery.data.data.data.totalPages);
   }
 
   const handleButtonClick = (index) => {
@@ -72,7 +68,6 @@ export default function CustomerReview({ dishId }) {
 
   const currentPath = `/food/${dishId}`;
 
-  console.log(activeButton);
   return (
     <div className={`${classes.customerReview}`}>
       <h1 className={`${classes["cr-title"]}`}>CUSTOMER REVIEWS</h1>

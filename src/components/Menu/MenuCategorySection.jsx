@@ -20,8 +20,6 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
   const queryClient = useQueryClient();
   const { favList, addItemToFav, removeItemFromFav } = useContext(FavContext);
 
-  console.log("favlist hien taij", favList);
-
   //Có thể viết query này ở component cha, tránh mỗi category lại call api 1 lần
   const { data: mostPopularData } = useQuery({
     queryKey: ["menu", "most-popular"],
@@ -59,7 +57,6 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
   let finalCategoryData = [];
   if (categoryData) {
     finalCategoryData = categoryData.data.data;
-    console.log("categoryData.data.data", categoryData.data.data);
   }
 
   if (catQueryData) {
@@ -122,7 +119,6 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
   };
 
   const handleSaveEdit = (foodAfterEdit) => {
-    console.log("foodAfterEdit", foodAfterEdit);
     setEditingFood(false);
 
     editMutation.mutate({

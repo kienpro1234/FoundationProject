@@ -31,8 +31,6 @@ export default function FoodDetail() {
     },
   });
 
-  console.log("dataDay", data);
-
   let content;
 
   if (isError) {

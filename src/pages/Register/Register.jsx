@@ -33,8 +33,6 @@ export default function Register() {
 
   const useRegisterMutation = useMutation({
     mutationFn: (userData) => {
-      console.log("mutate 1");
-
       try {
         return http.post(`auth/register`, {
           firstName: userData.surname,
@@ -51,7 +49,6 @@ export default function Register() {
       }
     },
     onSuccess: () => {
-      console.log("gohere");
       setUserData({
         surname: "",
         fullname: "",
@@ -199,7 +196,7 @@ export default function Register() {
         break;
       }
     }
-    console.log("valid", isValid);
+
     for (const key in userData) {
       if (userData[key] === "") {
         isValid = false;
@@ -210,7 +207,6 @@ export default function Register() {
       alert("Vui lòng nhập đúng thông tin yêu cầu");
       return;
     }
-    console.log("no return");
 
     useRegisterMutation.mutate(userData);
   };
