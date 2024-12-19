@@ -8,12 +8,15 @@ import { toast } from "react-toastify";
 import { FavContext } from "../../context/favContext";
 import { CartContext } from "../../context/cartContext";
 import { RiAdminFill } from "react-icons/ri";
+import { useQuery } from "@tanstack/react-query";
+import { fetchFavList } from "../../apis/fav.api";
 
 //THêm class riêng cho esapase, tắt luôn, chứ k chờ
 export default function Header({ className, ...props }) {
   //Dùng redux hay context api quản lý state sau
-  const { favList } = useContext(FavContext);
-  const { cartList } = useContext(CartContext);
+  let favList = [];
+  const { favList: favListContext } = useContext(FavContext);
+  const { cartList, userId } = useContext(CartContext);
   const inputDiv = useRef(null);
   const inputRef = useRef(null);
   const [searchKeyWord, setSearchKeyWord] = useState("");
@@ -60,6 +63,21 @@ export default function Header({ className, ...props }) {
 
     setSearchKeyWord(value);
   };
+
+  const getFavQuery = useQuery({
+    queryKey: ["favList", userId],
+    queryFn: () => fetchFavList(userId),
+    enabled: Boolean(token),
+  });
+
+  if (!token) {
+    favList = favListContext;
+  } else {
+    console.log("run 1");
+    if (getFavQuery.data) {
+      favList = getFavQuery.data.data.data.pageContent;
+    }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();

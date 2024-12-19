@@ -19,3 +19,5 @@ export const fetchAllDishRanking = (dishId, queryParams) => {
     },
   });
 };
+
+export const fetchDishRankingAnalysis = (dishId) => http.get(`rankings/dishes/${dishId}/ranking-analysis`);

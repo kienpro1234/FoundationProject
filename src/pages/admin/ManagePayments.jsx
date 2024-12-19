@@ -37,7 +37,7 @@ const PaymentsList = () => {
       {selectedUserForInfo && (
         <UserInfoModal userId={selectedUserForInfo} onClose={() => setSelectedUserForInfo(null)} />
       )}
-      <div className="!ml-[200px] px-4 py-8">
+      <div className="!ml-[240px] px-4 py-8">
         <h1 className="mb-6 text-2xl font-bold">User Payments</h1>
 
         <div className="overflow-x-auto">

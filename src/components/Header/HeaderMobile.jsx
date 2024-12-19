@@ -3,17 +3,20 @@ import classes from "./HeaderMobile.module.css";
 import { createSearchParams, Link, useNavigate } from "react-router-dom";
 import SearchContext from "../../context/headerContext";
 import { useMediaQuery } from "react-responsive";
-import { countFoodInCartList, getAccessToken } from "../../utils/util";
+import { countFoodInCartList, getAccessToken, getToken } from "../../utils/util";
 import { CartContext } from "../../context/cartContext";
 import { TABLEURL } from "../../utils/const";
 import { useQuery } from "@tanstack/react-query";
 import { getTable } from "../../apis/tableApi";
 import { toast } from "react-toastify";
 import { FavContext } from "../../context/favContext";
+import { fetchFavList } from "../../apis/fav.api";
 
 export default function HeaderMobile({ configImg, title }) {
-  const { tableId, cartList } = useContext(CartContext);
-  const { favList } = useContext(FavContext);
+  const { tableId, cartList, userId } = useContext(CartContext);
+  let favList = [];
+  const token = getToken();
+  const { favList: favListContext } = useContext(FavContext);
   const { isSearching, setIsSearching } = useContext(SearchContext);
   const { isMenuOpen, setIsMenuOpen } = useContext(SearchContext);
   const [searchKeyWord, setSearchKeyWord] = useState("");
@@ -64,6 +67,21 @@ export default function HeaderMobile({ configImg, title }) {
 
     setSearchKeyWord(value);
   };
+
+  const getFavQuery = useQuery({
+    queryKey: ["favList", userId],
+    queryFn: () => fetchFavList(userId),
+    enabled: Boolean(token),
+  });
+
+  if (!token) {
+    favList = favListContext;
+  } else {
+    console.log("run 1");
+    if (getFavQuery.data) {
+      favList = getFavQuery.data.data.data.pageContent;
+    }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();

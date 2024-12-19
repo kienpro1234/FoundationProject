@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export default function AdminNavbar() {
   return (
-    <nav className="ml-[200px] bg-white p-4">
+    <nav className="ml-[240px] bg-white p-4">
       <div className="flex space-x-4">
         <NavLink
           to="/admin/users"

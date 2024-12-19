@@ -56,7 +56,7 @@ const TableOrders = () => {
   return (
     <div>
       <AdminNavbar />
-      <div className="!ml-[200px] p-4">
+      <div className="!ml-[240px] p-4">
         {/* Tables Navigation */}
         <div className="mb-6 flex gap-4 overflow-x-auto">
           {tables.map((table) => (

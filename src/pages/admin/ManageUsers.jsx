@@ -125,7 +125,7 @@ export default function ManageUsers() {
   return (
     <div>
       <AdminNavbar />
-      <div className="menu p-4">
+      <div className="ml-[240px] p-4">
         <h2 className="mb-4 text-2xl font-bold">Manage Users</h2>
 
         {deleteUserMutation.isPending && <LoadingModal />}

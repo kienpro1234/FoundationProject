@@ -2,11 +2,12 @@ import React, { Fragment, useEffect, useState } from "react";
 import classes from "./CustomerReview.module.css";
 import { createSearchParams, NavLink, useNavigate } from "react-router-dom";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { fetchAllDishRanking, fetchDishRanking } from "../../apis/raking.api";
+import { fetchAllDishRanking, fetchDishRanking, fetchDishRankingAnalysis } from "../../apis/raking.api";
 import Pagination from "../Pagination/Pagination";
 import useQueryParams from "../../hooks/useQueryParams";
 import LoadingIndicator from "../UI/LoadingIndicator";
 import omit from "lodash/omit";
+import LoadingModal from "../LoadingModal/LoadingModal";
 export default function CustomerReview({ dishId }) {
   const [activeButton, setActiveButton] = useState(null);
   const buttonLabels = ["All", "5 stars", "4 stars", "3 stars", "2 stars", "1 star"];
@@ -24,6 +25,13 @@ export default function CustomerReview({ dishId }) {
     queryKey: ["commentList", queryParams],
     queryFn: () => fetchAllDishRanking(dishId, queryParams),
   });
+
+  const rankingAnalysisQuery = useQuery({
+    queryKey: ["rankingAnalysis", dishId],
+    queryFn: () => fetchDishRankingAnalysis(dishId),
+  });
+
+  const data = rankingAnalysisQuery?.data?.data?.data;
 
   useEffect(() => {
     if (queryParams?.rankingStars) {
@@ -70,12 +78,13 @@ export default function CustomerReview({ dishId }) {
 
   return (
     <div className={`${classes.customerReview}`}>
+      {/* {rankingAnalysisQuery.isLoading && <LoadingModal />} */}
       <h1 className={`${classes["cr-title"]}`}>CUSTOMER REVIEWS</h1>
       <div className={`${classes["customerReview-container"]}`}>
         <div className={`${["customerReview-content"]} row p-md-5 ps-md-2 align-items-center`}>
           <div className={`col-md-3 col-12 ${classes["content-item"]} text-md-center pe-0`}>
             <p className={`${classes["rv-number"]}`}>
-              <span>5.0</span>
+              <span>{data?.rankingAvg || 0}</span>
               <span> / 5</span>
             </p>
             <p className="star">
@@ -98,62 +107,62 @@ export default function CustomerReview({ dishId }) {
                 <div
                   className={`${classes["rv-progress"]}`}
                   //   style={{ width: percent ? `${percent}%` : "0" }}
-                  style={{ width: "100%" }}
+                  style={{ width: `${data?.rank5 || 0}%` }}
                 ></div>
               </div>
-              <span className={`${classes["percent"]}`}>100%</span>
+              <span className={`${classes["percent"]}`}>{data?.rank5 || 0}%</span>
             </div>
             <div className={`${classes["rv-rating-row"]}`}>
               <span className={`${classes["rv-rating-star"]}`}>
-                5<span>★</span>
+                4<span>★</span>
               </span>
               <div className={`${classes["rv-progress-bar"]}`}>
                 <div
                   className={`${classes["rv-progress"]}`}
                   //   style={{ width: percent ? `${percent}%` : "0" }}
-                  style={{ width: "100%" }}
+                  style={{ width: `${data?.rank4 || 0}%` }}
                 ></div>
               </div>
-              <span className={`${classes["percent"]}`}>100%</span>
+              <span className={`${classes["percent"]}`}>{data?.rank4 || 0}%</span>
             </div>
             <div className={`${classes["rv-rating-row"]}`}>
               <span className={`${classes["rv-rating-star"]}`}>
-                5<span>★</span>
+                3<span>★</span>
               </span>
               <div className={`${classes["rv-progress-bar"]}`}>
                 <div
                   className={`${classes["rv-progress"]}`}
                   //   style={{ width: percent ? `${percent}%` : "0" }}
-                  style={{ width: "100%" }}
+                  style={{ width: `${data?.rank3 || 0}%` }}
                 ></div>
               </div>
-              <span className={`${classes["percent"]}`}>100%</span>
+              <span className={`${classes["percent"]}`}>{data?.rank3 || 0}%</span>
             </div>
             <div className={`${classes["rv-rating-row"]}`}>
               <span className={`${classes["rv-rating-star"]}`}>
-                5<span>★</span>
+                2<span>★</span>
               </span>
               <div className={`${classes["rv-progress-bar"]}`}>
                 <div
                   className={`${classes["rv-progress"]}`}
                   //   style={{ width: percent ? `${percent}%` : "0" }}
-                  style={{ width: "100%" }}
+                  style={{ width: `${data?.rank2 || 0}%` }}
                 ></div>
               </div>
-              <span className={`${classes["percent"]}`}>100%</span>
+              <span className={`${classes["percent"]}`}>{data?.rank2 || 0}%</span>
             </div>
             <div className={`${classes["rv-rating-row"]}`}>
               <span className={`${classes["rv-rating-star"]}`}>
-                5<span>★</span>
+                1<span>★</span>
               </span>
               <div className={`${classes["rv-progress-bar"]}`}>
                 <div
                   className={`${classes["rv-progress"]}`}
                   //   style={{ width: percent ? `${percent}%` : "0" }}
-                  style={{ width: "100%" }}
+                  style={{ width: `${data?.rank1 || 0}%` }}
                 ></div>
               </div>
-              <span className={`${classes["percent"]}`}>100%</span>
+              <span className={`${classes["percent"]}`}>{data?.rank1 || 0}%</span>
             </div>
           </div>
           <div className={`col-md col-12 ${classes["content-item-last"]}`}>
@@ -172,7 +181,7 @@ export default function CustomerReview({ dishId }) {
           </div>
         </div>
       </div>
-      {rankingQuery.isLoading || rankingFetchAllQuery.isLoading ? (
+      {rankingQuery.isLoading || rankingFetchAllQuery.isLoading || rankingAnalysisQuery.isLoading ? (
         <LoadingIndicator />
       ) : (
         <Fragment>
