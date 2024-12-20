@@ -5,6 +5,7 @@ import AdminNavbar from "./AdminNavbar";
 import { useState } from "react";
 import UserInfoModal from "./UserInfoModal";
 import { formatVietnamCurrency } from "../../utils/util";
+import PaymentBill from "./PaymentBill";
 
 const fetchPayments = async () => {
   const response = await http.get("payments");
@@ -12,6 +13,7 @@ const fetchPayments = async () => {
 };
 
 const PaymentsList = () => {
+  const [selectedOrdersPayment, setSelectedOrdersPayment] = useState(null);
   const [selectedUserForInfo, setSelectedUserForInfo] = useState(null);
   const {
     data: paymentsData,
@@ -37,6 +39,10 @@ const PaymentsList = () => {
       {selectedUserForInfo && (
         <UserInfoModal userId={selectedUserForInfo} onClose={() => setSelectedUserForInfo(null)} />
       )}
+
+      {selectedOrdersPayment && (
+        <PaymentBill orders={selectedOrdersPayment} onClose={() => setSelectedOrdersPayment(null)} />
+      )}
       <div className="!ml-[240px] px-4 py-8">
         <h1 className="mb-6 text-2xl font-bold">User Payments</h1>
 
@@ -58,6 +64,9 @@ const PaymentsList = () => {
                 </th>
                 <th className="w-fit px-6 py-3 pr-0 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Email
+                </th>
+                <th className="w-fit px-6 py-3 pr-0 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  Bill
                 </th>
               </tr>
             </thead>
@@ -83,6 +92,12 @@ const PaymentsList = () => {
                   <td className="w-fit whitespace-nowrap px-6 py-4">{payment.paymentMethod}</td>
                   <td className="w-fit whitespace-nowrap px-6 py-4">{formatVietnamCurrency(payment.amount)}</td>
                   <td className="w-fit whitespace-nowrap px-6 py-4">{payment.user.emailOrPhone}</td>
+                  <td
+                    className="w-fit cursor-pointer whitespace-nowrap px-6 py-4 text-blue-400 hover:text-blue-500"
+                    onClick={() => setSelectedOrdersPayment(payment.orders)}
+                  >
+                    Click to see bill
+                  </td>
                 </tr>
               ))}
             </tbody>
