@@ -96,9 +96,13 @@ body {
 /* Button component */
 /* for button in MenuCategorySection */
 .food-review-button {
-  background-color: #c3c3c3;
+  background-color: hsl(0deg 96.78% 49.94% / 60%);
   color: white;
   padding: 8px 30px;
+}
+
+.food-review-button:hover {
+  background-color: hsl(0deg 96.78% 49.94% / 80%);
 }
 
 /* in food.jsx in food folder */

@@ -23,13 +23,32 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
   const [editingFood, setEditingFood] = useState(null);
   const [foodToEdit, setFoodToEdit] = useState(null);
   const queryClient = useQueryClient();
-  const { favList, addItemToFav, removeItemFromFav } = useContext(FavContext);
-  const { userId } = useContext(CartContext);
   const token = getAccessToken();
+  let favList = [];
+  let favIdList = [];
+  const { favList: favListContext, addItemToFav, removeItemFromFav } = useContext(FavContext);
+  const { userId } = useContext(CartContext);
 
   const isDesktop = useMediaQuery({ minWidth: 1024 });
   // const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
   const isMobile = useMediaQuery({ maxWidth: 1023 });
+
+  const getFavQuery = useQuery({
+    queryKey: ["favList", userId],
+    queryFn: () => fetchFavList(userId),
+    enabled: Boolean(token),
+  });
+
+  if (!token) {
+    favList = favListContext;
+    favIdList = favList.map((item) => item.dishId);
+  } else {
+    console.log("run 1");
+    if (getFavQuery.data) {
+      favList = getFavQuery.data.data.data.pageContent;
+      favIdList = favList.map((item) => item.dish.dishId);
+    }
+  }
 
   //Có thể viết query này ở component cha, tránh mỗi category lại call api 1 lần
   const { data: mostPopularData } = useQuery({
@@ -187,6 +206,11 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
 
       <ul className={`row gx-4 px-3 ${classes.category}`}>
         {finalCategoryData?.map((food) => {
+          console.log("favIdList", favIdList);
+          console.log("fooddidi", food);
+          let isFav = false;
+          favIdList.some((item) => item === food.dishId) ? (isFav = true) : (isFav = false);
+          console.log("isFav", isFav);
           return (
             <li className="col-md-3 col-6 mb-4 pe-2 md:!pe-3" key={food.dishId}>
               <div className={`${classes["menu-category-content"]} rounded-md p-2 shadow-1 md:!p-3`}>
@@ -243,7 +267,13 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
                     ></ModalOrdering>
                   </div>
                 </div>
-                <button className={`${classes["foodInfo-fav-btn"]}`} onClick={handleAddFav(food)}>
+                <button
+                  disabled={isFav}
+                  className={classNames(`${classes["foodInfo-fav-btn"]}`, {
+                    "cursor-not-allowed !bg-gray-400": isFav,
+                  })}
+                  onClick={handleAddFav(food)}
+                >
                   <i className="fa-regular fa-heart"></i>
                 </button>
 
