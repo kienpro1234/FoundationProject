@@ -14,6 +14,7 @@ export default function CustomerReview({ dishId }) {
 
   const queryParams = useQueryParams();
   const navigate = useNavigate();
+  console.log("Nannn", Boolean(NaN));
 
   const rankingQuery = useQuery({
     queryKey: ["commentList", { dishId, queryParams }],
@@ -82,9 +83,9 @@ export default function CustomerReview({ dishId }) {
       <h1 className={`${classes["cr-title"]}`}>CUSTOMER REVIEWS</h1>
       <div className={`${classes["customerReview-container"]}`}>
         <div className={`${["customerReview-content"]} row p-md-5 ps-md-2 align-items-center`}>
-          <div className={`col-md-3 col-12 ${classes["content-item"]} text-md-center pe-0`}>
+          {/* <div className={`col-md-3 col-12 ${classes["content-item"]} text-md-center pe-0`}>
             <p className={`${classes["rv-number"]}`}>
-              <span>{data?.rankingAvg || 0}</span>
+              <span>{data?.rankingAvg === 0 ? 0 : data?.rankingAvg.toFixed(1) || 0}</span>
               <span> / 5</span>
             </p>
             <p className="star">
@@ -94,6 +95,43 @@ export default function CustomerReview({ dishId }) {
               <i className="fa fa-star"></i>
               <i className="fa fa-star"></i>
             </p>
+            <p className="rv-vote">Base on 1 reviews</p>
+          </div> */}
+          <div className={`col-md-3 col-12 ${classes["content-item"]} text-md-center pe-0`}>
+            <p className={`${classes["rv-number"]}`}>
+              <span>{data?.rankingAvg === "NaN" || data?.rankingAvg === 0 ? 0 : data?.rankingAvg.toFixed(1) || 0}</span>
+              <span> / 5</span>
+            </p>
+            <p className="star">
+              {Array.from({ length: 5 }, (_, i) => {
+                const fullStars = Math.floor(data?.rankingAvg); // Số sao đầy đủ
+                const partialStar = data?.rankingAvg - fullStars; // Tỷ lệ sao còn lại (0 <= partialStar < 1)
+
+                if (i < fullStars) {
+                  // Hiển thị các sao đầy đủ màu vàng
+                  return <i key={i} className="fa fa-star bold-yellow"></i>;
+                } else if (i === fullStars && partialStar > 0) {
+                  // Hiển thị sao một phần dựa trên tỷ lệ partialStar
+                  return (
+                    <span key={i} className="fa fa-star partial-star">
+                      <span
+                        style={{
+                          width: `${partialStar * 100}%`,
+                          overflow: "hidden",
+                          display: "inline-block",
+                        }}
+                      >
+                        <i className="fa fa-star bold-yellow"></i>
+                      </span>
+                    </span>
+                  );
+                } else {
+                  // Hiển thị các sao nhạt màu
+                  return <i key={i} className="fa fa-star gray-star"></i>;
+                }
+              })}
+            </p>
+
             <p className="rv-vote">Base on 1 reviews</p>
           </div>
           <div
@@ -110,7 +148,9 @@ export default function CustomerReview({ dishId }) {
                   style={{ width: `${data?.rank5 || 0}%` }}
                 ></div>
               </div>
-              <span className={`${classes["percent"]}`}>{data?.rank5 || 0}%</span>
+              <span className={`${classes["percent"]}`}>
+                {data?.rank5 === "NaN" || data?.rank5 === 0 ? 0 : data?.rank5.toFixed(2) || 0}%
+              </span>
             </div>
             <div className={`${classes["rv-rating-row"]}`}>
               <span className={`${classes["rv-rating-star"]}`}>
@@ -123,7 +163,9 @@ export default function CustomerReview({ dishId }) {
                   style={{ width: `${data?.rank4 || 0}%` }}
                 ></div>
               </div>
-              <span className={`${classes["percent"]}`}>{data?.rank4 || 0}%</span>
+              <span className={`${classes["percent"]}`}>
+                {data?.rank4 === "NaN" || data?.rank4 === 0 ? 0 : data?.rank4.toFixed(2) || 0}%
+              </span>
             </div>
             <div className={`${classes["rv-rating-row"]}`}>
               <span className={`${classes["rv-rating-star"]}`}>
@@ -136,7 +178,9 @@ export default function CustomerReview({ dishId }) {
                   style={{ width: `${data?.rank3 || 0}%` }}
                 ></div>
               </div>
-              <span className={`${classes["percent"]}`}>{data?.rank3 || 0}%</span>
+              <span className={`${classes["percent"]}`}>
+                {data?.rank3 === "NaN" || data?.rank3 === 0 ? 0 : data?.rank3.toFixed(2) || 0}%
+              </span>
             </div>
             <div className={`${classes["rv-rating-row"]}`}>
               <span className={`${classes["rv-rating-star"]}`}>
@@ -149,7 +193,9 @@ export default function CustomerReview({ dishId }) {
                   style={{ width: `${data?.rank2 || 0}%` }}
                 ></div>
               </div>
-              <span className={`${classes["percent"]}`}>{data?.rank2 || 0}%</span>
+              <span className={`${classes["percent"]}`}>
+                {data?.rank2 === "NaN" || data?.rank2 === 0 ? 0 : data?.rank2.toFixed(2) || 0}%
+              </span>
             </div>
             <div className={`${classes["rv-rating-row"]}`}>
               <span className={`${classes["rv-rating-star"]}`}>
@@ -162,7 +208,9 @@ export default function CustomerReview({ dishId }) {
                   style={{ width: `${data?.rank1 || 0}%` }}
                 ></div>
               </div>
-              <span className={`${classes["percent"]}`}>{data?.rank1 || 0}%</span>
+              <span className={`${classes["percent"]}`}>
+                {data?.rank1 === "NaN" || data?.rank1 === 0 ? 0 : data?.rank1.toFixed(2) || 0}%
+              </span>
             </div>
           </div>
           <div className={`col-md col-12 ${classes["content-item-last"]}`}>

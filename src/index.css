@@ -367,6 +367,30 @@ input[type="checkbox"]:disabled {
   cursor: not-allowed;
 }
 
+.bold-yellow {
+  color: #ffd700; /* Vàng đậm */
+}
+
+.gray-star {
+  color: #e0e0e0; /* Màu xám nhạt */
+}
+
+.partial-star {
+  display: inline-block;
+  position: relative;
+  color: #e0e0e0; /* Màu nhạt mặc định */
+  width: 1em; /* Đảm bảo kích thước sao nhất quán */
+}
+
+.partial-star span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  overflow: hidden;
+  color: #ffd700; /* Vàng đậm */
+}
+
 /* RESPONSIVE */
 @media screen and (min-width: 1760px) {
   .headerGreeting-userinfo {
