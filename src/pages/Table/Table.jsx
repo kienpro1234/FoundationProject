@@ -7,6 +7,7 @@ import ErrorBlock from "../../components/UI/ErrorBlock";
 import { CartContext } from "../../context/cartContext";
 import { toast } from "react-toastify";
 import { createPortal } from "react-dom";
+import { updateOrderStatus } from "../../apis/order.api";
 
 export default function Table() {
   // lấy url của page này để call api fetch đến thông tin của table này, để hiển thị tương ứng
@@ -114,7 +115,7 @@ export default function Table() {
     );
   }, []);
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["table", tableId],
     queryFn: () => getTable(tableId),
     enabled: isPositionValid,
@@ -173,6 +174,22 @@ export default function Table() {
     }
   };
 
+  const confirmOrderMutation = useMutation({
+    mutationFn: updateOrderStatus,
+    onSuccess: (data) => {
+      toast.success("Thành công", { position: "top-center" });
+      refetch();
+    },
+    onError: (err) => {
+      toast.error("Update thất bại", { position: "top-center" });
+      console.error("err update status order", err);
+    },
+  });
+
+  const handleConfirmOrder = (orderId) => {
+    confirmOrderMutation.mutate(orderId);
+  };
+
   let dataTable = "";
   if (data) {
     console.log("data", data);
@@ -192,7 +209,8 @@ export default function Table() {
     content = (
       <div className="h-screen overflow-auto bg-pink-red">
         {isPending ||
-          (paymentMutation.isPending &&
+          paymentMutation.isPending ||
+          (confirmOrderMutation.isPending &&
             createPortal(
               <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-black/70">
                 <LoadingIndicator />
@@ -220,12 +238,28 @@ export default function Table() {
                     <p className="">Quantity: {order.quantity}</p>
                     <p className="">Status: {order.status ? "Đã thanh toán" : "Chưa thanh toán"}</p>
                     <div>
-                      <button
-                        className="rounded-lg bg-red-600 px-2 py-1 text-white shadow"
-                        onClick={() => handleClickDelete(order.orderId)}
-                      >
-                        Hủy
-                      </button>
+                      {!order.orderStatus && (
+                        <>
+                          <button
+                            className="me-1 rounded-lg bg-red-600 px-2 py-1 text-white shadow"
+                            onClick={() => handleClickDelete(order.orderId)}
+                          >
+                            Hủy
+                          </button>
+                          <button
+                            className="rounded-lg bg-green-600 px-2 py-1 text-white shadow"
+                            onClick={() => handleConfirmOrder(order.orderId)}
+                          >
+                            Xác nhận đơn
+                          </button>
+                        </>
+                      )}
+                      {order.orderStatus && (
+                        <p className="inline rounded-full bg-green-100 px-2 py-1 text-xs text-green-800">
+                          Đang chuẩn bị
+                        </p>
+                      )}
+
                       {orderIdDelete === order.orderId && (
                         <div className={`pop-up-delete shadow-lg`}>
                           <p className="mb-3 text-center">Are you sure to delete?</p>

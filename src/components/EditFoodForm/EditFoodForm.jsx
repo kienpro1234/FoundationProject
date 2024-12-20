@@ -5,7 +5,10 @@ import Select from "react-select";
 
 export default function EditFoodForm({ food, onCancel, onSave }) {
   console.log("fooddy", food);
-  const [formData, setFormData] = useState(food);
+  const [formData, setFormData] = useState({
+    ...food,
+    categories: food.categories.map((category) => category.categoryName),
+  });
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -33,8 +36,13 @@ export default function EditFoodForm({ food, onCancel, onSave }) {
     label: category.categoryName,
   }));
 
+  console.log("categoryOptions", categoryOptions);
+
   // Find default values for react-select
+  console.log("formData.categories", formData.categories);
   const defaultCategories = categoryOptions.filter((option) => formData.categories?.includes(option.value));
+
+  console.log("default,,", defaultCategories);
 
   //   Categories chooosing
   return (

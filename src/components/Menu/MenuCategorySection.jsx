@@ -238,6 +238,7 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
                   <Link to={`/food/${food.dishId}`}>
                     <p className={`fw-bold ${classes.foodName}`}>{food.dishName}</p>
                   </Link>
+                  <p>{food.orderAmount} purchased</p>
                   <p className={classes.price}>${food.price}</p>
                 </div>
                 <div className={`${classes.footer} d-flex align-items-center justify-between`}>
@@ -263,7 +264,16 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
                       modalId={`CHOOSE_ORDER_DETAIL${food.dishId}`}
                       foodId={food.dishId}
                       size={"sm"}
-                      triggeredButton={<Button className="food-review-button">ORDER</Button>}
+                      triggeredButton={
+                        <Button
+                          disabled={food.status === "Sold Out"}
+                          className={classNames(`food-review-button`, {
+                            "cursor-not-allowed !bg-gray-500": food.status === "Sold Out",
+                          })}
+                        >
+                          ORDER
+                        </Button>
+                      }
                     ></ModalOrdering>
                   </div>
                 </div>

@@ -87,7 +87,11 @@ const TableOrders = () => {
                     <p>Quantity: {order.quantity}</p>
                     <p>Cooking Time: {order.timeServing} mins</p>
                     <p>Total Price: ${order.totalPrice}</p>
-                    <p>Status: {order.orderStatus ? "Completed" : "Pending"}</p>
+                    <p
+                      className={`inline rounded-full px-2 py-1 text-xs ${order.status ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
+                    >
+                      Status: {order.orderStatus ? "Completed" : "Pending"}
+                    </p>
                   </div>
                   <img src={order.dish.image} alt={order.dish.dishName} className="size-32 rounded object-cover" />
                 </div>

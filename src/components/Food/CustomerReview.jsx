@@ -132,7 +132,7 @@ export default function CustomerReview({ dishId }) {
               })}
             </p>
 
-            <p className="rv-vote">Base on 1 reviews</p>
+            <p className="rv-vote">Base on {data?.rankingCount} reviews</p>
           </div>
           <div
             className={`col-md col-12 ${classes["content-item"]} ${classes["content-item-2"]} rv-rating-chart px-md-3`}
