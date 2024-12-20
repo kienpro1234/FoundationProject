@@ -12,7 +12,7 @@ import { fetchCategoryDetail } from "../../apis/category.api";
 import { FavContext } from "../../context/favContext";
 import EditFoodForm from "../EditFoodForm/EditFoodForm";
 import LoadingIndicator from "../UI/LoadingIndicator";
-import { addFav } from "../../apis/fav.api";
+import { addFav, fetchFavList } from "../../apis/fav.api";
 import { CartContext } from "../../context/cartContext";
 import LoadingModal from "../LoadingModal/LoadingModal";
 import { useMediaQuery } from "react-responsive";
@@ -28,6 +28,7 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
   let favIdList = [];
   const { favList: favListContext, addItemToFav, removeItemFromFav } = useContext(FavContext);
   const { userId } = useContext(CartContext);
+  console.log("useriddd", userId);
 
   const isDesktop = useMediaQuery({ minWidth: 1024 });
   // const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
@@ -158,6 +159,8 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
     onSuccess: () => {
       toast.success("Đã thêm vào danh sách món ăn yêu thích", { position: "top-center" });
       queryClient.invalidateQueries(["favList", userId]);
+      // queryClient.refetchQueries(["favList", userId]);
+      // getFavQuery.refetch();
     },
     onError: (err) => {
       toast.warning("Thức ăn này đã có trong danh sách yêu thích của bạn", { position: "top-center" });
@@ -167,9 +170,7 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
   const handleAddFav = (food) => () => {
     if (!token) {
       addItemToFav(food);
-      console.log("ec");
     } else {
-      console.log("ecc ecc");
       addToFavMutation.mutate({
         dishId: food.dishId,
         userId: userId,
