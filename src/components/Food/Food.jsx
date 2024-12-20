@@ -4,6 +4,7 @@ import classes from "./Food.module.css";
 import Button from "../UI/Button";
 import Modal from "../UI/Modal";
 import ModalOrdering from "../ModalOrdering/ModalOrdering";
+import classNames from "classnames";
 
 export default function Food({ food }) {
   const imageRef = useRef(null);
@@ -64,9 +65,19 @@ export default function Food({ food }) {
             <ModalOrdering
               itemCart={food}
               title={"Choose order detail"}
-              id={"CHOOSE_ORDER_DETAIL"}
+              modalId={`CHOOSE_ORDER_DETAIL${food.dishId}`}
+              foodId={food.dishId}
               size={"sm"}
-              triggeredButton={<Button className="food-review-button">ORDER</Button>}
+              triggeredButton={
+                <Button
+                  disabled={food.status === "Sold Out"}
+                  className={classNames(`food-review-button`, {
+                    "cursor-not-allowed !bg-gray-500": food.status === "Sold Out",
+                  })}
+                >
+                  ORDER
+                </Button>
+              }
             ></ModalOrdering>
 
             <div className={classes["food-mainInfo"]}>
