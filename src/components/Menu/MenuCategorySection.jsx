@@ -15,6 +15,8 @@ import LoadingIndicator from "../UI/LoadingIndicator";
 import { addFav } from "../../apis/fav.api";
 import { CartContext } from "../../context/cartContext";
 import LoadingModal from "../LoadingModal/LoadingModal";
+import { useMediaQuery } from "react-responsive";
+import classNames from "classnames";
 
 export default function MenuCategorySection({ category, catQueryData, catName, searchFoodList, searchName }) {
   const [idToDelete, setIdToDelete] = useState("");
@@ -24,6 +26,10 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
   const { favList, addItemToFav, removeItemFromFav } = useContext(FavContext);
   const { userId } = useContext(CartContext);
   const token = getAccessToken();
+
+  const isDesktop = useMediaQuery({ minWidth: 1024 });
+  // const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
+  const isMobile = useMediaQuery({ maxWidth: 1023 });
 
   //Có thể viết query này ở component cha, tránh mỗi category lại call api 1 lần
   const { data: mostPopularData } = useQuery({
@@ -132,6 +138,7 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
     mutationFn: addFav,
     onSuccess: () => {
       toast.success("Đã thêm vào danh sách món ăn yêu thích", { position: "top-center" });
+      queryClient.invalidateQueries(["favList", userId]);
     },
     onError: (err) => {
       toast.warning("Thức ăn này đã có trong danh sách yêu thích của bạn", { position: "top-center" });
@@ -156,10 +163,15 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
     return <p className="py-3 text-center font-yummy text-lg text-red-500">Không tìm thấy "{searchName}"</p>;
   return (
     <div className="menu-category">
-      {addToFavMutation.isPending && <LoadingModal />}
+      {addToFavMutation.isPending && <LoadingModal className="translate-x-0" />}
       {editMutation.isPending && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="relative translate-x-20">
+          <div
+            className={classNames(`relative`, {
+              "translate-x-0": isMobile,
+              "translate-x-20": isDesktop,
+            })}
+          >
             <LoadingIndicator />
           </div>
         </div>
