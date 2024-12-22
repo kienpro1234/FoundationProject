@@ -3,7 +3,6 @@ import { Link, NavLink } from "react-router-dom";
 import classes from "./Sider.module.css";
 import SiderMenu from "./SiderMenu";
 
-
 export default function Sider() {
   return (
     <section className={classes.sider}>
@@ -26,9 +25,9 @@ export default function Sider() {
             </p>
           </div>
           <div className={classes["sider-icon"]}>
-            <i className="fab fa-facebook-f text-primary"></i>
+            <a href="https://www.facebook.com/neilphelan85" className="fab fa-facebook-f text-primary"></a>
             <i className="fab fa-instagram text-danger"></i>
-            <i className="fab fa-github"></i>
+            <a href="https://github.com/bangyugi" className="fab fa-github"></a>
           </div>
         </div>
       </div>

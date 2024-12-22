@@ -63,6 +63,18 @@ export const getCartListFromLS = () => {
   return JSON.parse(localStorage.getItem("cartList")) || [];
 };
 
+export const getUserFromLS = () => {
+  return JSON.parse(localStorage.getItem("user")) || null;
+};
+
+export const getEmailOrPhoneReconfirmFromLS = () => {
+  return localStorage.getItem("emailOrPhoneReconfirm") || null;
+};
+
+export const setEmailOrPhoneReconfirmToLS = (emailOrPhoneReconfirm) => {
+  localStorage.setItem("emailOrPhoneReconfirm", emailOrPhoneReconfirm);
+};
+
 export const isEmail = (email) => {
   const emailRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
   if (emailRegex.test(email)) {
@@ -96,7 +108,9 @@ export const transformCategoryNameToURL = (categoryName) => {
 };
 
 export const formatVietnamCurrency = (amount) => {
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'decimal',
-  }).format(amount) + 'đ';
+  return (
+    new Intl.NumberFormat("vi-VN", {
+      style: "decimal",
+    }).format(amount) + "đ"
+  );
 };

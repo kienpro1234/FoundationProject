@@ -26,6 +26,7 @@ import ManageUsers from "./pages/admin/ManageUsers";
 import Bill from "./pages/Bill/Bill";
 import PaymentsList from "./pages/admin/ManagePayments";
 import ManageTable from "./pages/admin/ManageTables";
+import VerifyUser from "./pages/VerifyUser";
 
 function RejectedRoute() {
   const token = getToken();
@@ -113,6 +114,11 @@ const router = createBrowserRouter([
         element: <Register />,
       },
     ],
+  },
+
+  {
+    path: "/verify",
+    element: <VerifyUser />,
   },
   {
     path: "/bill/:paymentId",

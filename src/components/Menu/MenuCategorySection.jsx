@@ -28,7 +28,6 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
   let favIdList = [];
   const { favList: favListContext, addItemToFav, removeItemFromFav } = useContext(FavContext);
   const { userId } = useContext(CartContext);
-  console.log("useriddd", userId);
 
   const isDesktop = useMediaQuery({ minWidth: 1024 });
   // const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
@@ -44,7 +43,7 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
     favList = favListContext;
     favIdList = favList.map((item) => item.dishId);
   } else {
-    console.log("run 1");
+
     if (getFavQuery.data) {
       favList = getFavQuery.data.data.data.pageContent;
       favIdList = favList.map((item) => item.dish.dishId);
@@ -207,11 +206,10 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
 
       <ul className={`row gx-4 px-3 ${classes.category}`}>
         {finalCategoryData?.map((food) => {
-          console.log("favIdList", favIdList);
-          console.log("fooddidi", food);
+
           let isFav = false;
           favIdList.some((item) => item === food.dishId) ? (isFav = true) : (isFav = false);
-          console.log("isFav", isFav);
+
           return (
             <li className="col-md-3 col-6 mb-4 pe-2 md:!pe-3" key={food.dishId}>
               <div className={`${classes["menu-category-content"]} rounded-md p-2 shadow-1 md:!p-3`}>

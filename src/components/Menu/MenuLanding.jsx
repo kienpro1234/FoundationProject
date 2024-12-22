@@ -21,7 +21,7 @@ export default function MenuLanding({ foodCategories, favPage, ...props }) {
       <div className={classes["menuLanding-captions"]}>
         {!favPage && <h3 className="font-yummy !text-3xl !leading-5">MENU</h3>}
 
-        <h2 className={favPage ? "border-b-2 border-b-white font-yummy !text-4xl" : "font-yummy !text-3xl !leading-5"}>
+        <h2 className={favPage ? "border-b-2 border-b-white font-yummy !text-4xl" : "font-yummy !text-3xl"}>
           {favPage ? "YOUR FAVOURITE FOOD" : categoryName || props.aboutTitle || "TODAY'S MENU"}{" "}
         </h2>
       </div>

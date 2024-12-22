@@ -116,7 +116,7 @@ export default function About() {
       {/* services section */}
       <div className="container-big-screen services py-5 md:px-4">
         {/* services top content */}
-        <div className="mb-14 flex flex-col justify-center gap-12 md:flex-row md:gap-32">
+        <div className="mb-14 flex flex-col justify-center gap-12 overflow-auto md:flex-row md:gap-32">
           {/* item */}
           <div className="flex flex-col items-center gap-2">
             <div className="relative h-[250px] w-[250px] rounded-full bg-zinc-200 md:h-[200px] md:w-[200px]">
@@ -127,7 +127,7 @@ export default function About() {
               />
             </div>
 
-            <p className="mt-2 text-5xl font-semibold md:mt-0 md:text-4xl">PLACE ORDER</p>
+            <p className="mt-2 text-center text-5xl font-semibold md:mt-0 md:text-4xl">PLACE ORDER</p>
           </div>
           <div className="flex flex-col items-center gap-2">
             <div className="relative h-[250px] w-[250px] rounded-full bg-zinc-200 md:h-[200px] md:w-[200px]">

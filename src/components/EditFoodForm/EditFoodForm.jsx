@@ -234,7 +234,7 @@ export default function EditFoodForm({ food, onCancel, onSave }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 dark:bg-gray-800 dark:bg-opacity-75">
       <div className="max-h-[90vh] w-[800px] overflow-y-auto rounded-lg bg-white p-6 dark:bg-gray-900 dark:text-gray-200">
         <div className="top-0 z-10 mb-4 flex items-center justify-between bg-white pb-4 dark:bg-gray-900">
-          <h2 className="text-xl font-bold">Edit Food Item</h2>
+          <h2 className="text-xl font-bold text-black">Edit Food Item</h2>
           <button
             onClick={onCancel}
             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"

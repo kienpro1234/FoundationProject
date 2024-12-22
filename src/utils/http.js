@@ -35,7 +35,19 @@ class Http {
 
         return response;
       },
-      (err) => Promise.reject(err),
+      (err) => {
+        // Trường hợp token hết hạn thì xóa token trong localstorage, xóa ở client, đăng xuất
+        if (err.response.status === 1014 || err.response.status === 1005) {
+          this.accessToken = null;
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("user");
+          localStorage.removeItem("userId");
+          localStorage.removeItem("role");
+          localStorage.removeItem("emailOrPhoneReconfirm");
+          window.location.href = "/login";
+        }
+        return Promise.reject(err);
+      },
     );
   }
 }

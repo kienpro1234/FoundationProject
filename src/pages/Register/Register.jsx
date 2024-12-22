@@ -3,20 +3,22 @@ import classes from "./Register.module.css";
 import Input from "../../components/UI/Input";
 import ButtonLogin from "../../components/UI/ButtonLogin";
 import { Link, useNavigate } from "react-router-dom";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { DOMAIN } from "../../utils/const";
+import { useMutation } from "@tanstack/react-query";
+
 import { http } from "../../utils/http";
-import { isEmail, isPhoneNumber } from "../../utils/util";
+
 import { toast } from "react-toastify";
+import { isPhoneNumber } from "../../utils/util";
 
 export default function Register() {
   const [eyeOpen, setEyeOpen] = useState(true);
   const [userData, setUserData] = useState({
     surname: "",
     fullname: "",
-    account: "",
     password: "",
+    phoneNumber: "",
     confirmedPassword: "",
+    email: "",
   });
   const navigate = useNavigate();
 
@@ -26,6 +28,8 @@ export default function Register() {
     account: "",
     password: "",
     confirmedPassword: "",
+    phoneNumber: "",
+    email: "",
   });
 
   // let phoneNumber = isPhoneNumber(userData.account) ? userData.account : "";
@@ -37,8 +41,9 @@ export default function Register() {
         return http.post(`auth/register`, {
           firstName: userData.surname,
           lastName: userData.fullname,
-          emailOrPhone: userData.account,
-          gender: "male",
+          phoneNumber: userData.phoneNumber,
+          email: userData.email,
+          gender: "Male",
           password: userData.password,
           dob: "2024-11-25",
           address: "string",
@@ -48,7 +53,7 @@ export default function Register() {
         throw error;
       }
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       setUserData({
         surname: "",
         fullname: "",
@@ -56,14 +61,16 @@ export default function Register() {
         password: "",
         confirmedPassword: "",
       });
+      localStorage.setItem("user", JSON.stringify(data.data.data));
       toast.success("Register successfully", {
         position: "top-center",
       });
-      navigate("/login");
+      navigate("/verify");
     },
     onError: (error) => {
-      toast.error(`register failed ${error.response?.data?.message}`, {
+      toast.error(`${error.response?.data?.message}`, {
         position: "top-center",
+        autoClose: 3000,
       });
       console.error("Error:", error);
       // Xử lý lỗi và giữ lại dữ liệu form nếu đăng ký thất bại
@@ -113,7 +120,7 @@ export default function Register() {
     if (value === "") {
       setDataError({
         ...dataError,
-        [name]: "Account must not be left blank",
+        [name]: "This field must not be left blank",
       });
     }
 
@@ -192,6 +199,7 @@ export default function Register() {
 
     for (const key in dataError) {
       if (dataError[key]) {
+        console.log("có lỗi trong này");
         isValid = false;
         break;
       }
@@ -199,6 +207,7 @@ export default function Register() {
 
     for (const key in userData) {
       if (userData[key] === "") {
+        console.log("Lỗi data bị trống");
         isValid = false;
         break;
       }
@@ -240,12 +249,25 @@ export default function Register() {
         <div className="mb-[12px]">
           <Input
             className={"w-full"}
-            placeholder={"Email hoặc số điện thoại"}
-            name="account"
+            placeholder={"Số điện thoại"}
+            name="phoneNumber"
+            type="tel"
             onChange={handleChange}
-            value={userData.account}
+            value={userData.phoneNumber}
           />
           <div className={`${classes.error} `}>{dataError.account}</div>
+        </div>
+
+        <div className="mb-[12px]">
+          <Input
+            className={"w-full"}
+            placeholder={"Email"}
+            name="email"
+            type="email"
+            onChange={handleChange}
+            value={userData.email}
+          />
+          <div className={`${classes.error} `}>{dataError.email}</div>
         </div>
         <div className={`${classes["input-password"]}`}>
           <Input

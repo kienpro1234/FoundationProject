@@ -7,12 +7,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { http } from "../utils/http";
 import { toast } from "react-toastify";
 import { CartContext } from "../context/cartContext";
+import { getUserFromLS, setEmailOrPhoneReconfirmToLS } from "../utils/util";
+
 export default function Login() {
+  const user = getUserFromLS();
   const [eyeOpen, setEyeOpen] = useState(true);
+  const [noVerify, setNoverify] = useState(false);
   const initialUserData = {
     account: "",
     password: "",
   };
+
   const [userData, setUserData] = useState(initialUserData);
   const { setUserId } = useContext(CartContext);
   const navigate = useNavigate();
@@ -24,6 +29,18 @@ export default function Login() {
       [name]: value,
     });
   };
+
+  const reSendOtpMutation = useMutation({
+    mutationFn: async () => {
+      return http.post(`auth/resend-otp/${userData.account}`);
+    },
+    onSuccess: () => {
+      navigate("/verify");
+    },
+    onError: (err) => {
+      console.error("Lỗi otp resend trang login", err);
+    },
+  });
 
   const useLoginMutation = useMutation({
     mutationFn: async (userData) => {
@@ -65,12 +82,18 @@ export default function Login() {
       // toast.error(`Login failed - Account or password is not correct`, {
       //   position: "top-center",
       // });
-      toast.error("Login failed", {
-        position: "top-center",
-      });
 
-      console.log("Đăng nhập lỗi", err);
-      console.error("err", err);
+      if (err.response.data.code === 1017) {
+        toast.error(err.response.data.message, {
+          position: "top-center",
+        });
+        setEmailOrPhoneReconfirmToLS(userData.account);
+        setNoverify(true);
+      } else {
+        toast.error("Login failed", {
+          position: "top-center",
+        });
+      }
     },
   });
 
@@ -128,6 +151,7 @@ export default function Login() {
             {eyeOpen ? <i className="fa fa-eye text-gray-400"></i> : <i className="fa fa-eye-slash text-gray-400"></i>}
           </button>
         </div>
+
         {/* Nhớ tài khoản , quên mk */}
         <div className="flex items-baseline justify-between">
           <div className="mt-3 flex items-baseline gap-2">
@@ -173,6 +197,27 @@ export default function Login() {
               Đăng kí ngay
             </Link>
           </span>
+          {noVerify && !reSendOtpMutation.isPending && (
+            <span>
+              <span
+                to={"/verify"}
+                className="cursor-pointer text-nowrap text-red-500 hover:text-red-700"
+                href="#"
+                onClick={() => {
+                  reSendOtpMutation.mutate();
+                }}
+              >
+                Xác nhận tài khoản
+              </span>
+            </span>
+          )}
+          {noVerify && reSendOtpMutation.isPending && (
+            <span>
+              <span to={"/verify"} className="text-nowrap text-red-500 hover:text-red-700" href="#">
+                Đang chuyển hướng...
+              </span>
+            </span>
+          )}
         </div>
       </form>
     </div>
