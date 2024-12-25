@@ -37,14 +37,17 @@ class Http {
       },
       (err) => {
         // Trường hợp token hết hạn thì xóa token trong localstorage, xóa ở client, đăng xuất
-        if (err.response.status === 1014 || err.response.status === 1005) {
+        console.log("errr", err);
+        if (err.response?.data?.code === 9999) {
+          // alert("Phien dang nhap het han");
           this.accessToken = null;
           localStorage.removeItem("accessToken");
           localStorage.removeItem("user");
           localStorage.removeItem("userId");
           localStorage.removeItem("role");
           localStorage.removeItem("emailOrPhoneReconfirm");
-          window.location.href = "/login";
+          // window.location.href = "/login";
+          window.location.reload();
         }
         return Promise.reject(err);
       },

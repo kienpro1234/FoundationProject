@@ -80,7 +80,7 @@ export default function Food({ food }) {
               }
             ></ModalOrdering>
 
-            <div className={classes["food-mainInfo"]}>
+            <div className={`${classes["food-mainInfo"]} mt-4`}>
               <div className={classes.ingredients}>
                 <h3 className="fw-bold">
                   <img

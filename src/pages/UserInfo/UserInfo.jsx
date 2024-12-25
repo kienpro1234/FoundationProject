@@ -85,7 +85,12 @@ export default function UserInfo() {
   }
   if (isError) {
     console.error("error", error);
-    content = <ErrorBlock title={"Không thể fetch userinfo"} message={error.response.data.message} />;
+    content = (
+      <ErrorBlock
+        title={`Lỗi ${error.response?.data?.code}, không thể fetch user`}
+        message={error.response.data.message}
+      />
+    );
   }
 
   if (data) {

@@ -8,6 +8,7 @@ import { CartContext } from "../../context/cartContext";
 import { toast } from "react-toastify";
 import { createPortal } from "react-dom";
 import { updateOrderStatus } from "../../apis/order.api";
+import LoadingModal from "../../components/LoadingModal/LoadingModal";
 
 export default function Table() {
   // lấy url của page này để call api fetch đến thông tin của table này, để hiển thị tương ứng
@@ -186,8 +187,8 @@ export default function Table() {
     },
   });
 
-  const handleConfirmOrder = (orderId) => {
-    confirmOrderMutation.mutate(orderId);
+  const handleConfirmOrder = (orderId, orderStatus) => {
+    confirmOrderMutation.mutate({ orderId, orderStatus });
   };
 
   let dataTable = "";
@@ -208,16 +209,6 @@ export default function Table() {
   if (dataTable) {
     content = (
       <div className="h-screen overflow-auto bg-pink-red">
-        {isPending ||
-          paymentMutation.isPending ||
-          (confirmOrderMutation.isPending &&
-            createPortal(
-              <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-black/70">
-                <LoadingIndicator />
-              </div>,
-              document.querySelector("#root"),
-            ))}
-
         {/* Container */}
         <div className="px-8 py-3">
           {/* title */}
@@ -238,7 +229,7 @@ export default function Table() {
                     <p className="">Quantity: {order.quantity}</p>
                     <p className="">Status: {order.status ? "Đã thanh toán" : "Chưa thanh toán"}</p>
                     <div>
-                      {!order.orderStatus && (
+                      {order.orderStatus === "considering" && (
                         <>
                           <button
                             className="me-1 rounded-lg bg-red-600 px-2 py-1 text-white shadow"
@@ -248,37 +239,44 @@ export default function Table() {
                           </button>
                           <button
                             className="rounded-lg bg-green-600 px-2 py-1 text-white shadow"
-                            onClick={() => handleConfirmOrder(order.orderId)}
+                            onClick={() => handleConfirmOrder(order.orderId, "pending")}
                           >
                             Xác nhận đơn
                           </button>
                         </>
                       )}
-                      {order.orderStatus && (
+                      {/* considering, pending, served */}
+                      {order.orderStatus === "pending" && (
                         <p className="inline rounded-full bg-green-100 px-2 py-1 text-xs text-green-800">
                           Đang chuẩn bị
                         </p>
                       )}
 
+                      {order.orderStatus === "served" && (
+                        <p className="inline rounded-full bg-green-100 px-2 py-1 text-xs text-green-800">Đã phục vụ</p>
+                      )}
+
                       {orderIdDelete === order.orderId && (
-                        <div className={`pop-up-delete shadow-lg`}>
-                          <p className="mb-3 text-center">Are you sure to delete?</p>
-                          <button
-                            onClick={() => {
-                              setOrderIdDelete("");
-                            }}
-                            type="button"
-                            className="mb-2 me-2 rounded-lg border-2 border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-red-300 dark:border-red-500 dark:text-red-500 dark:hover:bg-red-600 dark:hover:text-white dark:focus:ring-red-900"
-                          >
-                            No
-                          </button>
-                          <button
-                            onClick={() => handleConfirmDelete(order.orderId)}
-                            type="button"
-                            className="mb-2 me-2 rounded-lg border-2 border-blue-700 px-5 py-2.5 text-center text-sm font-medium text-blue-700 hover:bg-blue-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-500 dark:hover:text-white dark:focus:ring-blue-800"
-                          >
-                            Yes
-                          </button>
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                          <div className={`pop-up-delete rounded-md shadow-lg`}>
+                            <p className="mb-3 text-center">Are you sure to delete?</p>
+                            <button
+                              onClick={() => {
+                                setOrderIdDelete("");
+                              }}
+                              type="button"
+                              className="mb-2 me-2 rounded-lg border-2 border-red-700 px-5 py-2.5 text-center text-sm font-medium text-red-700 hover:bg-red-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-red-300 dark:border-red-500 dark:text-red-500 dark:hover:bg-red-600 dark:hover:text-white dark:focus:ring-red-900"
+                            >
+                              No
+                            </button>
+                            <button
+                              onClick={() => handleConfirmDelete(order.orderId)}
+                              type="button"
+                              className="mb-2 me-2 rounded-lg border-2 border-blue-700 px-5 py-2.5 text-center text-sm font-medium text-blue-700 hover:bg-blue-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-500 dark:hover:text-white dark:focus:ring-blue-800"
+                            >
+                              Yes
+                            </button>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -326,5 +324,13 @@ export default function Table() {
     content = <LoadingIndicator />;
   }
   // Nếu vị trí không phù hợp thì return vị trí không phù hợp, không return ra gì / TƯơng tự với trường hợp người dùng từ chối cung cấp vị trí
-  return <>{content}</>;
+  return (
+    <>
+      {console.log("isPending", isPending)}
+      {(isPending || paymentMutation.isPending || confirmOrderMutation.isPending) && (
+        <LoadingModal className="translate-x-0" />
+      )}
+      {content}
+    </>
+  );
 }

@@ -25,7 +25,6 @@ export default function Register() {
   const [dataError, setDataError] = useState({
     surname: "",
     fullname: "",
-    account: "",
     password: "",
     confirmedPassword: "",
     phoneNumber: "",
@@ -43,10 +42,10 @@ export default function Register() {
           lastName: userData.fullname,
           phoneNumber: userData.phoneNumber,
           email: userData.email,
-          gender: "Male",
+          gender: "",
           password: userData.password,
-          dob: "2024-11-25",
-          address: "string",
+          dob: "",
+          address: "",
         });
       } catch (error) {
         console.log("error roi", error);
@@ -113,41 +112,78 @@ export default function Register() {
     }
   };
 
-  const validateAccount = (name, value) => {
+  // const validateAccount = (name, value) => {
+  //   console.log("name regex", name);
+  //   const emailRegex =
+  //     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$|^[0-9]+$/;
+  //   const phoneNumberRegex = /^\d{10,}$/;
+  //   if (value === "") {
+  //     setDataError({
+  //       ...dataError,
+  //       [name]: "This field must not be left blank",
+  //     });
+  //   }
+
+  //   if (isPhoneNumber(value)) {
+  //     console.log("isPhoneNumber");
+  //     if (!phoneNumberRegex.test(value)) {
+  //       setDataError({
+  //         ...dataError,
+  //         [name]: "PhoneNumber must have at least 10 number",
+  //       });
+  //     } else {
+  //       setDataError({
+  //         ...dataError,
+  //         [name]: "",
+  //       });
+  //     }
+  //   } else {
+  //     if (!emailRegex.test(value)) {
+  //       setDataError({
+  //         ...dataError,
+  //         [name]: "Email is not valid",
+  //       });
+  //     } else {
+  //       setDataError({
+  //         ...dataError,
+  //         [name]: "",
+  //       });
+  //     }
+  //   }
+  // };
+
+  const validateEmail = (name, value) => {
     const emailRegex =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$|^[0-9]+$/;
-    const phoneNumberRegex = /^\d{10,}$/;
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.\".+\")@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (value === "") {
+      return "This field must not be left blank";
+    } else if (!emailRegex.test(value)) {
       setDataError({
         ...dataError,
-        [name]: "This field must not be left blank",
+        [name]: "Email is not valid",
+      });
+    } else {
+      setDataError({
+        ...dataError,
+        [name]: "",
       });
     }
+  };
 
-    if (isPhoneNumber(value)) {
-      if (!phoneNumberRegex.test(value)) {
-        setDataError({
-          ...dataError,
-          [name]: "PhoneNumber must have at least 10 number",
-        });
-      } else {
-        setDataError({
-          ...dataError,
-          [name]: "",
-        });
-      }
+  const validatePhoneNumber = (name, value) => {
+    const phoneNumberRegex = /^\d{10,}$/;
+    if (value === "") {
+      return "This field must not be left blank";
+    } else if (!phoneNumberRegex.test(value)) {
+      setDataError({
+        ...dataError,
+        [name]: "PhoneNumber must have at least 10 number",
+      });
     } else {
-      if (!emailRegex.test(value)) {
-        setDataError({
-          ...dataError,
-          [name]: "Email is not valid",
-        });
-      } else {
-        setDataError({
-          ...dataError,
-          [name]: "",
-        });
-      }
+      setDataError({
+        ...dataError,
+        [name]: "",
+      });
     }
   };
 
@@ -188,7 +224,8 @@ export default function Register() {
       [name]: value,
     });
     if (name === "surname" || name === "fullname") validateName(name, value);
-    if (name === "account") validateAccount(name, value);
+    if (name === "email") validateEmail(name, value);
+    if (name === "phoneNumber") validatePhoneNumber(name, value);
     if (name === "password") validatePassword(name, value);
     if (name === "confirmedPassword") validateConfirmedPassword(name, value);
   };
@@ -221,7 +258,7 @@ export default function Register() {
   };
   return (
     <div className={`${classes.loginContainer} `}>
-      <form className={`${classes.loginForm} rounded-md`} onSubmit={handleSubmit}>
+      <form noValidate className={`${classes.loginForm} rounded-md`} onSubmit={handleSubmit}>
         <h2 className={`heading-login`}>Đăng Kí</h2>
         <p className={`mb-3 mt-2`}>Đăng kí bằng email hoặc số điện thoại</p>
 
@@ -255,7 +292,7 @@ export default function Register() {
             onChange={handleChange}
             value={userData.phoneNumber}
           />
-          <div className={`${classes.error} `}>{dataError.account}</div>
+          <div className={`${classes.error} `}>{dataError.phoneNumber}</div>
         </div>
 
         <div className="mb-[12px]">

@@ -8,9 +8,11 @@ import { http } from "../utils/http";
 import { toast } from "react-toastify";
 import { CartContext } from "../context/cartContext";
 import { getUserFromLS, setEmailOrPhoneReconfirmToLS } from "../utils/util";
+import { io } from "socket.io-client";
 
 export default function Login() {
   const user = getUserFromLS();
+  const { socket, setSocket } = useContext(CartContext);
   const [eyeOpen, setEyeOpen] = useState(true);
   const [noVerify, setNoverify] = useState(false);
   const initialUserData = {
@@ -70,7 +72,15 @@ export default function Login() {
         localStorage.setItem("userId", userId);
         localStorage.setItem("role", role);
         setUserId(userId);
+        // setSocket(
+        //   io("https://restaurant-ordering-webapp-0-7-5-release.onrender.com", {
+        //     auth: {
+        //       Authorization: `Bearer ${accessToken}`,
+        //     },
+        //   }),
+        // );
       }
+
       setUserData(initialUserData);
       toast.success("Đăng nhập thành công", {
         position: "top-center",

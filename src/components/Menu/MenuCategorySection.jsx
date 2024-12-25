@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import Button from "../UI/Button";
 import classes from "./MenuCategorySection.module.css";
-import { formatName, getAccessToken, getRoleLS, transformCategoryNameToURL } from "../../utils/util";
+import { formatName, getAccessToken, getRoleLS, normalizeNumber, transformCategoryNameToURL } from "../../utils/util";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DOMAIN } from "../../utils/const";
@@ -43,7 +43,6 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
     favList = favListContext;
     favIdList = favList.map((item) => item.dishId);
   } else {
-
     if (getFavQuery.data) {
       favList = getFavQuery.data.data.data.pageContent;
       favIdList = favList.map((item) => item.dish.dishId);
@@ -184,7 +183,7 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
     <div className="menu-category">
       {addToFavMutation.isPending && <LoadingModal className="translate-x-0" />}
       {editMutation.isPending && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+        <div className="text-s fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <div
             className={classNames(`relative`, {
               "translate-x-0": isMobile,
@@ -206,7 +205,6 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
 
       <ul className={`row gx-4 px-3 ${classes.category}`}>
         {finalCategoryData?.map((food) => {
-
           let isFav = false;
           favIdList.some((item) => item === food.dishId) ? (isFav = true) : (isFav = false);
 
@@ -237,12 +235,17 @@ export default function MenuCategorySection({ category, catQueryData, catName, s
                   <Link to={`/food/${food.dishId}`}>
                     <p className={`fw-bold ${classes.foodName}`}>{food.dishName}</p>
                   </Link>
-                  <p>{food.orderAmount} purchased</p>
+                  <div className="d-flex items-center justify-between gap-1">
+                    <p>{food.orderAmount} purchased</p>
+                    <p>{food.servedAmount} served amount</p>
+                  </div>
+
                   <p className={classes.price}>${food.price}</p>
                 </div>
                 <div className={`${classes.footer} d-flex align-items-center justify-between`}>
                   <div className="food-review">
                     <div className="d-flex align-items-center gap-1">
+                      {normalizeNumber(food.rankingAvg)}
                       <i className="fa fa-star text-warning"></i>
                       {/* <p>
                         {food.starAmount} ({food.reviewAmount} reviews)

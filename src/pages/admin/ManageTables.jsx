@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { http } from "../../utils/http";
 import AdminNavbar from "./AdminNavbar";
+import { CartContext } from "../../context/cartContext";
+import { toast } from "react-toastify";
 
 const fetchTables = async () => {
   console.log("fetching tables");
@@ -15,6 +17,7 @@ const fetchOrdersByPosition = async (positionId) => {
 };
 
 const TableOrders = () => {
+  const { socket } = useContext(CartContext);
   const [selectedTable, setSelectedTable] = useState(null);
 
   // Query for fetching tables
@@ -36,6 +39,31 @@ const TableOrders = () => {
       }
     }
   }, [tables.length]);
+
+  // useEffect(() => {
+  //   if (socket?.connected) {
+  //     onConnect();
+  //   }
+
+  //   function onConnect() {}
+
+  //   function onDisconnect() {}
+
+  //   // function onNewOrder(order) {
+  //   //   toast.success(`New order from ${order.user.emailOrPhone}`);
+  //   //   refetchOrders();
+  //   // }
+
+  //   socket?.on("connect", onConnect);
+  //   socket?.on("disconnect", onDisconnect);
+  //   // socket?.on("newOrder", onNewOrder);
+
+  //   return () => {
+  //     socket?.off("connect", onConnect);
+  //     socket?.off("disconnect", onDisconnect);
+  //     // socket?.off("confirmOrder", onNewOrder);
+  //   };
+  // }, []);
 
   console.log("selectedtable", selectedTable);
 

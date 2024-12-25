@@ -13,7 +13,7 @@ import LoadingIndicator from "../UI/LoadingIndicator";
 import { createPortal } from "react-dom";
 import { CartContext } from "../../context/cartContext";
 
-const DEFAULT_DOB = "1999-12-24";
+// const DEFAULT_DOB = "1999-12-24";
 
 export default function UserInformation({ user }) {
   console.log("user", user);
@@ -33,16 +33,12 @@ export default function UserInformation({ user }) {
   useEffect(() => {
     if (user) {
       setUserName(user?.firstName);
-      setGender(user?.gender || "Male");
-      setSelectedDate(user?.dob || DEFAULT_DOB);
+      setGender(user?.gender || "");
+      setSelectedDate(user?.dob || "");
     }
   }, [user]);
 
-  console.log("selectedDate", selectedDate);
-
-  const newDate = new Date(selectedDate || DEFAULT_DOB);
-
-  console.log("newDate", newDate.getFullYear());
+  const newDate = selectedDate ? new Date(selectedDate) : "";
 
   const updateUserMutation = useMutation({
     mutationFn: updateUser,
@@ -149,7 +145,11 @@ export default function UserInformation({ user }) {
                 ) : (
                   <Fragment>
                     <h3 className="mb-2">Date of birth</h3>
-                    <p>{`${newDate.getDate()}/${newDate.getMonth() + 1}/${newDate.getFullYear()}`}</p>
+                    <p>
+                      {newDate
+                        ? `${newDate.getDate()}/${newDate.getMonth() + 1}/${newDate.getFullYear()}`
+                        : "------------"}
+                    </p>
                   </Fragment>
                 )}
                 {/* <h3>Name</h3>
@@ -210,7 +210,7 @@ export default function UserInformation({ user }) {
                 ) : (
                   <Fragment>
                     <h3 className="mb-2">Gender</h3>
-                    <p>{gender}</p>
+                    <p>{gender || "------------"}</p>
                   </Fragment>
                 )}
               </div>
@@ -231,7 +231,7 @@ export default function UserInformation({ user }) {
                   <i className="fa fa-envelope"></i> <span>Contact</span>
                 </p>
                 {/* Mở đóng edit dựa theo state của isEditing */}
-                <input disabled={true} type="email" value={`${isEmail(user.emailOrPhone) ? user.emailOrPhone : ""}`} />
+                <input disabled={true} type="email" value={`${user.email}`} />
               </div>
 
               {/* <div>
@@ -288,7 +288,7 @@ export default function UserInformation({ user }) {
                 <i className="fa fa-envelope"></i> <span>Contact</span>
               </p>
               {/* Mở đóng edit dựa theo state của isEditing */}
-              <input disabled={true} type="email" value={`${isEmail(user.emailOrPhone) ? user.emailOrPhone : ""}`} />
+              <input disabled={true} type="email" value={`${user.email}`} />
             </div>
 
             {/* <div> */}
@@ -348,7 +348,11 @@ export default function UserInformation({ user }) {
               ) : (
                 <Fragment>
                   <h3 className="mb-2">Date of birth</h3>
-                  <p>{`${newDate.getDate()}/${newDate.getMonth() + 1}/${newDate.getFullYear()}`}</p>
+                  <p>
+                    {newDate
+                      ? `${newDate.getDate()}/${newDate.getMonth() + 1}/${newDate.getFullYear()}`
+                      : "------------------------------------"}
+                  </p>
                 </Fragment>
               )}
             </div>
@@ -399,7 +403,7 @@ export default function UserInformation({ user }) {
               ) : (
                 <Fragment>
                   <h3 className="mb-2">Gender</h3>
-                  <p>{gender}</p>
+                  <p>{gender || "------------------------------------"}</p>
                 </Fragment>
               )}
             </div>

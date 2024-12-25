@@ -1,5 +1,6 @@
-import { createContext, useReducer, useState } from "react";
-import { getCartListFromLS, setCartListToLS } from "../utils/util";
+import { createContext, useEffect, useReducer, useState } from "react";
+import { getCartListFromLS, getToken, setCartListToLS } from "../utils/util";
+import { io } from "socket.io-client";
 
 export const CartContext = createContext({
   //state để xử lý data cart khi người dùng chưa đăng nhập
@@ -12,6 +13,8 @@ export const CartContext = createContext({
   setUserId: () => "",
   tableId: "",
   setTableId: () => {},
+  socket: undefined,
+  setSocket: (socket) => {},
 });
 
 const intitialState = {
@@ -87,9 +90,23 @@ const cartReducer = (state, action) => {
 
 //Có thể dùng kết hợp useReducer sau, hỏi để tối ưu đoạn này thay vì dùng useState để code state có logic lớn
 export const CartContextProvider = ({ children }) => {
+  const [socket, setSocket] = useState(undefined);
   const [state, dispatch] = useReducer(cartReducer, intitialState);
   const [tableId, setTableId] = useState("");
   const [userId, setUserId] = useState(intitialState.userId);
+  const token = getToken();
+
+  // useEffect(() => {
+  //   if (token) {
+  //     setSocket(
+  //       io("http://localhost:3001", {
+  //         auth: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }),
+  //     );
+  //   }
+  // }, []);
 
   console.log("userId o ben nay ntn", userId);
   // 3 function này để xử lý cart khi người dùng chưa đăng nhập, lưu vào LS
@@ -127,6 +144,8 @@ export const CartContextProvider = ({ children }) => {
         addItemToCart,
         userId,
         setUserId,
+        socket,
+        setSocket,
       }}
     >
       {children}

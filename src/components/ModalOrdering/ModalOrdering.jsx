@@ -23,12 +23,12 @@ export default function ModalOrdering({ title, modalId, size, triggeredButton, f
     if (quantity === 1) {
       return;
     } else {
-      setQuantity((prevQuantity) => prevQuantity - 1);
+      setQuantity((prevQuantity) => Number(prevQuantity) - 1);
     }
   };
 
   const handleIncre = () => {
-    setQuantity((prevQuantity) => prevQuantity + 1);
+    setQuantity((prevQuantity) => Number(prevQuantity) + 1);
   };
 
   const handleCancel = () => {
@@ -39,7 +39,7 @@ export default function ModalOrdering({ title, modalId, size, triggeredButton, f
     mutationFn: () => {
       console.log("userid o trong mutate gui len api", userId);
       return orderFood({
-        quantity: quantity,
+        quantity: Number(quantity),
         userId: userId,
         dishId: foodId,
         positionId: tableId,
@@ -61,6 +61,7 @@ export default function ModalOrdering({ title, modalId, size, triggeredButton, f
     onError: (err) => {
       toast.error(err);
       console.error("err", err);
+      toast.error(`Order failed, ${err.response.data.message}`, { autoClose: 3000 });
     },
   });
 
@@ -95,7 +96,15 @@ export default function ModalOrdering({ title, modalId, size, triggeredButton, f
         >
           -
         </span>
-        <span className="w-1/2 border-b border-black text-center text-xl">{quantity}</span>
+        {/* <span className="w-1/2 border-b border-black text-center text-xl">{quantity}</span> */}
+        <input
+          value={quantity}
+          type="number"
+          onChange={(e) => {
+            setQuantity(e.target.value);
+          }}
+          className="w-1/2 border-b border-black text-center text-xl"
+        />
         <span
           onClick={handleIncre}
           className="inline-block size-6 cursor-pointer rounded-full border !border-emerald-300 text-center leading-4 transition hover:scale-105"

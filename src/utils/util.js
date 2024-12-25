@@ -114,3 +114,15 @@ export const formatVietnamCurrency = (amount) => {
     }).format(amount) + "đ"
   );
 };
+
+export function normalizeNumber(number) {
+  if (Number.isInteger(number)) {
+    return number;
+  }
+  const integerPart = Math.floor(number);
+  const decimalPart = number - integerPart;
+  if (decimalPart === 0) {
+    return integerPart;
+  }
+  return number;
+}
