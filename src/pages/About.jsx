@@ -157,7 +157,11 @@ export default function About() {
           {/* item */}
           <div className="flex flex-col gap-x-3 md:w-1/2 md:flex-row">
             <div className="w-full">
-              <img className="w-full" src="https://static.tastykitchen.vn/images/img16.jpg" alt="" />
+              <img
+                className="w-full rounded-md shadow-md"
+                src="https://static.tastykitchen.vn/images/img16.jpg"
+                alt=""
+              />
             </div>
             <p className="text-xl">
               Pure taste from natural and fresh ingredients rigorously selected from leading prestigious farms in
@@ -166,7 +170,11 @@ export default function About() {
           </div>
           <div className="flex flex-col gap-x-3 md:w-1/2 md:flex-row">
             <div className="w-full">
-              <img className="w-full" src="https://static.tastykitchen.vn/images/img16.jpg" alt="" />
+              <img
+                className="w-full rounded-md shadow-md"
+                src="https://static.tastykitchen.vn/images/img16.jpg"
+                alt=""
+              />
             </div>
             <p className="text-xl">
               Pure taste from natural and fresh ingredients rigorously selected from leading prestigious farms in
@@ -179,7 +187,11 @@ export default function About() {
           {/* item */}
           <div className="flex flex-col gap-x-3 md:w-1/2 md:flex-row">
             <div className="w-full">
-              <img className="w-full" src="https://static.tastykitchen.vn/images/img16.jpg" alt="" />
+              <img
+                className="w-full rounded-md shadow-md"
+                src="https://static.tastykitchen.vn/images/img16.jpg"
+                alt=""
+              />
             </div>
             <p className="text-xl">
               Pure taste from natural and fresh ingredients rigorously selected from leading prestigious farms in
@@ -188,7 +200,11 @@ export default function About() {
           </div>
           <div className="flex flex-col gap-x-3 md:w-1/2 md:flex-row">
             <div className="w-full">
-              <img className="w-full" src="https://static.tastykitchen.vn/images/img16.jpg" alt="" />
+              <img
+                className="w-full rounded-md shadow-md"
+                src="https://static.tastykitchen.vn/images/img16.jpg"
+                alt=""
+              />
             </div>
             <p className="text-xl">
               Pure taste from natural and fresh ingredients rigorously selected from leading prestigious farms in

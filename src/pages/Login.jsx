@@ -72,13 +72,7 @@ export default function Login() {
         localStorage.setItem("userId", userId);
         localStorage.setItem("role", role);
         setUserId(userId);
-        // setSocket(
-        //   io("https://restaurant-ordering-webapp-0-7-5-release.onrender.com", {
-        //     auth: {
-        //       Authorization: `Bearer ${accessToken}`,
-        //     },
-        //   }),
-        // );
+        setSocket(io("https://restaurant-ordering-webapp-0-7-7-release.onrender.com"));
       }
 
       setUserData(initialUserData);
